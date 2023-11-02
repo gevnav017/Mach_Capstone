@@ -6,10 +6,10 @@ import React from 'react'
 // MUI imports
 
 
-const Profile = () => {
+const Register = () => {
   return (
-    <div>Profile</div>
+    <div>Register</div>
   )
 }
 
-export default Profile
+export default Register

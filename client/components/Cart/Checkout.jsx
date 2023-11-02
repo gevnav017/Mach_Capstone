@@ -6,10 +6,10 @@ import React from 'react'
 // MUI imports
 
 
-const Profile = () => {
+const Checkout = () => {
   return (
-    <div>Profile</div>
+    <div>Checkout</div>
   )
 }
 
-export default Profile
+export default Checkout
