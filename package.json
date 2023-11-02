@@ -13,12 +13,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.16",
+    "@mui/material": "^5.14.16",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.4",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "morgan": "^1.10.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "styled-components": "^6.1.0"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.22.15",
