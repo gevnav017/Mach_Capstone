@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 
 // component imports
+import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Speakers from "./components/Products/Speakers";
 import Headphones from "./components/Products/Headphones";
