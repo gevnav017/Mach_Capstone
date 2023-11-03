@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 
 // api routes
-// app.use("/api", require("./api/products"))
+app.use("/api", require("./api/products"))
 
 // send file upon refresh from any page or extension
 app.get("/*", (req, res, next) => {
