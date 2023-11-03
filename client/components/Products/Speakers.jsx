@@ -4,6 +4,7 @@ import React from 'react'
 
 
 // MUI imports
+import { Card } from '@mui/material'
 
 
 const Speakers = () => {
