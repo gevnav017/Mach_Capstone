@@ -187,7 +187,7 @@ const Navbar = () => {
       </AppBar>
 
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/speakers" element={<Speakers />} />
         <Route path="/headphones" element={<Headphones />} />
         <Route path="/earbuds" element={<Earbuds />} />
