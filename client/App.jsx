@@ -20,6 +20,7 @@ const App = () => {
     <>
       <Link to="/home">Home</Link>
       <Link to="/Speakers">Speakers</Link>
+      <Link to="/Headphones"> Headphones</Link>
 
       <Button color="primary" variant="contained">
         Primary
@@ -34,6 +35,7 @@ const App = () => {
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/speakers" element={<Speakers />} />
+        <Route path="/headphones" element={<Headphones />} />
       </Routes>
     </>
   );
