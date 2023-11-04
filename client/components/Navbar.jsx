@@ -7,6 +7,10 @@ import Speakers from "./Products/Speakers";
 import Headphones from "./Products/Headphones";
 import Earbuds from "./Products/Earbuds";
 import Cart from "./Cart/Cart";
+import Profile from "./Account/Profile";
+import Wishlist from "./Account/Wishlist";
+import Orders from "./Account/Orders";
+import NoPathError from "./NoPathError";
 
 // MUI imports
 import AppBar from "@mui/material/AppBar";
@@ -125,6 +129,14 @@ const Navbar = () => {
                     style={{ textDecoration: "none", color: "#3c4757" }}
                   >
                     Earbuds
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Link
+                    to="/account/profile"
+                    style={{ textDecoration: "none", color: "#3c4757" }}
+                  >
+                    Account
                   </Link>
                 </MenuItem>
               </Menu>
@@ -265,6 +277,10 @@ const Navbar = () => {
         <Route path="/headphones" element={<Headphones />} />
         <Route path="/earbuds" element={<Earbuds />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/account/profile" element={<Profile />} />
+        <Route path="/account/wishlist" element={<Wishlist />} />
+        <Route path="/account/orders" element={<Orders />} />
+        <Route path="/*" element={<NoPathError />} />
       </Routes>
     </>
   );
