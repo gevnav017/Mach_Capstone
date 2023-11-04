@@ -15,9 +15,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 
 // api routes
+// products api
 app.use("/api", require("./api/products"))
 
+// users api
+app.use("/api", require("./api/users"))
+
+// orders api
+app.use("/api", require("./api/orders"))
+
 // send file upon refresh from any page or extension
+app.get("/*", (req, res, next) => {
+  try {
+    res.sendFile(path.join(__dirname, "../public/index.html"));
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get("/*", (req, res, next) => {
   try {
     res.sendFile(path.join(__dirname, "../public/index.html"));
