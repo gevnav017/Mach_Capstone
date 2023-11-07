@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id           String     @id @default(uuid()) @db.Uuid
+  userName     String     @unique
+  password     String
+  discount     Boolean    @default(false)
+  freeShipping Boolean    @default(false)
+  dateCreated  DateTime   @default(now()) @db.Date
+  wishlist     wishlist[]
+  orders       orders[]
+  reviews      reviews[]
+}
+
+model products {
+  id       String     @id @default(uuid()) @db.Uuid
+  brand    String
+  type     String
+  price    Decimal    @db.Decimal(7, 2)
+  category String
+  image String
+  wishlist wishlist[]
+  orders   orders[]
+  reviews  reviews[]
+}
+
+model wishlist {
+  id          String   @id @default(uuid()) @db.Uuid
+  dateCreated DateTime @default(now()) @db.Date
+  productId   String   @default(uuid()) @db.Uuid
+  products    products @relation(fields: [productId], references: [id])
+  userId      String   @default(uuid()) @db.Uuid
+  users       users    @relation(fields: [userId], references: [id])
+}
+
+model orders {
+  id          String   @id @default(uuid()) @db.Uuid
+  quantity    Int
+  inCart      Boolean  @default(false)
+  dateOrdered DateTime @default(now()) @db.Date
+  productId   String   @default(uuid()) @db.Uuid
+  products    products @relation(fields: [productId], references: [id])
+  userId      String   @default(uuid()) @db.Uuid
+  users       users    @relation(fields: [userId], references: [id])
+}
+
+model reviews {
+  id           String   @id @default(uuid()) @db.Uuid
+  review       Int
+  dateReviewed DateTime @default(now()) @db.Date
+  productId    String   @default(uuid()) @db.Uuid
+  products     products @relation(fields: [productId], references: [id])
+  userId       String   @default(uuid()) @db.Uuid
+  users        users    @relation(fields: [userId], references: [id])
+}
