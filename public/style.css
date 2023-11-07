@@ -1,1 +1,13 @@
 /* styles go here */
+.center {
+    float: center;
+    width:  600px;
+    height: 600px;
+    object-fit: cover;
+}
+
+.text {
+    text-align: center;
+    text-decoration: underline;
+
+}
