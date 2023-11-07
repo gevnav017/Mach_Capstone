@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 // component imports
 
@@ -12,66 +12,90 @@ import ButtonBase from '@mui/material/ButtonBase';
 
 import Box from '@mui/material/Box';
 
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+      <Paper style={{margin: 10}} elevation={3}>
 
-const Img = styled('img')({
-  margin: 'auto',
-  display: 'block',
-  maxWidth: '100%',
-  maxHeight: '200%',
-});
-
-
-export default function ComplexGrid() {
-  return (
-    <Paper
-      sx={{
-        p: 2,
-        margin: 'auto',
-        maxWidth: 500,
-        flexGrow: 1,
-        backgroundColor: (theme) =>
-          theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-      }}
-    >
-      <Grid container spacing={2}>
-        <Grid item>
-          <ButtonBase sx={{ width: 200, height: 200 }}>
-            <Img alt="complex" src="/static/images/grid/complex.jpg" />
-          </ButtonBase>
-        </Grid>
-        <Grid item xs={12} sm container>
-          <Grid item xs container direction="column" spacing={2}>
-            <Grid item xs>
-              <Typography gutterBottom variant="subtitle1" component="div">
-                Mach | speed of sound
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                Sounds
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                music
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography sx={{ cursor: 'pointer' }} variant="body2">
-                on sale
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid item>
-            <Typography variant="subtitle1" component="div">
-               blah blah blah
-            </Typography>
-          </Grid>
-        </Grid>
-      </Grid>
+      <Carousel 
+      autoPlay
+      showArrows={true}
+      showStatus={true}
+      width={960}
+      stopOnHover={false}
+      interval={1000}
+      >
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
+    <p className="legend">Legend 1</p>
+  </div>
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-2.jpg" />
+    <p className="legend">Legend 2</p>
+  </div>
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-3.jpg" />
+    <p className="legend">Legend 3</p>
+  </div>
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-4.jpg" />
+    <p className="legend">Legend 4</p>
+  </div>
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-5.jpg" />
+    <p className="legend">Legend 5</p>
+  </div>
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-6.jpg" />
+    <p className="legend">Legend 6</p>
+  </div>
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-7.jpg" />
+    <p className="legend">Legend 7</p>
+  </div>
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-8.jpg" />
+    <p className="legend">Legend 8</p>
+  </div>
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-9.jpg" />
+    <p className="legend">Legend 9</p>
+  </div>
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-10.jpg" />
+    <p className="legend">Legend 10</p>
+  </div>
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-11.jpg" />
+    <p className="legend">Legend 11</p>
+  </div>
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-12.jpg" />
+    <p className="legend">Legend 12</p>
+  </div>
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-13.jpg" />
+    <p className="legend">Legend 13</p>
+  </div>
+  <div>
+    <img src="http://lorempixel.com/output/cats-q-c-640-480-14.jpg" />
+    <p className="legend">Legend 14</p>
+  </div>
+</Carousel>
+      
     </Paper>
-
-    
-
-  );
+        
+      </div>
+    );
+  }
 }
+
+export default App;
+
+
 
 
 
