@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
 
 // component imports
 
 // MUI imports
 import {
   Container,
+  Box,
   Grid,
   Card,
   CardActions,
@@ -13,36 +15,146 @@ import {
   Button,
   Typography,
 } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import Favorite from "@mui/icons-material/Favorite";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
+
+const ItemsCard = ({ item }) => {
+  const [count, setCount] = useState(1);
+
+  const decrementQty = () => {
+    setCount(prevCount => prevCount > 1 && prevCount - 1)
+  }
+
+  return (
+    <Grid item xs={12} sm={6} md={4} lg={3}>
+      <Card>
+        <CardMedia
+          sx={{ height: 140 }}
+          image="./test.jpeg"
+          title={`${item.name} ${item.type}`}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {item.name}
+          </Typography>
+          <Typography gutterBottom variant="body2" color="text.secondary">
+            {item.type}
+          </Typography>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 2,
+              pt: 4,
+              mb: 2,
+              borderTop: "1px solid",
+              borderColor: "background.main",
+            }}
+          >
+            <Typography gutterBottom variant="h6" component="div">
+              ${item.price}
+            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Button
+                onClick={decrementQty}
+              >
+                <RemoveOutlinedIcon />
+              </Button>
+              <Typography color="text.secondary">{count}</Typography>
+              <Button
+                onClick={() =>
+                  setCount((c) => c + 1)
+                }
+              >
+                <AddOutlinedIcon />
+              </Button>
+            </Box>
+          </Box>
+        </CardContent>
+        <CardActions>
+          <Checkbox
+            icon={<FavoriteBorder />}
+            checkedIcon={<Favorite />}
+            color="error"
+            sx={{ mr: "auto" }}
+            onClick={() => addToWishlist(item.id)}
+          />
+          <Button size="small" onClick={() => addToCart(item.id)}>
+            Buy
+          </Button>
+        </CardActions>
+      </Card>
+    </Grid>
+  );
+};
 
 const Earbuds = () => {
+  const [earbuds, setEarbuds] = useState([]);
+
+  useEffect(() => {
+    Axios.get("http://localhost:3000/api/earbuds")
+      .then((res) => res)
+      .then((data) => setEarbuds(data.data))
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const addToWishlist = (earbudId) => {
+    Axios.post(
+      "http://localhost:3000/api/account/wishlist",
+      {
+        userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
+        productId: earbudId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => res)
+      .then((data) => console.log(data))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const addToCart = (earbudId) => {
+    Axios.post(
+      "http://localhost:3000/api/account/wishlist",
+      {
+        userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
+        productId: earbudId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => res)
+      .then((data) => console.log(data))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <Container maxWidth="lg" sx={{ p: 3 }}>
-      <Typography centered variant="h5" sx={{ my: 2 }}> Earbuds </Typography>
-      {/* <Grid container spacing={2}>
-        {[1, 2, 3, 4, 5].map((card) => (
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Card sx={{ maxWidth: 345 }}>
-              <CardMedia
-                sx={{ height: 140 }}
-                image="/static/images/cards/contemplative-reptile.jpg"
-                title="green iguana"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Earbud
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  earbud details
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small" sx={{ mr: "auto" }}>Favorite</Button>
-                <Button size="small">Buy</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid> */}
+      <img src="./test.jpeg" alt="test" />
+      <Typography variant="h5" sx={{ my: 2 }}>
+        {" "}
+        Earbuds{" "}
+      </Typography>
+      <Grid container spacing={2}>
+        {earbuds && earbuds.map((earbud) => <ItemsCard key={earbud.id} item={earbud} />)}
+      </Grid>
     </Container>
   );
 };

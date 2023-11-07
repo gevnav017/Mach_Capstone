@@ -24,15 +24,10 @@ app.use("/api", require("./api/users"))
 // orders api
 app.use("/api", require("./api/orders"))
 
-// send file upon refresh from any page or extension
-app.get("/*", (req, res, next) => {
-  try {
-    res.sendFile(path.join(__dirname, "../public/index.html"));
-  } catch (error) {
-    next(error);
-  }
-});
+// wishlist api
+app.use("/api", require("./api/wishlist"))
 
+// send file upon refresh from any page or extension
 app.get("/*", (req, res, next) => {
   try {
     res.sendFile(path.join(__dirname, "../public/index.html"));

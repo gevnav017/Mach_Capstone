@@ -14,6 +14,8 @@ model users {
   id           String     @id @default(uuid()) @db.Uuid
   userName     String     @unique
   password     String
+  firstName    String
+  lastName     String
   discount     Boolean    @default(false)
   freeShipping Boolean    @default(false)
   dateCreated  DateTime   @default(now()) @db.Date
@@ -25,10 +27,11 @@ model users {
 model products {
   id       String     @id @default(uuid()) @db.Uuid
   brand    String
+  name     String
   type     String
   price    Decimal    @db.Decimal(7, 2)
   category String
-  image String
+  image    String
   wishlist wishlist[]
   orders   orders[]
   reviews  reviews[]
