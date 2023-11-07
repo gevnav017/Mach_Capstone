@@ -6,7 +6,7 @@ const prisma = require('../db/client')
 router.get("/account/wishlist/:userId", async (req, res) => {
     try {
         const { userId } = req.params
-        const wishlist = await prisma.products.findMany({
+        const wishlist = await prisma.wishlist.findMany({
             where: {
                 id: userId
             },
@@ -15,6 +15,22 @@ router.get("/account/wishlist/:userId", async (req, res) => {
             }
         })
         res.json(wishlist)
+    }
+    catch (err) {
+        console.log(err)
+    }
+})
+
+router.post("/account/wishlist", async (req, res) => {
+    try {
+        const { userId, productId } = req.body
+        const addToWishlist = await prisma.wishlist.create({
+            data: {
+                userId: userId,
+                productId: productId
+            }
+        })
+        res.json(addToWishlist)
     }
     catch (err) {
         console.log(err)

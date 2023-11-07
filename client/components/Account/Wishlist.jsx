@@ -4,11 +4,14 @@ import React from 'react'
 
 
 // MUI imports
+import { Container, Box } from '@mui/material'
 
 
 const Wishlist = () => {
   return (
-    <div>Wishlist</div>
+    <Container maxWidth="lg" sx={{ p: 3 }}>
+      Wishlist
+    </Container>
   )
 }
 

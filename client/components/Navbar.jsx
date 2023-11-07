@@ -7,9 +7,12 @@ import Speakers from "./Products/Speakers";
 import Headphones from "./Products/Headphones";
 import Earbuds from "./Products/Earbuds";
 import Cart from "./Cart/Cart";
+import Account from "./Account/Account";
 import Profile from "./Account/Profile";
 import Wishlist from "./Account/Wishlist";
 import Orders from "./Account/Orders";
+import Login from "./Login/Login";
+import Footer from "./Footer";
 import NoPathError from "./NoPathError";
 
 // MUI imports
@@ -26,7 +29,8 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import Badge from "@mui/material/Badge";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -49,7 +53,7 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar position="sticky" color="background" sx={{}}>
+      <AppBar position="sticky" color="background">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -101,7 +105,7 @@ const Navbar = () => {
               >
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Link
-                    to="/home"
+                    to="/"
                     style={{ textDecoration: "none", color: "#3c4757" }}
                   >
                     Home
@@ -165,7 +169,7 @@ const Navbar = () => {
                 sx={{ my: 2, display: "block" }}
               >
                 <Link
-                  to="/home"
+                  to="/"
                   style={{ textDecoration: "none", color: "#3c4757" }}
                 >
                   Home
@@ -212,7 +216,9 @@ const Navbar = () => {
                 style={{ textDecoration: "none", color: "#3c4757" }}
               >
                 <IconButton sx={{ mr: 2 }}>
-                  <ShoppingCartOutlinedIcon />
+                  <Badge badgeContent={4} color="primary">
+                    <ShoppingCartOutlinedIcon />
+                  </Badge>
                 </IconButton>
               </Link>
               <Tooltip title="view account">
@@ -271,15 +277,18 @@ const Navbar = () => {
         </Container>
       </AppBar>
 
+      <Footer />
+
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/speakers" element={<Speakers />} />
         <Route path="/headphones" element={<Headphones />} />
         <Route path="/earbuds" element={<Earbuds />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/account/profile" element={<Profile />} />
-        <Route path="/account/wishlist" element={<Wishlist />} />
-        <Route path="/account/orders" element={<Orders />} />
+        <Route path="/account/profile" element={<Account />} />
+        <Route path="/account/wishlist" element={<Account />} />
+        <Route path="/account/orders" element={<Account />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/*" element={<NoPathError />} />
       </Routes>
     </>

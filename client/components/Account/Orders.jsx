@@ -4,11 +4,13 @@ import React from 'react'
 
 
 // MUI imports
-
+import { Container } from '@mui/material'
 
 const Orders = () => {
   return (
-    <div>Orders</div>
+    <Container maxWidth="lg" sx={{ p: 3 }}>
+      Orders
+    </Container>
   )
 }
 
