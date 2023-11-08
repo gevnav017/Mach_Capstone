@@ -10,26 +10,26 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 
 const Footer = () => {
   return (
-    <Container maxWidth="xl"
+    <Container
+      maxWidth="xxl"
       sx={{
         position: "fixed",
         left: 0,
         bottom: 0,
-        height: "70px",
-        p: 3
+        height: "50px",
       }}
     >
-      <Box gap={3} sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <Box>
+        <Box gap={3} sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Box>
             <InstagramIcon />
-        </Box>
-        <Box>
+          </Box>
+          <Box>
             <FacebookIcon />
-        </Box>
-        <Box>
+          </Box>
+          <Box>
             <TwitterIcon />
+          </Box>
         </Box>
-      </Box>
     </Container>
   );
 };
