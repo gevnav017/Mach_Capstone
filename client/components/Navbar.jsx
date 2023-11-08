@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 
 // component imports
 import Home from "./Home";
 import Speakers from "./Products/Speakers";
+import SpeakerDetails from "./ProductDetails/SpeakerDetails";
 import Headphones from "./Products/Headphones";
+import HeadphoneDetails from "./ProductDetails/HeadphoneDetails";
 import Earbuds from "./Products/Earbuds";
+import EarbudDetails from "./ProductDetails/EarbudDetails";
 import Cart from "./Cart/Cart";
 import Account from "./Account/Account";
-import Profile from "./Account/Profile";
-import Wishlist from "./Account/Wishlist";
-import Orders from "./Account/Orders";
 import Login from "./Login/Login";
+import Register from "./Login/Register";
 import Footer from "./Footer";
 import NoPathError from "./NoPathError";
 
@@ -28,7 +29,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import Badge from "@mui/material/Badge";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
@@ -53,10 +53,16 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar position="sticky" color="background">
+      <AppBar position="sticky" color="common">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+            <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
+              <img
+                src="/images/logo/mach-logo.png"
+                alt="mach-logo"
+                width="75px"
+              />
+            </Box>
             <Typography
               variant="h6"
               noWrap
@@ -137,7 +143,7 @@ const Navbar = () => {
                 </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Link
-                    to="/account/profile"
+                    to="/account"
                     style={{ textDecoration: "none", color: "#3c4757" }}
                   >
                     Account
@@ -145,7 +151,9 @@ const Navbar = () => {
                 </MenuItem>
               </Menu>
             </Box>
-            <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+            <Box sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}>
+              <img src="../images/mach_logo.png" alt="mach-logo" />
+            </Box>
             <Typography
               variant="h5"
               noWrap
@@ -244,26 +252,10 @@ const Navbar = () => {
               >
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Link
-                    to="/account/profile"
+                    to="/account"
                     style={{ textDecoration: "none", color: "#3c4757" }}
                   >
-                    Profile
-                  </Link>
-                </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Link
-                    to="/account/wishlist"
-                    style={{ textDecoration: "none", color: "#3c4757" }}
-                  >
-                    Wishlist
-                  </Link>
-                </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Link
-                    to="/account/orders"
-                    style={{ textDecoration: "none", color: "#3c4757" }}
-                  >
-                    Orders
+                    Account
                   </Link>
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
@@ -281,14 +273,25 @@ const Navbar = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/speakers" element={<Speakers />} />
-        <Route path="/headphones" element={<Headphones />} />
-        <Route path="/earbuds" element={<Earbuds />} />
+        <Route path="/speakers" element={<Speakers />}>
+          <Route
+            path="/speakers/speaker-details"
+            element={<SpeakerDetails />}
+          />
+        </Route>
+        <Route path="/headphones" element={<Headphones />}>
+          <Route
+            path="/headphones/headphone-details"
+            element={<HeadphoneDetails />}
+          />
+        </Route>
+        <Route path="/earbuds" element={<Earbuds />}>
+          <Route path="/earbuds/earbud-details" element={<EarbudDetails />} />
+        </Route>
         <Route path="/cart" element={<Cart />} />
-        <Route path="/account/profile" element={<Account />} />
-        <Route path="/account/wishlist" element={<Account />} />
-        <Route path="/account/orders" element={<Account />} />
+        <Route path="/account" element={<Account />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/*" element={<NoPathError />} />
       </Routes>
     </>

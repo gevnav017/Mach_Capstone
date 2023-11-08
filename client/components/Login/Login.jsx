@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Axios from "axios";
 
 // component imports
@@ -61,15 +62,20 @@ const Login = () => {
     <Box
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", md: "row" },
+        flexDirection: { xs: "column-reverse", md: "row" },
         width: "100%",
-        height: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)",  md: "calc(100vh - 69px)" },
+        height: {
+          xs: "calc(100vh - 56px)",
+          sm: "calc(100vh - 64px)",
+          md: "calc(100vh - 69px)",
+        },
         backgroundImage: "linear-gradient(to right, #3c4757 , #EEEEEE)",
       }}
     >
       <Box
         sx={{
-          width: {  md: "50%" },
+          width: { md: "50%" },
+
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -80,7 +86,7 @@ const Login = () => {
             display: "flex",
             flexDirection: "column",
             bgcolor: "background.main",
-            minWidth: { xs: "250px", md: "50%", xl: "600px" },
+            minWidth: { xs: "250px", md: "50%", xl: "500px" },
             boxSizing: "border-box",
             my: { xs: 5, md: 0 },
             blockSize: "fit-content",
@@ -139,13 +145,38 @@ const Login = () => {
             label="Remember me"
           />
 
-          <Button variant="outlined" color="primary" onClick={handleLogin}>
+          <Button variant="contained" color="primary" onClick={handleLogin}>
             Login
           </Button>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <Typography fontSize="small">Not a member?</Typography>
+            <Link to="/register">
+              <Button>Sign up</Button>
+            </Link>
+          </Box>
         </Box>
       </Box>
-      <Box sx={{ width: "50%" }}>
-        <Box id="login-logo">Logo</Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: { md: "50%" },
+          height: { xs: "200px", md: "98%" }
+        }}
+      >
+        <Box id="login-logo" sx={{ textAlign: "center" }}>
+          <img src="/images/logo/mach-logo.png" alt="mach-logo" />
+        </Box>
       </Box>
     </Box>
   );

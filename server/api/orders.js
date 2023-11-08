@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const prisma = require('../db/client')
 
-// all orders by user
+// get all orders by user
 router.get("/account/orders/:userId", async (req, res) => {
     try {
         const { userId } = req.params
@@ -21,11 +21,10 @@ router.get("/account/orders/:userId", async (req, res) => {
     }
 })
 
-// all orders by user
+// post user order of product to orders table
 router.post("/account/orders", async (req, res) => {
     try {
-        const { userId, productId, quantity } = req.params
-        console.log(userId, productId, quantity)
+        const { userId, productId, quantity } = req.body
         const addToCart = await prisma.orders.create({
             data: {
                 userId,

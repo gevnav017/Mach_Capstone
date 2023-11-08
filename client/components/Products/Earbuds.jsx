@@ -25,15 +25,62 @@ const ItemsCard = ({ item }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
-    setCount(prevCount => prevCount > 1 && prevCount - 1)
-  }
+    setCount((prevCount) => prevCount > 1 && prevCount - 1);
+  };
+
+  const addToWishlist = (earbudId) => {
+    Axios.post(
+      "http://localhost:3000/api/account/wishlist",
+      {
+        userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
+        productId: earbudId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => res)
+      .then((data) => console.log(data))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const addToCart = (earbudId) => {
+    Axios.post(
+      "http://localhost:3000/api/account/orders",
+      {
+        userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
+        productId: earbudId,
+        quantity: count
+      },
+      {
+        headers: {
+          "Content-Type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => res)
+      .then((data) => console.log(data))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
-    <Grid item xs={12} sm={6} md={4} lg={3}>
+    <Grid item xs={12} sm={6} md={4}>
       <Card>
         <CardMedia
-          sx={{ height: 140 }}
-          image="./test.jpeg"
+          component="img"
+          sx={{
+            height: 140,
+            p: 1,
+            objectFit: "contain",
+            boxSizing: "border-box",
+          }}
+          image={item.image}
           title={`${item.name} ${item.type}`}
         />
         <CardContent>
@@ -60,17 +107,11 @@ const ItemsCard = ({ item }) => {
               ${item.price}
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Button
-                onClick={decrementQty}
-              >
+              <Button onClick={decrementQty}>
                 <RemoveOutlinedIcon />
               </Button>
               <Typography color="text.secondary">{count}</Typography>
-              <Button
-                onClick={() =>
-                  setCount((c) => c + 1)
-                }
-              >
+              <Button onClick={() => setCount((c) => c + 1)}>
                 <AddOutlinedIcon />
               </Button>
             </Box>
@@ -105,55 +146,14 @@ const Earbuds = () => {
       });
   }, []);
 
-  const addToWishlist = (earbudId) => {
-    Axios.post(
-      "http://localhost:3000/api/account/wishlist",
-      {
-        userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
-        productId: earbudId,
-      },
-      {
-        headers: {
-          "Content-Type": "application/JSON",
-        },
-      }
-    )
-      .then((res) => res)
-      .then((data) => console.log(data))
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const addToCart = (earbudId) => {
-    Axios.post(
-      "http://localhost:3000/api/account/wishlist",
-      {
-        userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
-        productId: earbudId,
-      },
-      {
-        headers: {
-          "Content-Type": "application/JSON",
-        },
-      }
-    )
-      .then((res) => res)
-      .then((data) => console.log(data))
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   return (
     <Container maxWidth="lg" sx={{ p: 3 }}>
-      <img src="./test.jpeg" alt="test" />
       <Typography variant="h5" sx={{ my: 2 }}>
-        {" "}
-        Earbuds{" "}
+        Earbuds
       </Typography>
       <Grid container spacing={2}>
-        {earbuds && earbuds.map((earbud) => <ItemsCard key={earbud.id} item={earbud} />)}
+        {earbuds &&
+          earbuds.map((earbud) => <ItemsCard key={earbud.id} item={earbud} />)}
       </Grid>
     </Container>
   );

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+// import { useLocation } from "react-router-dom";
 
 // component imports
 import Profile from "./Profile";
@@ -12,30 +13,32 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 
 const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
+  const { children, value, index } = props;
 
   return (
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
     >
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
-
 const Account = () => {
+  // const location = useLocation();
+  // const page = location.pathname;
   const [value, setValue] = useState(0);
+
+  // useEffect(() => {
+  //   if (page.includes("profile")) {
+  //     setValue(0);
+  //   } else if (page.includes("wishlist")) {
+  //     setValue(1);
+  //   } else if (page.includes("orders")) {
+  //     setValue(2);
+  //   }
+  // }, [page]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -50,9 +53,9 @@ const Account = () => {
             onChange={handleChange}
             aria-label="basic tabs example"
           >
-            <Tab label="Profile" {...a11yProps(0)} />
-            <Tab label="Wishlist" {...a11yProps(1)} />
-            <Tab label="Orders" {...a11yProps(2)} />
+            <Tab label="Profile" />
+            <Tab label="Wishlist" />
+            <Tab label="Orders"/>
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>

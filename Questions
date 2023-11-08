@@ -1,0 +1,9 @@
+1. how to setup click on wishlist or order item and navigate to product-details page with that item loaded
+
+2. how to use nested routes for navbar/tabs
+
+3. image tags not loading any image from local storage
+
+4. efficient way of changing all localhost API calls to the deployed hosted URL
+
+5. downloading and using react dev tools in the console
