@@ -71,7 +71,7 @@ const ItemsCard = ({ item }) => {
 
   return (
     <Grid item xs={12} sm={6} md={4}>
-      <Card>
+      <Card sx={{ borderRadius: "10px" }}>
         <CardMedia
           component="img"
           sx={{
@@ -125,8 +125,8 @@ const ItemsCard = ({ item }) => {
             sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}
           />
-          <Button size="small" onClick={() => addToCart(item.id)}>
-            Buy
+          <Button variant="contained" size="small" onClick={() => addToCart(item.id)}>
+            Add to cart
           </Button>
         </CardActions>
       </Card>
