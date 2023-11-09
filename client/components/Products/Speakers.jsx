@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
+
 
 // component imports
 
 // MUI imports
 import {
+  Container,
+  Box,
+  Grid,
   Card,
   CardActions,
   CardContent,
@@ -11,32 +16,147 @@ import {
   Button,
   Typography,
 } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import Favorite from "@mui/icons-material/Favorite";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 
-const Speakers = () => {
+const ItemsCard = ({ item }) => {
+  const [count, setCount] = useState(1);
+
+  const decrementQty = () => {
+    setCount((prevCount) => prevCount > 1 && prevCount - 1);
+  };
+
+  const addToWishlist = (speakerId) => {
+    Axios.post(
+      "http://localhost:3000/api/account/wishlist",
+      {
+        userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
+        productId: speakerId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => res)
+      .then((data) => console.log(data))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const addToCart = (speakerId) => {
+    Axios.post(
+      "http://localhost:3000/api/account/orders",
+      {
+        userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
+        productId: speakerId,
+        quantity: count
+      },
+      {
+        headers: {
+          "Content-Type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => res)
+      .then((data) => console.log(data))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
-    <>
-      <h1> Speakers </h1>
-      <Card sx={{ maxWidth: 345 }}>
+    <Grid item xs={12} sm={6} md={4}>
+      <Card sx={{ borderRadius: "10px" }}>
         <CardMedia
-          sx={{ height: 140 }}
-          image="/static/images/cards/contemplative-reptile.jpg"
-          title="green iguana"
+          component="img"
+          sx={{
+            height: 140,
+            p: 1,
+            objectFit: "contain",
+            boxSizing: "border-box",
+          }}
+          image={item.image}
+          title={`${item.name} ${item.type}`}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Lizard
+            {item.name}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+          <Typography gutterBottom variant="body2" color="text.secondary">
+            {item.type}
           </Typography>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 2,
+              pt: 4,
+              mb: 2,
+              borderTop: "1px solid",
+              borderColor: "background.main",
+            }}
+          >
+            <Typography gutterBottom variant="h6" component="div">
+              ${item.price}
+            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Button onClick={decrementQty}>
+                <RemoveOutlinedIcon />
+              </Button>
+              <Typography color="text.secondary">{count}</Typography>
+              <Button onClick={() => setCount((c) => c + 1)}>
+                <AddOutlinedIcon />
+              </Button>
+            </Box>
+          </Box>
         </CardContent>
         <CardActions>
-          <Button size="small">Share</Button>
-          <Button size="small">Learn More</Button>
+          <Checkbox
+            icon={<FavoriteBorder />}
+            checkedIcon={<Favorite />}
+            color="error"
+            sx={{ mr: "auto" }}
+            onClick={() => addToWishlist(item.id)}
+          />
+          <Button variant="contained" size="small" onClick={() => addToCart(item.id)}>
+            Add to cart
+          </Button>
         </CardActions>
       </Card>
-    </>
+    </Grid>
+  );
+};
+
+const Speakers = () => {
+  const [speakers, setSpeakers] = useState([]);
+
+  useEffect(() => {
+    Axios.get("http://localhost:3000/api/speakers")
+      .then((res) => res)
+      .then((data) => setSpeakers(data.data))
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  return (
+    <Container maxWidth="lg" sx={{ p: 3 }}>
+      <Typography variant="h5" sx={{ my: 2 }}>
+        Speakers
+      </Typography>
+      <Grid container spacing={2}>
+        {speakers &&
+          speakers.map((speaker) => <ItemsCard key={speaker.id} item={speaker} />)}
+      </Grid>
+    </Container>
   );
 };
 
