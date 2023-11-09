@@ -1,8 +1,8 @@
 const prisma = require("./client");
 
 const products = [
-  { brand: "Bose", name: "Speaker", type: "Soundbar", price: 128.56, category: "Speaker", image: "/images/bose/bose-soundbar1.jpg" },
-  { brand: "Bose", name: "Speaker", type: "Bluetooth", price: 288.56, category: "Speaker", image: "/images/bose/bose-bluetooth1.jpg" },
+  { brand: "Bose", name: "Soundbar 600", type: "Soundbar", price: 128.56, category: "Speaker", image: "/images/bose/bose-soundbar600.jpg" },
+  { brand: "Bose", name: "S1 Pro", type: "Bluetooth", price: 288.56, category: "Speaker", image: "/images/bose/bose-s1pro.jpg" },
   { brand: "Bose", name: "Portable Smart Speaker", type: "Bluetooth", price: 399.00, category: "Speaker", image: "/images/bose/bose-portable.jpg" },
   { brand: "Bose", name: "SoundLink Micro", type: "Bluetooth", price: 119.00, category: "Speaker", image: "/images/bose/bose-micro.jpg" },
   { brand: "Bose", name: "SoundLink Flex", type: "Bluetooth", price: 149.00, category: "Speaker", image: "/images/bose/bose-soundflex.jpg" },
@@ -19,7 +19,6 @@ const products = [
   { brand: "JBL", name: "Tour Pro 2", type: "Noise-Cancellation", price: 249.95, category: "Earbud", image: "/images/jbl/jbl-tour.jpg" },
   { brand: "JBL", name: "Tune Buds", type: "Bluetooth", price: 99.95, category: "Earbud", image: "/images/jbl/jbl-tune.jpg" },
   { brand: "JBL", name: "Endurance Peak 3", type: "Noise-Cancellation", price: 89.95, category: "Earbud", image: "/images/jbl/jbl-peak.jpg" },
-
 
   { brand: "SONY", name: "NS7 Wireless Wearable TV", type: "Wireless", price: 299.99, category: "Speaker", image: "/images/sony/sony-ns7.jpg" },
   { brand: "SONY", name: "LSPX-S3 Glass Sound Speaker", type: "Bluetooth", price: 349.99, category: "Speaker", image: "/images/sony/sony-glass.jpg" },
