@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // component imports
+import MasonryImageList from './MasonryImageList';
 
 // MUI imports
 import Carousel from "react-material-ui-carousel";
@@ -43,7 +44,10 @@ const Home = () => {
   // make axios call here to the API to get all items
   useEffect(() => {}, []);
 
-  const itemsss = [
+
+
+const CarouselExample = () => {
+  const items = [
     {
       // add image url/src within the quotes below
       image:
@@ -118,6 +122,8 @@ const Home = () => {
             ))}
           </Masonry>
         </Box>
+
+        <MasonryImageList />
       </Box>
     </Container>
   );
