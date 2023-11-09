@@ -1,9 +1,12 @@
-1. how to setup click on wishlist or order item and navigate to product-details page with that item loaded
+1. how to setup click on wishlist or order item and navigate to product-details page with that item loaded // useNavigate()
 
-2. how to use nested routes for navbar/tabs
+2. image tags not loading any image from local storage
 
-3. image tags not loading any image from local storage
+3. efficient way of changing all localhost API calls to the deployed hosted URL // .env variables
 
-4. efficient way of changing all localhost API calls to the deployed hosted URL
+4. downloading and using react dev tools in the console
 
-5. downloading and using react dev tools in the console
+5. live demo on accessing protected API's with JWT // ex. paid API's on softwares to access data
+still not getting JWT and how it authenticates, what does it compare itself to for auth
+
+render deploy frontend and backend
