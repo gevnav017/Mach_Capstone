@@ -47,8 +47,6 @@ const productsData = async () => {
   });
 };
 
-productsData();
-
 const usersData = async () => {
   await prisma.users.deleteMany();
   await prisma.users.create({
@@ -61,5 +59,19 @@ const usersData = async () => {
   });
 };
 
-usersData();
+const wishlistData = async () => {
+  await prisma.wishlist.deleteMany();
+};
 
+const ordersData = async () => {
+  await prisma.orders.deleteMany();
+};
+
+const runData = async () => {
+  await wishlistData();
+  await ordersData();
+  await usersData();
+  await productsData();
+}
+
+runData()
