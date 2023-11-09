@@ -1,10 +1,13 @@
 import React from 'react'
 
 // component imports
-
+import MasonryImageList from './MasonryImageList';
 
 // MUI imports
 import Carousel from "react-material-ui-carousel";
+
+
+
 
 
 const CarouselExample = () => {
@@ -45,6 +48,7 @@ const CarouselExample = () => {
     // ... add more items as needed
   ];
   return (
+    <> 
     <Carousel>
       {items.map((item, index) => (
         <div class="text">
@@ -53,7 +57,9 @@ const CarouselExample = () => {
         </div>
       ))}
     </Carousel>
-
+    <MasonryImageList />
+    </>
+   
   );
 };
 
