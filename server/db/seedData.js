@@ -12,7 +12,7 @@ const products = [
   { brand: "Bose", name: "QuietComfort Ultra With Wireless Case", type: "Bluetooth", price: 348.00, category: "Earbud", image: "../../public/images/bose-ultra.jpg" },
 
   { brand: "JBL", name: "Go 3", type: "Bluetooth", price: 49.95, category: "Speaker", image: "../../public/images/jbl-go.jpg" },
-  { brand: "JBL", name: "PartyBox Ultimate", type: "Bluetooth", price: 1,699.95, category: "Speaker", image: "../../public/images/jbl-ultimate.jpg" },
+  { brand: "JBL", name: "PartyBox Ultimate", type: "Bluetooth", price: 1699.95, category: "Speaker", image: "../../public/images/jbl-ultimate.jpg" },
   { brand: "JBL", name: "PartyBox Encore", type: "Wireless", price: 399.95, category: "Speaker", image: "../../public/images/jbl-partybox.jpg" },
   { brand: "JBL", name: "Live 660NC", type: "Noise-Cancellation", price: 99.95, category: "Headphone", image: "../../public/images/jbl-live.jpg" },
   { brand: "JBL", name: "Free WFH Wireless", type: "Wireless", price: 99.95, category: "Headphone", image: "../../public/images/jbl-free.jpg" },
@@ -25,7 +25,7 @@ const products = [
   { brand: "SONY", name: "LSPX-S3 Glass Sound Speaker", type: "Bluetooth", price: 349.99, category: "Speaker", image: "../../public/images/sony-glass.jpg" },
   { brand: "SONY", name: "WH-1000XM5 Wireless", type: "Wireless", price: 399.99, category: "Headphone", image: "../../public/images/sony-wh.jpg" },
   { brand: "SONY", name: "WH-CH720N Wireless", type: "Noise-Cancellation", price: 149.99, category: "Headphone", image: "../../public/images/sony-ch.jpg" },
-  { brand: "SONY", name: "IER-Z1R Signature Series", type: "High-Resolution", price: 1,699.99, category: "Headphone", image: "../../public/images/sony-ier.jpg" },
+  { brand: "SONY", name: "IER-Z1R Signature Series", type: "High-Resolution", price: 1699.99, category: "Headphone", image: "../../public/images/sony-ier.jpg" },
   { brand: "SONY", name: "WF-1000XM5 Wireless", type: "Wireless", price: 299.99, category: "Earbud", image: "../../public/images/sony-wf.jpg" },
   { brand: "SONY", name: "LinkBuds", type: "Wireless", price: 139.99, category: "Earbud", image: "../../public/images/sony-link.jpg" },
 
