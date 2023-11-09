@@ -60,7 +60,7 @@ const MasonryImageList = () => {
     
   ];
   return (
-        <Box class="center" sx={{ width: 500, height: 450, overflowY: 'scroll' }}>
+        <Box class="center" sx={{ width: 500, height: 550, overflowY: 'scroll' }}>
       <ImageList variant="masonry" cols={3} gap={8}>
         {itemData.map((item, index) => (
           <ImageListItem key={item.img}>
