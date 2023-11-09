@@ -5,6 +5,7 @@ import React from 'react'
 
 // MUI imports
 
+
 const EarbudDetails = () => {
   return (
     <div>EarbudDetails</div>

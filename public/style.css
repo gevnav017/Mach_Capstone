@@ -1,18 +1,3 @@
-/* styles go here */
-.center {
-    margin: auto;
-    width:  600px;
-    height: 600px;
-    background-size: cover
-
-}
-
-.text {
-    text-align: center;
-    text-decoration: solid;
-}
-
-
 * {
     margin: 0;
     padding: 0;
