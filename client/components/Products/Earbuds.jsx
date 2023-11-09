@@ -147,7 +147,7 @@ const Earbuds = () => {
   }, []);
 
   return (
-    <Container maxWidth="lg" sx={{ p: 3 }}>
+    <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
       <Typography variant="h5" sx={{ my: 2 }}>
         Earbuds
       </Typography>

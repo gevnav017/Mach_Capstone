@@ -54,31 +54,17 @@ const Navbar = () => {
   return (
     <>
       <AppBar position="sticky" color="common">
-        <Container maxWidth="xl">
+        <Container maxWidth="xl" sx={{ minWidth: "400px" }}>
           <Toolbar disableGutters>
             <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
-              <img
-                src="/images/logo/mach-logo.png"
-                alt="mach-logo"
-                width="75px"
-              />
+              <Link to="/">
+                <img
+                  src="/images/logo/mach-logo.png"
+                  alt="mach-logo"
+                  width="75px"
+                />
+              </Link>
             </Box>
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="./home"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              MACH
-            </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
@@ -109,14 +95,6 @@ const Navbar = () => {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Link
-                    to="/"
-                    style={{ textDecoration: "none", color: "#3c4757" }}
-                  >
-                    Home
-                  </Link>
-                </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Link
                     to="/speakers"
@@ -151,38 +129,19 @@ const Navbar = () => {
                 </MenuItem>
               </Menu>
             </Box>
-            <Box sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}>
-              <img src="../images/mach_logo.png" alt="mach-logo" />
+
+            <Box sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1 }}>
+              <Link to="/">
+                <img
+                  src="/images/logo/mach-logo.png"
+                  alt="mach-logo"
+                  width="75px"
+                />
+              </Link>
             </Box>
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              MACH
-            </Typography>
+
+            {/* layout after medium screen */}
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              <Button
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, display: "block" }}
-              >
-                <Link
-                  to="/"
-                  style={{ textDecoration: "none", color: "#3c4757" }}
-                >
-                  Home
-                </Link>
-              </Button>
               <Button
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, display: "block" }}
