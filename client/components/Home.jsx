@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // component imports
-import MasonryImageList from './MasonryImageList';
+import MasonryImageList from "./MasonryImageList";
 
 // MUI imports
 import Carousel from "react-material-ui-carousel";
@@ -13,7 +13,7 @@ let i = -1;
 const MasonryImages = ({ item }) => {
   let imgHeights = [220, 90, 150, 70, 110, 180, 80, 160];
 
-  i++
+  i++;
   let imgHeight = imgHeights[i];
 
   console.log(imgHeight);
@@ -44,10 +44,7 @@ const Home = () => {
   // make axios call here to the API to get all items
   useEffect(() => {}, []);
 
-
-
-const CarouselExample = () => {
-  const items = [
+  const itemsss = [
     {
       // add image url/src within the quotes below
       image:
