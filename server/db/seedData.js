@@ -5,6 +5,7 @@ const products = [
   { brand: "Bose", name: "Speaker", type: "Bluetooth", price: 288.56, category: "Speaker", image: "../../client/images/bose-bluetooth1.jpg" },
   { brand: "Bose", name: "Quiet Confort Pro", type: "Bluetooth", price: 352.56, category: "Earbud", image: "../../client/images/bose-bluetooth1.jpg" },
   { brand: "Bose", name: "Quiet Comfort II", type: "Bluetooth", price: 245.56, category: "Earbud", image: "../../client/images/bose-bluetooth1.jpg" },
+  { brand: "Bose", name: "Noise Cancelling Headphones 700", type: "Bluetooth", price: 279.00, category: "Headphones", image: "../../client/images/bose-noise_cancelling_headphones_700.jpg" }
 ];
 
 const productsData = async () => {
