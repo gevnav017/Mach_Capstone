@@ -5,7 +5,6 @@ import { createTheme, ThemeProvider } from "@mui/material";
 
 // component imports
 import App from "./App";
-import MasonryImageList from "./components/MasonryImageList";
 
 // custom MUI theme
 const theme = createTheme({
@@ -39,7 +38,6 @@ root.render(
   <BrowserRouter>
     <ThemeProvider theme={theme}>
       <App />
-      {/* <MasonryImageList /> */}
     </ThemeProvider>
   </BrowserRouter>
 );
