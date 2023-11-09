@@ -11,6 +11,7 @@ body {
     animation: logoDance 3s linear alternate;
 }
 
+
 @keyframes logoDance {
     /* 25% {
         transform: rotate(90deg) scale(1.1); 
