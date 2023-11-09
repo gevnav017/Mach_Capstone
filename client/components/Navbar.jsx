@@ -10,6 +10,8 @@ import HeadphoneDetails from "./ProductDetails/HeadphoneDetails";
 import Earbuds from "./Products/Earbuds";
 import EarbudDetails from "./ProductDetails/EarbudDetails";
 import Cart from "./Cart/Cart";
+import Checkout from "./Cart/Checkout";
+import OrderConfirmation from "./Cart/OrderConfirmation";
 import Account from "./Account/Account";
 import Login from "./Login/Login";
 import Register from "./Login/Register";
@@ -125,7 +127,7 @@ const Navbar = () => {
                     to="/account"
                     style={{ textDecoration: "none", color: "#3c4757" }}
                   >
-                    Account
+                    My Account
                   </Link>
                 </MenuItem>
               </Menu>
@@ -215,7 +217,7 @@ const Navbar = () => {
                     to="/account"
                     style={{ textDecoration: "none", color: "#3c4757" }}
                   >
-                    Account
+                    My Account
                   </Link>
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
@@ -248,7 +250,11 @@ const Navbar = () => {
         <Route path="/earbuds" element={<Earbuds />}>
           <Route path="/earbuds/earbud-details" element={<EarbudDetails />} />
         </Route>
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/cart" element={<Cart />} >
+          <Route path="/cart/checkout" element={<Checkout />} >
+            <Route path="/cart/checkout/order-confirmation" element={<OrderConfirmation />} />
+          </Route>
+        </Route>
         <Route path="/account" element={<Account />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

@@ -7,7 +7,7 @@ import Wishlist from "./Wishlist";
 import Orders from "./Orders";
 
 // MUI imports
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -16,10 +16,7 @@ const TabPanel = (props) => {
   const { children, value, index } = props;
 
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-    >
+    <div role="tabpanel" hidden={value !== index}>
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
@@ -45,8 +42,17 @@ const Account = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ p: 3 }}>
+    <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
       <Box sx={{ width: "100%" }}>
+
+        <Box sx={{ my: 2 }}>
+          <Typography
+            variant="h5"
+          >
+            Welcome, Name
+          </Typography>
+        </Box>
+
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
             value={value}
@@ -55,9 +61,10 @@ const Account = () => {
           >
             <Tab label="Profile" />
             <Tab label="Wishlist" />
-            <Tab label="Orders"/>
+            <Tab label="Orders" />
           </Tabs>
         </Box>
+
         <TabPanel value={value} index={0}>
           <Profile />
         </TabPanel>
