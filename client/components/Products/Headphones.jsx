@@ -1,8 +1,10 @@
 // component imports
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
+
 // MUI imports
 import { Container, Box, Grid, Card, CardActions, CardContent, CardMedia, Button, Typography } from "@mui/material";
+
 //code that I worked on from 11-6 to 11-8//
 import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
