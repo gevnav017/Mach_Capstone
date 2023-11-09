@@ -11,6 +11,18 @@ body {
     animation: logoDance 3s linear alternate;
 }
 
+.center {
+    margin: auto;
+    width:  600px;
+    height: 600px;
+    background-size: cover
+
+}
+
+.text {
+    text-align: center;
+    text-decoration: solid;
+}
 
 @keyframes logoDance {
     /* 25% {
