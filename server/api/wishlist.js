@@ -6,7 +6,6 @@ const prisma = require('../db/client')
 router.get("/account/wishlist/:userId", async (req, res) => {
     try {
         const { userId } = req.params
-        console.log(userId)
         const wishlist = await prisma.wishlist.findMany({
             where: {
                 userId: userId
