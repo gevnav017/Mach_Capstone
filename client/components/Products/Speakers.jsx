@@ -26,7 +26,7 @@ const ItemsCard = ({ item }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
-    setCount((prevCount) => prevCount > 1 && prevCount - 1);
+    setCount((prevCount) => prevCount > 1 ? prevCount - 1 : 1);
   };
 
   const addToWishlist = (speakerId) => {
@@ -70,6 +70,8 @@ const ItemsCard = ({ item }) => {
       });
   };
 
+  console.log(count);
+  
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Card sx={{ borderRadius: "10px" }}>
@@ -108,7 +110,7 @@ const ItemsCard = ({ item }) => {
               ${item.price}
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Button onClick={decrementQty}>
+              <Button onClick={decrementQty} disabled={count === 1}>
                 <RemoveOutlinedIcon />
               </Button>
               <Typography color="text.secondary">{count}</Typography>
