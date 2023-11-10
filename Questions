@@ -8,3 +8,5 @@
 still not getting JWT and how it authenticates, what does it compare itself to for auth
 
 render deploy frontend and backend
+
+5. what should API errors respond with instead of console logging

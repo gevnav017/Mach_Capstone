@@ -40,6 +40,7 @@ const ItemsCard = ({ item }) => {
   };
 
   const addToCart = (headphonesId) => {
+    console.log(headphonesId)
     Axios.post(
       "http://localhost:3000/api/account/orders",
       {

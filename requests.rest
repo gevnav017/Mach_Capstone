@@ -3,3 +3,27 @@ GET http://localhost:3000/api/products
 ###
 
 GET http://localhost:3000/api/users
+
+###
+
+POST http://localhost:3000/api/users/register
+content-type: application/json
+
+{
+    "username": "ggg",
+    "password": "testing",
+    "firstName": "geo",
+    "lastName": "lastname"
+}
+
+###
+
+POST http://localhost:3000/api/users/login
+content-type: application/json
+
+{
+    "username": "gg",
+    "password": "testing"
+}
+
+###
