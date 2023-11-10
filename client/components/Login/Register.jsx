@@ -21,6 +21,8 @@ const initialError = [
   {
     username: false,
     password: false,
+    firstName: false,
+    lastName: false,
     incorrectCredentials: false,
     userNotExist: false,
   },
@@ -29,6 +31,8 @@ const initialError = [
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [error, setError] = useState(initialError);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -49,7 +53,18 @@ const SignUp = () => {
     }
 
     if (username && password) {
-      Axios.get("http://localhost:3000/api/users")
+      Axios.post(
+        "http://localhost:3000/api/users/register",
+        {
+          "content-type": "application/JSON",
+        },
+        {
+          username: username,
+          password: password,
+          firstName: firstName,
+          lastName: lastName,
+        }
+      )
         .then((res) => res)
         .then((data) => console.log(data))
         .catch((err) => {
@@ -96,6 +111,30 @@ const SignUp = () => {
           }}
         >
           <Typography variant="h5">Sign Up</Typography>
+
+          <FormControl variant="outlined">
+            <InputLabel htmlFor="firstName-input">First name</InputLabel>
+            <OutlinedInput
+              id="firstName-input"
+              label="First name"
+              onChange={(e) => {
+                setFirstName(e.target.value);
+              }}
+              error={error.firstName}
+            />
+          </FormControl>
+
+          <FormControl variant="outlined">
+            <InputLabel htmlFor="lastName-input">Last name</InputLabel>
+            <OutlinedInput
+              id="lastName-input"
+              label="Last name"
+              onChange={(e) => {
+                setLastName(e.target.value);
+              }}
+              error={error.lastName}
+            />
+          </FormControl>
 
           <FormControl variant="outlined">
             <InputLabel htmlFor="username-input">Username</InputLabel>
