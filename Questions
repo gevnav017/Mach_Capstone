@@ -9,4 +9,12 @@ still not getting JWT and how it authenticates, what does it compare itself to f
 
 render deploy frontend and backend
 
-5. what should API errors respond with instead of console logging
+###
+
+5. what should API errors respond with instead of console logging. error status and desc?
+
+6. efficient way of looping through and setting errors state to true for all keys in state object in register page
+
+7. not be able to go to extensions login or register if already logged in and token is in window.localStorage
+
+8. how to use/access user info in token globally. Please dont tell me we need redux

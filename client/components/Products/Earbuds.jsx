@@ -107,7 +107,7 @@ const ItemsCard = ({ item }) => {
               ${item.price}
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Button onClick={decrementQty}>
+              <Button onClick={decrementQty} disabled={count === 1}>
                 <RemoveOutlinedIcon />
               </Button>
               <Typography color="text.secondary">{count}</Typography>

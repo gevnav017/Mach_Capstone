@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 
 // component imports
@@ -31,6 +31,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(initialError);
   const [showPassword, setShowPassword] = useState(false);
+  const [user, setUser] = useState([]);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -38,25 +39,57 @@ const Login = () => {
     event.preventDefault();
   };
 
+  const navigate = useNavigate();
+
   const handleLogin = () => {
     setError(initialError);
+
     if (!username && !password) {
       setError({ ...error, username: true, password: true });
+      return;
     } else if (!username) {
       setError({ ...error, username: true });
+      return;
     } else if (!password) {
       setError({ ...error, password: true });
+      return;
     }
 
     if (username && password) {
-      Axios.get("http://localhost:3000/api/users")
-        .then((res) => res)
-        .then((data) => console.log(data))
-        .catch((err) => {
-          console.log(err);
-        });
+      const token = window.localStorage.getItem("token");
+
+      if (token) {
+        Axios.post(
+          "http://localhost:3000/api/users/login",
+          {},
+          {
+            headers: {
+              authorization: token,
+            },
+          }
+        )
+          .then((data) => setUser(data.data.username))
+          .then(navigate("/"));
+      } else {
+        Axios.post(
+          "http://localhost:3000/api/users/login",
+          {
+            username: username,
+            password: password,
+          },
+          {
+            headers: {
+              "Content-Type": "application/JSON",
+            },
+          }
+        )
+          .then((data) => console.log(data.data.username))
+          .then(navigate("/"));
+      }
     }
   };
+
+  console.log(user);
 
   return (
     <Box
@@ -86,7 +119,7 @@ const Login = () => {
             display: "flex",
             flexDirection: "column",
             bgcolor: "background.main",
-            minWidth: { xs: "250px", md: "50%", xl: "500px" },
+            minWidth: { xs: "250px", md: "60%", xl: "500px" },
             boxSizing: "border-box",
             my: { xs: 5, md: 0 },
             blockSize: "fit-content",
@@ -171,7 +204,7 @@ const Login = () => {
           justifyContent: "center",
           alignItems: "center",
           width: { md: "50%" },
-          height: { xs: "200px", md: "98%" }
+          height: { xs: "200px", md: "98%" },
         }}
       >
         <Box id="login-logo" sx={{ textAlign: "center" }}>

@@ -27,8 +27,12 @@ const Wishlist = () => {
   }, []);
 
 
-  // add to wishlist button function
+  // add to cart button function
   // once clicked, add item to cart and remove from wishlist
+  const addToCart = () => {
+
+  }
+  
   return (
     <>
       {wishlist &&
