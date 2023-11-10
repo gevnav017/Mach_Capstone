@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 
 // component imports
@@ -42,10 +42,13 @@ const SignUp = () => {
     event.preventDefault();
   };
 
+  const navigate = useNavigate()
+
   const handleSignUp = () => {
     setError(initialError);
-    if (!username && !password) {
-      setError({ ...error, username: true, password: true });
+    
+    if (!username && !password && !firstName && !lastName) {
+      setError({ ...error, username: true, password: true, firstName: true, lastName: true });
     } else if (!username) {
       setError({ ...error, username: true });
     } else if (!password) {
@@ -56,17 +59,24 @@ const SignUp = () => {
       Axios.post(
         "http://localhost:3000/api/users/register",
         {
-          "content-type": "application/JSON",
-        },
-        {
           username: username,
           password: password,
           firstName: firstName,
           lastName: lastName,
+        },
+        {
+          "content-type": "application/JSON",
         }
       )
         .then((res) => res)
-        .then((data) => console.log(data))
+        .then((data) => {
+          const token = data.data.token;
+          console.log("token", token)
+          const user = data.data.user;
+          window.localStorage.setItem("token", token);
+        })
+        .then(navigate("/login"))
+
         .catch((err) => {
           console.log(err);
         });
@@ -100,7 +110,7 @@ const SignUp = () => {
             display: "flex",
             flexDirection: "column",
             bgcolor: "background.main",
-            minWidth: { xs: "250px", md: "50%", xl: "500px" },
+            minWidth: { xs: "250px", md: "60%", xl: "500px" },
             boxSizing: "border-box",
             my: { xs: 5, md: 0 },
             blockSize: "fit-content",

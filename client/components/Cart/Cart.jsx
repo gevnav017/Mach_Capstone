@@ -19,6 +19,12 @@ const Cart = () => {
     })
   }, [])
 
+  // add to wishlist function
+  // once clicked, add item to wishlist and remove from cart
+  const addToWishlist = () => {
+
+  }
+
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px" }}>
       Cart
