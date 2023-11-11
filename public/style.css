@@ -11,6 +11,20 @@ body {
     animation: logoDance 3s linear alternate;
 }
 
+.navLink {
+    color: #3c4757;
+    text-decoration: none;
+    border-bottom: solid white;
+}
+
+.navLink:hover {
+    border-bottom: solid #bfbfbf;
+}
+
+.activeNavLink {
+    border-bottom: solid #0092CA;
+}
+
 @keyframes logoDance {
     /* 25% {
         transform: rotate(90deg) scale(1.1); 

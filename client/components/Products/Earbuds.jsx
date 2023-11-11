@@ -20,6 +20,8 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import IconButton from "@mui/material/IconButton";
 
 const ItemsCard = ({ item }) => {
   const [count, setCount] = useState(1);
@@ -54,7 +56,7 @@ const ItemsCard = ({ item }) => {
       {
         userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
         productId: earbudId,
-        quantity: count
+        quantity: count,
       },
       {
         headers: {
@@ -87,6 +89,14 @@ const ItemsCard = ({ item }) => {
           <Typography gutterBottom variant="h5" component="div">
             {item.name}
           </Typography>
+          <Typography
+            gutterBottom
+            variant="h6"
+            color="text.secondary"
+            component="div"
+          >
+            {item.brand}
+          </Typography>
           <Typography gutterBottom variant="body2" color="text.secondary">
             {item.type}
           </Typography>
@@ -106,14 +116,27 @@ const ItemsCard = ({ item }) => {
             <Typography gutterBottom variant="h6" component="div">
               ${item.price}
             </Typography>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Button onClick={decrementQty} disabled={count === 1}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <IconButton
+                onClick={decrementQty}
+                disabled={count === 1}
+                sx={{ color: "primary.main" }}
+              >
                 <RemoveOutlinedIcon />
-              </Button>
+              </IconButton>
               <Typography color="text.secondary">{count}</Typography>
-              <Button onClick={() => setCount((c) => c + 1)}>
+              <IconButton
+                onClick={() => setCount((c) => c + 1)}
+                sx={{ color: "primary.main" }}
+              >
                 <AddOutlinedIcon />
-              </Button>
+              </IconButton>
             </Box>
           </Box>
         </CardContent>
@@ -125,7 +148,12 @@ const ItemsCard = ({ item }) => {
             sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}
           />
-          <Button variant="contained" size="small" onClick={() => addToCart(item.id)}>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => addToCart(item.id)}
+          >
+            <ShoppingCartOutlinedIcon size="small" sx={{ mr: 1 }} />
             Add to cart
           </Button>
         </CardActions>

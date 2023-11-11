@@ -3,7 +3,18 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 
 // MUI imports
-import { Container, Box, Grid, Card, CardActions, CardContent, CardMedia, Button, Typography } from "@mui/material";
+import {
+  Container,
+  Box,
+  Grid,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 
 //code that I worked on from 11-6 to 11-8//
 import Checkbox from "@mui/material/Checkbox";
@@ -40,13 +51,13 @@ const ItemsCard = ({ item }) => {
   };
 
   const addToCart = (headphonesId) => {
-    console.log(headphonesId)
+    console.log(headphonesId);
     Axios.post(
       "http://localhost:3000/api/account/orders",
       {
         userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
         productId: headphonesId,
-        quantity: count
+        quantity: count,
       },
       {
         headers: {
@@ -79,6 +90,14 @@ const ItemsCard = ({ item }) => {
           <Typography gutterBottom variant="h5" component="div">
             {item.name}
           </Typography>
+          <Typography
+            gutterBottom
+            variant="h6"
+            color="text.secondary"
+            component="div"
+          >
+            {item.brand}
+          </Typography>
           <Typography gutterBottom variant="body2" color="text.secondary">
             {item.type}
           </Typography>
@@ -99,13 +118,20 @@ const ItemsCard = ({ item }) => {
               ${item.price}
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Button onClick={decrementQty}>
+              <IconButton
+                onClick={decrementQty}
+                disabled={count === 1}
+                sx={{ color: "primary.main" }}
+              >
                 <RemoveOutlinedIcon />
-              </Button>
+              </IconButton>
               <Typography color="text.secondary">{count}</Typography>
-              <Button onClick={() => setCount((c) => c + 1)}>
+              <IconButton
+                onClick={() => setCount((c) => c + 1)}
+                sx={{ color: "primary.main" }}
+              >
                 <AddOutlinedIcon />
-              </Button>
+              </IconButton>
             </Box>
           </Box>
         </CardContent>
@@ -117,7 +143,11 @@ const ItemsCard = ({ item }) => {
             sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}
           />
-          <Button variant="contained" size="small" onClick={() => addToCart(item.id)}>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => addToCart(item.id)}
+          >
             Add to cart
           </Button>
         </CardActions>
@@ -125,7 +155,6 @@ const ItemsCard = ({ item }) => {
     </Grid>
   );
 };
-
 
 ///////////////////////////////////////////
 const Headphones = () => {
@@ -141,18 +170,20 @@ const Headphones = () => {
   }, []);
 
   console.log("Headphones state:", headphones); //just to double check some things
-  
+
   return (
-      <Container maxWidth="lg" sx={{ p: 3 }}>
-        <Typography variant="h5" sx={{ my: 2 }}>
-          Headphones
-        </Typography>
-        <Grid container spacing={2}>
-          {headphones &&
-            headphones.map((headphones) => <ItemsCard key={headphones.id} item={headphones} />)}
-        </Grid>
-      </Container>
-    );
+    <Container maxWidth="lg" sx={{ p: 3 }}>
+      <Typography variant="h5" sx={{ my: 2 }}>
+        Headphones
+      </Typography>
+      <Grid container spacing={2}>
+        {headphones &&
+          headphones.map((headphones) => (
+            <ItemsCard key={headphones.id} item={headphones} />
+          ))}
+      </Grid>
+    </Container>
+  );
 };
 
 export default Headphones;
