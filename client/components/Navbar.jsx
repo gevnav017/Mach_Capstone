@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, NavLink } from "react-router-dom";
 
 // component imports
 import Home from "./Home";
@@ -17,7 +17,6 @@ import Login from "./Login/Login";
 import Register from "./Login/Register";
 import Footer from "./Footer";
 import NoPathError from "./NoPathError";
-
 
 // MUI imports
 import AppBar from "@mui/material/AppBar";
@@ -38,6 +37,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [activeCartStyle, setActiveCartStyle] = useState(false);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -54,19 +54,23 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
 
+  const activeClassStyle = ({ isActive }) => {
+    return isActive ? "navLink activeNavLink" : "navLink";
+  };
+
   return (
     <>
       <AppBar position="sticky" color="common">
         <Container maxWidth="xl" sx={{ minWidth: "400px" }}>
           <Toolbar disableGutters>
             <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
-              <Link to="/">
+              <NavLink to="/">
                 <img
                   src="/images/logo/mach-logo.png"
                   alt="mach-logo"
                   width="75px"
                 />
-              </Link>
+              </NavLink>
             </Box>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -99,98 +103,79 @@ const Navbar = () => {
                 }}
               >
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Link
-                    to="/speakers"
-                    style={{ textDecoration: "none", color: "#3c4757" }}
-                  >
+                  <NavLink to="/speakers" className={activeClassStyle}>
                     Speakers
-                  </Link>
+                  </NavLink>
                 </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Link
-                    to="/headphones"
-                    style={{ textDecoration: "none", color: "#3c4757" }}
-                  >
+                  <NavLink to="/headphones" className={activeClassStyle}>
                     Headphones
-                  </Link>
+                  </NavLink>
                 </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Link
-                    to="/earbuds"
-                    style={{ textDecoration: "none", color: "#3c4757" }}
-                  >
+                  <NavLink to="/earbuds" className={activeClassStyle}>
                     Earbuds
-                  </Link>
+                  </NavLink>
                 </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Link
-                    to="/account"
-                    style={{ textDecoration: "none", color: "#3c4757" }}
-                  >
+                  <NavLink to="/cart" className={activeClassStyle}>
+                    Cart
+                  </NavLink>
+                </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <NavLink to="/account" className={activeClassStyle}>
                     My Account
-                  </Link>
+                  </NavLink>
                 </MenuItem>
               </Menu>
             </Box>
 
             <Box sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1 }}>
-              <Link to="/">
+              <NavLink to="/">
                 <img
                   src="/images/logo/mach-logo.png"
                   alt="mach-logo"
                   width="75px"
                 />
-              </Link>
+              </NavLink>
             </Box>
 
             {/* layout after medium screen */}
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              <Button
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, display: "block" }}
-              >
-                <Link
-                  to="/speakers"
-                  style={{ textDecoration: "none", color: "#3c4757" }}
+              <NavLink to="/speakers" className={activeClassStyle}>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, display: "block", color: "secondary.main" }}
                 >
                   Speakers
-                </Link>
-              </Button>
-              <Button
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, display: "block" }}
-              >
-                <Link
-                  to="/headphones"
-                  style={{ textDecoration: "none", color: "#3c4757" }}
+                </Button>
+              </NavLink>
+              <NavLink to="/headphones" className={activeClassStyle}>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, display: "block", color: "secondary.main" }}
                 >
                   Headphones
-                </Link>
-              </Button>
-              <Button
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, display: "block" }}
-              >
-                <Link
-                  to="/earbuds"
-                  style={{ textDecoration: "none", color: "#3c4757" }}
+                </Button>
+              </NavLink>
+              <NavLink to="/earbuds" className={activeClassStyle}>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, display: "block", color: "secondary.main" }}
                 >
                   Earbuds
-                </Link>
-              </Button>
+                </Button>
+              </NavLink>
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <Link
-                to="/cart"
-                style={{ textDecoration: "none", color: "#3c4757" }}
-              >
-                <IconButton sx={{ mr: 2 }}>
+              <IconButton sx={{ mr: 2 }}>
+                <NavLink to="/cart" className={activeClassStyle}>
                   <Badge badgeContent={4} color="primary">
                     <ShoppingCartOutlinedIcon />
                   </Badge>
-                </IconButton>
-              </Link>
+                </NavLink>
+              </IconButton>
               <Tooltip title="view account">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -213,17 +198,14 @@ const Navbar = () => {
                 onClose={handleCloseUserMenu}
               >
                 <MenuItem onClick={handleCloseUserMenu}>
-                  <Link
-                    to="/account"
-                    style={{ textDecoration: "none", color: "#3c4757" }}
-                  >
+                  <NavLink to="/account" className={activeClassStyle}>
                     My Account
-                  </Link>
+                  </NavLink>
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" style={{ color: "#3c4757" }}>
+                  <NavLink to="/" className={activeClassStyle}>
                     Logout
-                  </Typography>
+                  </NavLink>
                 </MenuItem>
               </Menu>
             </Box>
@@ -250,9 +232,12 @@ const Navbar = () => {
         <Route path="/earbuds" element={<Earbuds />}>
           <Route path="/earbuds/earbud-details" element={<EarbudDetails />} />
         </Route>
-        <Route path="/cart" element={<Cart />} >
-          <Route path="/cart/checkout" element={<Checkout />} >
-            <Route path="/cart/checkout/order-confirmation" element={<OrderConfirmation />} />
+        <Route path="/cart" element={<Cart />}>
+          <Route path="/cart/checkout" element={<Checkout />}>
+            <Route
+              path="/cart/checkout/order-confirmation"
+              element={<OrderConfirmation />}
+            />
           </Route>
         </Route>
         <Route path="/account" element={<Account />} />
