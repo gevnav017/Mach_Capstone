@@ -16,7 +16,7 @@ const ItemsCard = ({ item }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
-    setCount((prevCount) => prevCount > 1 && prevCount - 1);
+    setCount((prevCount) => prevCount > 1 ? prevCount - 1 : 1);
   };
 
   const addToWishlist = (headphonesId) => {
@@ -40,6 +40,7 @@ const ItemsCard = ({ item }) => {
   };
 
   const addToCart = (headphonesId) => {
+    console.log(headphonesId)
     Axios.post(
       "http://localhost:3000/api/account/orders",
       {
@@ -98,7 +99,7 @@ const ItemsCard = ({ item }) => {
               ${item.price}
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Button onClick={decrementQty}>
+              <Button onClick={decrementQty} disabled={count === 1}>
                 <RemoveOutlinedIcon />
               </Button>
               <Typography color="text.secondary">{count}</Typography>
@@ -129,11 +130,12 @@ const ItemsCard = ({ item }) => {
 ///////////////////////////////////////////
 const Headphones = () => {
   const [headphones, setHeadphones] = useState([]);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     Axios.get("http://localhost:3000/api/headphones")
       .then((res) => res)
-      .then((data) => setHeadphones(data.data)) //should this be just data ?? instead of data.data ? idk i am confused
+      .then((data) => setHeadphones(data.data))
       .catch((err) => {
         console.log(err);
       });

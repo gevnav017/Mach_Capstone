@@ -25,7 +25,7 @@ const ItemsCard = ({ item }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
-    setCount((prevCount) => prevCount > 1 && prevCount - 1);
+    setCount((prevCount) => prevCount > 1 ? prevCount - 1 : 1);
   };
 
   const addToWishlist = (earbudId) => {
@@ -107,7 +107,7 @@ const ItemsCard = ({ item }) => {
               ${item.price}
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Button onClick={decrementQty}>
+              <Button onClick={decrementQty} disabled={count === 1}>
                 <RemoveOutlinedIcon />
               </Button>
               <Typography color="text.secondary">{count}</Typography>
