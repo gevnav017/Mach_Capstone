@@ -15,6 +15,21 @@ render deploy frontend and backend
 
 6. efficient way of looping through and setting errors state to true for all keys in state object in register page
 
+7. how to extract the username, first name, last name from the jwt token that is passed to the client after verification
+
 7. not be able to go to extensions login or register if already logged in and token is in window.localStorage
 
-8. how to use/access user info in token globally. Please dont tell me we need redux
+8. how to authorize if user token from local storage is deleted but user is still found in db
+
+9. how to use/access user info in token globally. Please dont tell me we need redux
+
+10. how to go back to the page user was on prior to clicking the login button on the nav to login
+
+11. databse structure for chat/messaging
+
+###
+
+update db:
+git pull the latest for updated seed file
+wishlist table removed and added col to orders table so run primsa migrate again
+then npm run seed

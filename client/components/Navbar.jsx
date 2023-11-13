@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, NavLink } from "react-router-dom";
 
 // component imports
@@ -37,7 +37,18 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [activeCartStyle, setActiveCartStyle] = useState(false);
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const token = window.localStorage.getItem("token")
+  }, [])
+  
+  const handleLogout = () => {
+    handleCloseUserMenu()
+
+    window.localStorage.removeItem("token")
+    setUser(null)
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -122,11 +133,13 @@ const Navbar = () => {
                     Cart
                   </NavLink>
                 </MenuItem>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <NavLink to="/account" className={activeClassStyle}>
-                    My Account
-                  </NavLink>
-                </MenuItem>
+                {user && (
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <NavLink to="/account" className={activeClassStyle}>
+                      My Account
+                    </NavLink>
+                  </MenuItem>
+                )}
               </Menu>
             </Box>
 
@@ -168,7 +181,7 @@ const Navbar = () => {
               </NavLink>
             </Box>
 
-            <Box sx={{ flexGrow: 0 }}>
+            <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
               <IconButton sx={{ mr: 2 }}>
                 <NavLink to="/cart" className={activeClassStyle}>
                   <Badge badgeContent={4} color="primary">
@@ -176,11 +189,29 @@ const Navbar = () => {
                   </Badge>
                 </NavLink>
               </IconButton>
-              <Tooltip title="view account">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
+
+              {user ? (
+                <Tooltip title="view account">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <Box sx={{ display: "flex" }}>
+                  <NavLink to="/login" className={activeClassStyle}>
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      sx={{ my: 2, color: "secondary.main" }}
+                    >
+                      Login
+                    </Button>
+                  </NavLink>
+                </Box>
+              )}
+
               <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"
@@ -202,7 +233,7 @@ const Navbar = () => {
                     My Account
                   </NavLink>
                 </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
+                <MenuItem onClick={handleLogout}>
                   <NavLink to="/" className={activeClassStyle}>
                     Logout
                   </NavLink>

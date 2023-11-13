@@ -58,16 +58,11 @@ const usersData = async () => {
   });
 };
 
-const wishlistData = async () => {
-  await prisma.wishlist.deleteMany();
-};
-
 const ordersData = async () => {
   await prisma.orders.deleteMany();
 };
 
 const runData = async () => {
-  await wishlistData();
   await ordersData();
   await usersData();
   await productsData();

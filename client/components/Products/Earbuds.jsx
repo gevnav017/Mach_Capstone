@@ -39,7 +39,7 @@ const ItemsCard = ({ item }) => {
       },
       {
         headers: {
-          "Content-Type": "application/JSON",
+          "content-type": "application/JSON",
         },
       }
     )
@@ -54,13 +54,13 @@ const ItemsCard = ({ item }) => {
     Axios.post(
       "http://localhost:3000/api/account/orders",
       {
-        userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
+        userId: "669c7e57-e2f4-4fdb-950c-760cfb833885",
         productId: earbudId,
         quantity: count,
       },
       {
         headers: {
-          "Content-Type": "application/JSON",
+          "content-type": "application/JSON",
         },
       }
     )

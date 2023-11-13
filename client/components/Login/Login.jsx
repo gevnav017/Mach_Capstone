@@ -31,7 +31,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(initialError);
   const [showPassword, setShowPassword] = useState(false);
-  const [user, setUser] = useState([]);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -40,6 +39,25 @@ const Login = () => {
   };
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = window.localStorage.getItem("token");
+    console.log("Token: ", token);
+
+    if (token) {
+      Axios.post(
+        "http://localhost:3000/api/users/login",
+        {},
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      )
+        .then((data) => console.log(data))
+        .then(navigate("/"));
+    }
+  }, []);
 
   const handleLogin = () => {
     setError(initialError);
@@ -56,40 +74,26 @@ const Login = () => {
     }
 
     if (username && password) {
-      const token = window.localStorage.getItem("token");
-
-      if (token) {
-        Axios.post(
-          "http://localhost:3000/api/users/login",
-          {},
-          {
-            headers: {
-              authorization: token,
-            },
-          }
-        )
-          .then((data) => setUser(data.data.username))
-          .then(navigate("/"));
-      } else {
-        Axios.post(
-          "http://localhost:3000/api/users/login",
-          {
-            username: username,
-            password: password,
+      Axios.post(
+        "http://localhost:3000/api/users/login",
+        {
+          username: username,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/JSON",
           },
-          {
-            headers: {
-              "Content-Type": "application/JSON",
-            },
-          }
-        )
-          .then((data) => console.log(data.data.username))
-          .then(navigate("/"));
-      }
+        }
+      ).then((data) => {
+        if (data.status === 200) {
+          const token = data.data.token
+          window.localStorage.setItem("token", token)
+          navigate("/");
+        }
+      });
     }
   };
-
-  console.log(user);
 
   return (
     <Box
