@@ -19,6 +19,7 @@ body {
 
 .navLink:hover {
     border-bottom: solid #bfbfbf;
+    transition: 0.5s all;
 }
 
 .activeNavLink {

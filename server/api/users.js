@@ -19,37 +19,52 @@ router.get("/users", async (req, res) => {
 router.post("/users/login", async (req, res) => {
   try {
     const token = req.headers.authorization;
+    console.log("Token:", token);
 
     // if token found in users window
     if (token) {
-      console.log("token path")
+      console.log("token path");
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
       if (!user) {
+        console.log("user not found");
         res.status(401).json("User not found");
       } else {
+        console.log("user logged in");
         res.json(user);
       }
     }
     // if token not found in users window
     else {
-      console.log("login path")
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      const user = { userName: req.body.username, password: hashedPassword };
-      
-      const dbUserFound = await prisma.users.findUnique({
-        where: user
-        // {
-        //   userName: req.body.username
-        // },
+      console.log("login path");
+
+      const userFound = await prisma.users.findUnique({
+        where: { userName: req.body.username },
       });
 
-      console.log(dbUserFound)
-
-      if (!dbUserFound) {
+      if (!userFound) {
+        console.log("user not in db");
         res.status(401).json("User not found");
       } else {
-        res.json(user);
+        const authUser = await bcrypt.compare(
+          req.body.password,
+          userFound.password
+        );
+
+        if (!authUser) {
+          res.status(401).json("not authorized");
+        } else {
+          const user = {
+            userName: userFound.userName,
+            firstName: userFound.firstName,
+            lastName: userFound.lastName,
+          };
+
+          const jwtUser = { username: userFound.userName, password: userFound.password };
+          const token = jwt.sign(jwtUser, process.env.JWT_SECRET_KEY);
+    
+          res.json({ token: token, user: user });
+        }
       }
     }
   } catch (err) {
@@ -75,10 +90,12 @@ router.post("/users/register", async (req, res) => {
     });
 
     // create jwt token for user
-    const jwtUser = { username: user.userName, password: user.password };
-    const token = jwt.sign(jwtUser, process.env.JWT_SECRET_KEY);
+    if (newUser) {
+      const jwtUser = { username: user.userName, password: user.password };
+      const token = jwt.sign(jwtUser, process.env.JWT_SECRET_KEY);
 
-    res.json({ token: token, user: user });
+      res.json({ token: token, user: user });
+    }
   } catch (err) {
     console.log(err);
   }
