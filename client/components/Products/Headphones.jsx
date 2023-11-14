@@ -22,6 +22,7 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 const ItemsCard = ({ item }) => {
   const [count, setCount] = useState(1);
@@ -34,12 +35,12 @@ const ItemsCard = ({ item }) => {
     Axios.post(
       "http://localhost:3000/api/account/wishlist",
       {
-        userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
+        userId: "b7e93e4f-7da1-4af6-970d-3306f9d4f4c1",
         productId: headphonesId,
       },
       {
         headers: {
-          "Content-Type": "application/JSON",
+          "content-type": "application/JSON",
         },
       }
     )
@@ -55,13 +56,13 @@ const ItemsCard = ({ item }) => {
     Axios.post(
       "http://localhost:3000/api/account/orders",
       {
-        userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
+        userId: "b7e93e4f-7da1-4af6-970d-3306f9d4f4c1",
         productId: headphonesId,
         quantity: count,
       },
       {
         headers: {
-          "Content-Type": "application/JSON",
+          "content-type": "application/JSON",
         },
       }
     )
@@ -148,6 +149,8 @@ const ItemsCard = ({ item }) => {
             size="small"
             onClick={() => addToCart(item.id)}
           >
+            <ShoppingCartOutlinedIcon size="small" sx={{ mr: 1 }} />
+
             Add to cart
           </Button>
         </CardActions>
@@ -172,7 +175,7 @@ const Headphones = () => {
   console.log("Headphones state:", headphones); //just to double check some things
 
   return (
-    <Container maxWidth="lg" sx={{ p: 3 }}>
+    <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
       <Typography variant="h5" sx={{ my: 2 }}>
         Headphones
       </Typography>

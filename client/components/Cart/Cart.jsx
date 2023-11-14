@@ -11,14 +11,15 @@ const Cart = () => {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    Axios.get()
-    .then()
-    .then()
+    Axios.get("http://localhost:3000/api/account/orders")
+    .then((res) => res)
+    .then((data) => setCart(data.data))
     .catch((err) => {
       console.log(err)
     })
   }, [])
-
+  // console.log("Cart state:", ); //just to double check again
+  
   // add to wishlist function
   // once clicked, add item to wishlist and remove from cart
   const addToWishlist = () => {

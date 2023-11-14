@@ -34,7 +34,7 @@ const ItemsCard = ({ item }) => {
     Axios.post(
       "http://localhost:3000/api/account/wishlist",
       {
-        userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
+        userId: "b7e93e4f-7da1-4af6-970d-3306f9d4f4c1",
         productId: earbudId,
       },
       {
@@ -54,7 +54,7 @@ const ItemsCard = ({ item }) => {
     Axios.post(
       "http://localhost:3000/api/account/orders",
       {
-        userId: "669c7e57-e2f4-4fdb-950c-760cfb833885",
+        userId: "b7e93e4f-7da1-4af6-970d-3306f9d4f4c1",
         productId: earbudId,
         quantity: count,
       },

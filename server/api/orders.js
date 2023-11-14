@@ -40,7 +40,7 @@ router.post("/account/orders", async (req, res) => {
     if (!inCart) {
       // add item to cart
       const addToCart = await prisma.orders.create({
-        data: {
+         data: {
           userId,
           productId,
           quantity,
