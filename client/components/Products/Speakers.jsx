@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import Axios from "axios";
 
 // component imports
+import useCurrentUser from "../CurrentUser";
 import MuiSnackbar from '../components/MuiSnackbar'
 
 // MUI imports
@@ -29,14 +31,14 @@ const ItemsCard = ({ item, handleSnackbarOpen }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
-    setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : 1));
+    setCount((prevCount) => prevCount > 1 && prevCount - 1);
   };
 
   const addToWishlist = (speakerId) => {
     Axios.post(
       "http://localhost:3000/api/account/wishlist",
       {
-        userId: "9e81a93b-4517-4b4f-9c7c-5609ad3a1b4a",
+        userId: user.id,
         productId: speakerId,
       },
       {
@@ -45,10 +47,9 @@ const ItemsCard = ({ item, handleSnackbarOpen }) => {
         },
       }
     )
-      .then((res) => res)
-      .then((data) => console.log(data))
-      .catch((err) => {
-        console.log(err);
+    .then((res) => console.log(res))
+    .catch((err) => {
+      console.log(err);
       });
   };
 
@@ -56,7 +57,7 @@ const ItemsCard = ({ item, handleSnackbarOpen }) => {
     Axios.post(
       "http://localhost:3000/api/account/orders",
       {
-        userId: "9e81a93b-4517-4b4f-9c7c-5609ad3a1b4a",
+        userId: user.id,
         productId: speakerId,
         quantity: count,
       },
@@ -66,11 +67,15 @@ const ItemsCard = ({ item, handleSnackbarOpen }) => {
         },
       }
     )
-      .then((res) => res)
-      .then((data) => console.log(data))
-      .catch((err) => {
-        console.log(err);
+    .then((res) => console.log(res))
+    .catch((err) => {
+      console.log(err);
       });
+
+  const navigate = useNavigate()
+
+  const handleItemDetails = (itemId) => {
+    navigate(`/speakers/speaker-details/${itemId}`)
 
   handleSnackbarOpen();  
   
@@ -79,17 +84,22 @@ const ItemsCard = ({ item, handleSnackbarOpen }) => {
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Card sx={{ borderRadius: "10px" }}>
+      <Box sx={{ width: "100%", height: 240, boxSizing: "border-box", }}>
         <CardMedia
           component="img"
           sx={{
-            height: 140,
-            p: 1,
-            objectFit: "contain",
-            boxSizing: "border-box",
+            width: "100%",
+              height: "100%",
+              p: 1,
+              objectFit: "contain",
+              boxSizing: "border-box"
           }}
+          className="productCardImg"
           image={item.image}
           title={`${item.name} ${item.type}`}
+          onClick={() => handleItemDetails(item.id)}
         />
+        </Box>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {item.name}
@@ -143,6 +153,7 @@ const ItemsCard = ({ item, handleSnackbarOpen }) => {
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
+            checked={item.orders[0] && item.orders[0].inWishlist}
             color="error"
             sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}
@@ -163,30 +174,32 @@ const ItemsCard = ({ item, handleSnackbarOpen }) => {
 
 const Speakers = () => {
   const [speakers, setSpeakers] = useState([]);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const handleSnackbarOpen = () => {
-    setSnackbarOpen(true);
-  };
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
+  const user = useCurrentUser();
+  
   };
 
   useEffect(() => {
-    Axios.get("http://localhost:3000/api/speakers")
-      .then((res) => res)
-      .then((data) => setSpeakers(data.data))
+    Axios.post(
+      "http://localhost:3000/api/products",
+      {
+        userId: user && user.id,
+        category: "Speaker",
+      },
+      {
+        headers: {
+          "Content-Type": "application/Json",
+        },
+      }
+    )
+      .then((res) => setSpeakers(res.data))
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [user]);
 
   return (
-    <Container maxWidth="lg" sx={{ p: 3 }}>
+    <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
       <Typography variant="h5" sx={{ my: 2 }}>
         Speakers
       </Typography>
@@ -196,6 +209,7 @@ const Speakers = () => {
             <ItemsCard 
             key={speaker.id} 
             item={speaker}
+            user={user}
             handleSnackbarOpen={handleSnackbarOpen}
             />
           ))}
