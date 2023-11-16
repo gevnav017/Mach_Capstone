@@ -4,7 +4,7 @@ import Axios from "axios";
 
 // component imports
 import useCurrentUser from "../CurrentUser";
-import MuiSnackbar from '../components/MuiSnackbar'
+import MuiSnackbar from '../MuiSnackbar';
 
 // MUI imports
 import {
@@ -25,9 +25,9 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import IconButton from "@mui/material/IconButton";
-// import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
-const ItemsCard = ({ item, handleSnackbarOpen }) => {
+
+const ItemsCard = ({ item, user }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
@@ -71,13 +71,12 @@ const ItemsCard = ({ item, handleSnackbarOpen }) => {
     .catch((err) => {
       console.log(err);
       });
+  };
 
   const navigate = useNavigate()
 
   const handleItemDetails = (itemId) => {
     navigate(`/speakers/speaker-details/${itemId}`)
-
-  handleSnackbarOpen();  
   
   };
 
@@ -176,8 +175,6 @@ const Speakers = () => {
   const [speakers, setSpeakers] = useState([]);
 
   const user = useCurrentUser();
-  
-  };
 
   useEffect(() => {
     Axios.post(
@@ -210,11 +207,9 @@ const Speakers = () => {
             key={speaker.id} 
             item={speaker}
             user={user}
-            handleSnackbarOpen={handleSnackbarOpen}
             />
           ))}
       </Grid>
-      <CustomerSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} />
     </Container>
   );
 };
