@@ -23,6 +23,7 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import IconButton from "@mui/material/IconButton";
+// import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 const ItemsCard = ({ item, handleSnackbarOpen }) => {
   const [count, setCount] = useState(1);
