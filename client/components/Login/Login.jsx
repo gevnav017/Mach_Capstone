@@ -38,11 +38,10 @@ const Login = () => {
     event.preventDefault();
   };
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const token = window.localStorage.getItem("token");
-    console.log("Token: ", token);
 
     if (token) {
       Axios.post(
@@ -53,9 +52,13 @@ const Login = () => {
             authorization: token,
           },
         }
-      )
-        .then((data) => console.log(data))
-        .then(navigate("/"));
+      ).then((data) => {
+        if (data.status === 200) {
+          const token = data.data.token;
+          window.localStorage.setItem("token", token);
+          navigate(-1);
+        }
+      });
     }
   }, []);
 
@@ -87,8 +90,8 @@ const Login = () => {
         }
       ).then((data) => {
         if (data.status === 200) {
-          const token = data.data.token
-          window.localStorage.setItem("token", token)
+          const token = data.data.token;
+          window.localStorage.setItem("token", token);
           navigate("/");
         }
       });

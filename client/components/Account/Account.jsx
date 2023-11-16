@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 // import { useLocation } from "react-router-dom";
 
 // component imports
+import useCurrentUser from "../CurrentUser";
 import Profile from "./Profile";
 import Wishlist from "./Wishlist";
 import Orders from "./Orders";
@@ -27,6 +28,10 @@ const Account = () => {
   // const page = location.pathname;
   const [value, setValue] = useState(0);
 
+  // get user logged in
+  const user = useCurrentUser();
+  console.log(user);
+
   // useEffect(() => {
   //   if (page.includes("profile")) {
   //     setValue(0);
@@ -43,38 +48,37 @@ const Account = () => {
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
-      <Box sx={{ width: "100%" }}>
+      {!user ? (
+        <Box>Loading</Box>
+      ) : (
+        <Box sx={{ width: "100%" }}>
+          <Box sx={{ my: 2 }}>
+            <Typography variant="h5">Welcome, {user.firstName}</Typography>
+          </Box>
 
-        <Box sx={{ my: 2 }}>
-          <Typography
-            variant="h5"
-          >
-            Welcome, Name
-          </Typography>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+            >
+              <Tab label="Profile" />
+              <Tab label="Wishlist" />
+              <Tab label="Orders" />
+            </Tabs>
+          </Box>
+
+          <TabPanel value={value} index={0}>
+            <Profile />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <Wishlist />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <Orders />
+          </TabPanel>
         </Box>
-
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-          >
-            <Tab label="Profile" />
-            <Tab label="Wishlist" />
-            <Tab label="Orders" />
-          </Tabs>
-        </Box>
-
-        <TabPanel value={value} index={0}>
-          <Profile />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <Wishlist />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <Orders />
-        </TabPanel>
-      </Box>
+      )}
     </Container>
   );
 };

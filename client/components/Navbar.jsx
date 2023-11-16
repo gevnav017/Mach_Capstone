@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, NavLink } from "react-router-dom";
 
 // component imports
+import useCurrentUser from "./CurrentUser";
 import Home from "./Home";
 import Speakers from "./Products/Speakers";
 import SpeakerDetails from "./ProductDetails/SpeakerDetails";
@@ -37,18 +38,15 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [user, setUser] = useState(null)
 
-  useEffect(() => {
-    const token = window.localStorage.getItem("token")
-  }, [])
-  
+  // get user logged in
+  const user = useCurrentUser();
+
   const handleLogout = () => {
-    handleCloseUserMenu()
+    handleCloseUserMenu();
 
-    window.localStorage.removeItem("token")
-    setUser(null)
-  }
+    window.localStorage.removeItem("token");
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -194,7 +192,7 @@ const Navbar = () => {
                 <Tooltip title="view account">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
-                      alt="Remy Sharp"
+                      alt={user.firstName}
                       src="/static/images/avatar/2.jpg"
                     />
                   </IconButton>
@@ -234,7 +232,7 @@ const Navbar = () => {
                   </NavLink>
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
-                  <NavLink to="/" className={activeClassStyle}>
+                  <NavLink to="/" className="navLink">
                     Logout
                   </NavLink>
                 </MenuItem>
@@ -248,22 +246,16 @@ const Navbar = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/speakers" element={<Speakers />}>
-          <Route
-            path="/speakers/speaker-details"
-            element={<SpeakerDetails />}
-          />
-        </Route>
-        <Route path="/headphones" element={<Headphones />}>
-          <Route
-            path="/headphones/headphone-details"
-            element={<HeadphoneDetails />}
-          />
-        </Route>
-        <Route path="/earbuds" element={<Earbuds />}>
-          <Route path="/earbuds/earbud-details" element={<EarbudDetails />} />
-        </Route>
-        <Route path="/cart" element={<Cart />}>
+        <Route exact path="/speakers" element={<Speakers />} />
+        <Route path="/speakers/speaker-details/:itemId" element={<SpeakerDetails />} />
+        <Route exact path="/headphones" element={<Headphones />} />
+        <Route
+          path="/headphones/headphone-details/:itemId"
+          element={<HeadphoneDetails />}
+        />
+        <Route exact path="/earbuds" element={<Earbuds />} />
+        <Route path="/earbuds/earbud-details/:itemId" element={<EarbudDetails />} />
+        <Route exact path="/cart" element={<Cart />}>
           <Route path="/cart/checkout" element={<Checkout />}>
             <Route
               path="/cart/checkout/order-confirmation"
