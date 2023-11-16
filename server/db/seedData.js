@@ -1,4 +1,5 @@
 const prisma = require("./client");
+require("dotenv").config()
 
 const products = [
   { brand: "Bose", name: "Soundbar 600", type: "Soundbar", price: 128.56, category: "Speaker", image: "/images/bose/bose-soundbar600.jpg" },

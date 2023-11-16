@@ -9,7 +9,7 @@ router.get("/account/orders/:userId", async (req, res) => {
 
     const orders = await prisma.orders.findMany({
       where: {
-        id: userId,
+        userId: userId,
         inCart: false,
       },
       include: {
@@ -17,6 +17,7 @@ router.get("/account/orders/:userId", async (req, res) => {
       },
     });
 
+    console.log(orders);
     res.json(orders);
   } catch (err) {
     console.log(err);
@@ -41,7 +42,7 @@ router.post("/account/orders", async (req, res) => {
     if (!inCart) {
       // add item to cart
       const addToCart = await prisma.orders.create({
-        data: {
+         data: {
           userId,
           productId,
           quantity,
