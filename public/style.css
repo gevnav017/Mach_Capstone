@@ -26,6 +26,11 @@ body {
     border-bottom: solid #0092CA;
 }
 
+.productCardImg:hover {
+    cursor: pointer;
+    width: 300;
+}
+
 @keyframes logoDance {
     /* 25% {
         transform: rotate(90deg) scale(1.1); 

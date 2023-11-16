@@ -16,15 +16,15 @@ router.get("/users", async (req, res) => {
   }
 });
 
-router.post("/users/login", async (req, res) => {
+router.get("/user/auth/me", (req, res) => {
   try {
     const token = req.headers.authorization;
-    console.log("Token:", token);
 
     // if token found in users window
     if (token) {
-      console.log("token path");
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+      delete user.password;
 
       if (!user) {
         console.log("user not found");
@@ -34,37 +34,35 @@ router.post("/users/login", async (req, res) => {
         res.json(user);
       }
     }
-    // if token not found in users window
-    else {
-      console.log("login path");
+  } catch (err) {
+    console.log(err);
+  }
+});
 
-      const userFound = await prisma.users.findUnique({
-        where: { userName: req.body.username },
-      });
+router.post("/users/login", async (req, res) => {
+  try {
+    const dbUser = await prisma.users.findUnique({
+      where: { userName: req.body.username },
+    });
 
-      if (!userFound) {
-        console.log("user not in db");
-        res.status(401).json("User not found");
+    if (!dbUser) {
+      console.log("user not in db");
+      res.status(401).json("User not found");
+    } else {
+      const authUser = await bcrypt.compare(
+        req.body.password,
+        dbUser.password
+      );
+
+      if (!authUser) {
+        res.status(401).json("not authorized");
       } else {
-        const authUser = await bcrypt.compare(
-          req.body.password,
-          userFound.password
-        );
+        delete dbUser.discount
+        delete dbUser.freeShipping
 
-        if (!authUser) {
-          res.status(401).json("not authorized");
-        } else {
-          const user = {
-            userName: userFound.userName,
-            firstName: userFound.firstName,
-            lastName: userFound.lastName,
-          };
+        const token = jwt.sign(dbUser, process.env.JWT_SECRET_KEY);
 
-          const jwtUser = { username: userFound.userName, password: userFound.password };
-          const token = jwt.sign(jwtUser, process.env.JWT_SECRET_KEY);
-    
-          res.json({ token: token, user: user });
-        }
+        res.json({ token: token });
       }
     }
   } catch (err) {
@@ -82,19 +80,21 @@ router.post("/users/register", async (req, res) => {
       lastName: req.body.lastName,
     };
 
-    // add user already exists check error status 409
+    // add username already exists check error status 409
 
     // add user to database
     const newUser = await prisma.users.create({
       data: user,
     });
 
+    delete newUser.discount;
+    delete newUser.freeShipping;
+
     // create jwt token for user
     if (newUser) {
-      const jwtUser = { username: user.userName, password: user.password };
-      const token = jwt.sign(jwtUser, process.env.JWT_SECRET_KEY);
+      const token = jwt.sign(newUser, process.env.JWT_SECRET_KEY);
 
-      res.json({ token: token, user: user });
+      res.json({ token: token });
     }
   } catch (err) {
     console.log(err);

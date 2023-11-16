@@ -10,6 +10,7 @@ router.get("/account/orders/:userId", async (req, res) => {
     const orders = await prisma.orders.findMany({
       where: {
         userId: userId,
+        inCart: false,
       },
       include: {
         products: true,
@@ -53,10 +54,11 @@ router.post("/account/orders", async (req, res) => {
       res.json(addToCart);
     } else {
       // already in cart, update qty
-      itemInCartId = inCart.id;
+      const itemInCartId = inCart.id;
+      const newQty = inCart.quantity + quantity;
 
       const updateQty = await prisma.orders.update({
-        data: { quantity: quantity },
+        data: { quantity: newQty },
         where: { id: itemInCartId },
       });
 
@@ -69,3 +71,6 @@ router.post("/account/orders", async (req, res) => {
 });
 
 module.exports = router;
+
+
+

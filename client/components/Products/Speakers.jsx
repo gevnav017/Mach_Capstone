@@ -20,6 +20,7 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import IconButton from "@mui/material/IconButton";
 // import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
@@ -34,7 +35,7 @@ const ItemsCard = ({ item }) => {
     Axios.post(
       "http://localhost:3000/api/account/wishlist",
       {
-        userId: "b7e93e4f-7da1-4af6-970d-3306f9d4f4c1",
+        userId: "9e81a93b-4517-4b4f-9c7c-5609ad3a1b4a",
         productId: speakerId,
       },
       {
@@ -54,7 +55,7 @@ const ItemsCard = ({ item }) => {
     Axios.post(
       "http://localhost:3000/api/account/orders",
       {
-        userId: "b7e93e4f-7da1-4af6-970d-3306f9d4f4c1",
+        userId: "9e81a93b-4517-4b4f-9c7c-5609ad3a1b4a",
         productId: speakerId,
         quantity: count,
       },
@@ -147,6 +148,7 @@ const ItemsCard = ({ item }) => {
             size="small"
             onClick={() => addToCart(item.id)}
           >
+           <ShoppingCartOutlinedIcon size="small" sx={{ mr: 1 }} />
             Add to cart
           </Button>
         </CardActions>
