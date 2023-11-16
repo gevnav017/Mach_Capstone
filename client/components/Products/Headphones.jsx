@@ -75,17 +75,22 @@ const ItemsCard = ({ item }) => {
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Card sx={{ borderRadius: "10px" }}>
-        <CardMedia
-          component="img"
-          sx={{
-            height: 140,
-            p: 1,
-            objectFit: "contain",
-            boxSizing: "border-box",
-          }}
-          image={item.image}
-          title={`${item.name} ${item.type}`}
-        />
+        <Box sx={{ width: "100%", height: 240, boxSizing: "border-box" }}>
+          <CardMedia
+            component="img"
+            sx={{
+              width: "100%",
+              height: "100%",
+              p: 1,
+              objectFit: "contain",
+              boxSizing: "border-box",
+            }}
+            className="productCardImg"
+            image={item.image}
+            title={`${item.name} ${item.type}`}
+            onClick={() => handleItemDetails(item.id)}
+          />
+        </Box>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {item.name}
@@ -163,9 +168,19 @@ const Headphones = () => {
   const [headphones, setHeadphones] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:3000/api/headphones")
-      .then((res) => res)
-      .then((data) => setHeadphones(data.data)) //should this be just data ?? instead of data.data ? idk i am confused
+    Axios.post(
+      "http://localhost:3000/api/products",
+      {
+        // userId: user && user.id,
+        category: "Headphone",
+      },
+      {
+        headers: {
+          "Content-Type": "application/Json",
+        },
+      }
+    )
+      .then((res) => setHeadphones(res.data))
       .catch((err) => {
         console.log(err);
       });
