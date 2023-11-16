@@ -8,7 +8,7 @@ const products = [
   { brand: "Bose", name: "SoundLink Flex", type: "Bluetooth", price: 149.00, category: "Speaker", image: "/images/bose/bose-soundflex.jpg" },
   { brand: "Bose", name: "QuietComfort", type: "Noise-Cancellation", price: 349.00, category: "Headphone", image: "/images/bose/bose-quiet.jpg" },
   { brand: "Bose", name: "Noise Cancelling", type: "Bluetooth", price: 279.00, category: "Headphone", image: "/images/bose/bose-noisecancel.jpg" },
-  { brand: "Bose", name: "QuietConfort Ultra", type: "Noise-Cancellation", price: 299.00, category: "Earbud", image: "/images/bose/bose-comfort.jpg" },
+  { brand: "Bose", name: "QuietComfort Ultra", type: "Noise-Cancellation", price: 299.00, category: "Earbud", image: "/images/bose/bose-comfort.jpg" },
   { brand: "Bose", name: "QuietComfort Ultra With Wireless Case", type: "Bluetooth", price: 348.00, category: "Earbud", image: "/images/bose/bose-ultra.jpg" },
 
   { brand: "JBL", name: "Go 3", type: "Bluetooth", price: 49.95, category: "Speaker", image: "/images/jbl/jbl-go.jpg" },

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 
 // component imports
+import MuiSnackbar from '../components/MuiSnackbar'
 
 // MUI imports
 import {
@@ -23,7 +24,7 @@ import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import IconButton from "@mui/material/IconButton";
 
-const ItemsCard = ({ item }) => {
+const ItemsCard = ({ item, handleSnackbarOpen }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
@@ -69,6 +70,9 @@ const ItemsCard = ({ item }) => {
       .catch((err) => {
         console.log(err);
       });
+
+  handleSnackbarOpen();  
+  
   };
 
   return (
@@ -158,6 +162,18 @@ const ItemsCard = ({ item }) => {
 
 const Speakers = () => {
   const [speakers, setSpeakers] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   useEffect(() => {
     Axios.get("http://localhost:3000/api/speakers")
@@ -176,9 +192,14 @@ const Speakers = () => {
       <Grid container spacing={2}>
         {speakers &&
           speakers.map((speaker) => (
-            <ItemsCard key={speaker.id} item={speaker} />
+            <ItemsCard 
+            key={speaker.id} 
+            item={speaker}
+            handleSnackbarOpen={handleSnackbarOpen}
+            />
           ))}
       </Grid>
+      <CustomerSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} />
     </Container>
   );
 };
