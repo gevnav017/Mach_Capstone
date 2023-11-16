@@ -184,7 +184,7 @@ const Earbuds = () => {
     Axios.post(
       "http://localhost:3000/api/products",
       {
-        userId: user && user.id,
+        // userId: user && user.id,
         category: "Earbud",
       },
       {
@@ -197,7 +197,7 @@ const Earbuds = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [user]);
+  }, []);
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
