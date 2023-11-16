@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import Axios from "axios";
 
 // component imports
+import useCurrentUser from "../CurrentUser";
 
 // MUI imports
 import {
@@ -23,7 +25,7 @@ import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import IconButton from "@mui/material/IconButton";
 
-const ItemsCard = ({ item }) => {
+const ItemsCard = ({ item, user }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
@@ -34,7 +36,7 @@ const ItemsCard = ({ item }) => {
     Axios.post(
       "http://localhost:3000/api/account/wishlist",
       {
-        userId: "af7c1fe6-d669-414e-b066-e9733f0de7a8",
+        userId: user.id,
         productId: earbudId,
       },
       {
@@ -43,8 +45,7 @@ const ItemsCard = ({ item }) => {
         },
       }
     )
-      .then((res) => res)
-      .then((data) => console.log(data))
+      .then((res) => console.log(res))
       .catch((err) => {
         console.log(err);
       });
@@ -54,7 +55,7 @@ const ItemsCard = ({ item }) => {
     Axios.post(
       "http://localhost:3000/api/account/orders",
       {
-        userId: "669c7e57-e2f4-4fdb-950c-760cfb833885",
+        userId: user.id,
         productId: earbudId,
         quantity: count,
       },
@@ -64,27 +65,37 @@ const ItemsCard = ({ item }) => {
         },
       }
     )
-      .then((res) => res)
-      .then((data) => console.log(data))
+      .then((res) => console.log(res))
       .catch((err) => {
         console.log(err);
       });
   };
 
+  const navigate = useNavigate()
+
+  const handleItemDetails = (itemId) => {
+    navigate(`/earbuds/earbud-details/${itemId}`)
+  };
+
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Card sx={{ borderRadius: "10px" }}>
-        <CardMedia
-          component="img"
-          sx={{
-            height: 140,
-            p: 1,
-            objectFit: "contain",
-            boxSizing: "border-box",
-          }}
-          image={item.image}
-          title={`${item.name} ${item.type}`}
-        />
+        <Box sx={{ width: "100%", height: 240, boxSizing: "border-box", }}>
+          <CardMedia
+            component="img"
+            sx={{
+              width: "100%",
+              height: "100%",
+              p: 1,
+              objectFit: "contain",
+              boxSizing: "border-box"
+            }}
+            className="productCardImg"
+            image={item.image}
+            title={`${item.name} ${item.type}`}
+            onClick={() => handleItemDetails(item.id)}
+          />
+        </Box>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {item.name}
@@ -144,6 +155,7 @@ const ItemsCard = ({ item }) => {
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
+            checked={item.orders[0] && item.orders[0].inWishlist}
             color="error"
             sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}
@@ -165,14 +177,27 @@ const ItemsCard = ({ item }) => {
 const Earbuds = () => {
   const [earbuds, setEarbuds] = useState([]);
 
+  // get user logged in
+  const user = useCurrentUser();
+
   useEffect(() => {
-    Axios.get("http://localhost:3000/api/earbuds")
-      .then((res) => res)
-      .then((data) => setEarbuds(data.data))
+    Axios.post(
+      "http://localhost:3000/api/products",
+      {
+        userId: user && user.id,
+        category: "Earbud",
+      },
+      {
+        headers: {
+          "Content-Type": "application/Json",
+        },
+      }
+    )
+      .then((res) => setEarbuds(res.data))
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [user]);
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
@@ -181,7 +206,9 @@ const Earbuds = () => {
       </Typography>
       <Grid container spacing={2}>
         {earbuds &&
-          earbuds.map((earbud) => <ItemsCard key={earbud.id} item={earbud} />)}
+          earbuds.map((earbud) => (
+            <ItemsCard key={earbud.id} item={earbud} user={user} />
+          ))}
       </Grid>
     </Container>
   );

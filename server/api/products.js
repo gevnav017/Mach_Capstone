@@ -1,77 +1,77 @@
-const express = require('express')
-const router = express.Router()
-const prisma = require('../db/client')
+const express = require("express");
+const router = express.Router();
+const prisma = require("../db/client");
 
 // all products
 router.get("/products", async (req, res) => {
-    try {
-        const products = await prisma.products.findMany()
-        res.json(products)
-    }
-    catch (err) {
-        console.log(err)
-    }
-})
+  try {
+    const products = await prisma.products.findMany();
+    
+    res.json(products);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
-// one product by id
-router.get("/products/:productId", async (req, res) => {
-    try {
-        const { productId } = req.params
-        const product = await prisma.products.findUnique({
-            where: {
-                id: productId
-            }
-        })
-        res.json(product)
-    }
-    catch (err) {
-        console.log(err)
-    }
-})
+// all products based on category and userId
+router.post("/products", async (req, res) => {
+  try {
+    const { userId, category } = req.body;
+    console.log(userId, category);
+    
+    const products = await prisma.products.findMany({
+      where: {
+        category: category,
+      },
+      include: {
+        orders: {
+          where: {
+            userId: userId,
+          },
+        },
+      },
+    });
+    console.log(products);
+    
+    res.json(products);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
-// all speakers
-router.get("/speakers", async (req, res) => {
-    try {
-        const speakers = await prisma.products.findMany({
-            where: {
-                category: "Speaker"
-            }
-        })
-        res.json(speakers)
-    }
-    catch (err) {
-        console.log(err)
-    }
-})
+// all products based on category
+router.get("/products", async (req, res) => {
+  try {
+    const { category } = req.body;
+    console.log(category)
+    
+    const products = await prisma.products.findMany({
+      where: {
+        category: category,
+      },
+    });
+    
+    res.json(products);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
-// all headphones
-router.get("/headphones", async (req, res) => {
-    try {
-        const headphones = await prisma.products.findMany({
-            where: {
-                category: "Headphone"
-            }
-        })
-        res.json(headphones)
-    }
-    catch (err) {
-        console.log(err)
-    }
-})
+// single product by id
+router.get("/product/:itemId", async (req, res) => {
+  try {
+    const { itemId } = req.params;
 
-// all earbuds
-router.get("/earbuds", async (req, res) => {
-    try {
-        const earbuds = await prisma.products.findMany({
-            where: {
-                category: "Earbud"
-            }
-        })
-        res.json(earbuds)
-    }
-    catch (err) {
-        console.log(err)
-    }
-})
+    const item = await prisma.products.findUnique({
+      where: {
+        id: itemId,
+      },
+    });
 
-module.exports = router
+    res.json(item);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+module.exports = router;
