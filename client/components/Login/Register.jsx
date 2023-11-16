@@ -17,16 +17,14 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
-const initialError = [
-  {
-    username: false,
-    password: false,
-    firstName: false,
-    lastName: false,
-    incorrectCredentials: false,
-    userNotExist: false,
-  },
-];
+const initialError = {
+  username: false,
+  password: false,
+  firstName: false,
+  lastName: false,
+  incorrectCredentials: false,
+  userNotExist: false,
+};
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -42,18 +40,24 @@ const SignUp = () => {
     event.preventDefault();
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSignUp = () => {
-    setError(initialError);
-    
-    if (!username && !password && !firstName && !lastName) {
-      setError({ ...error, username: true, password: true, firstName: true, lastName: true });
-    } else if (!username) {
-      setError({ ...error, username: true });
-    } else if (!password) {
-      setError({ ...error, password: true });
-    }
+    setError({ ...error, username: !username, password: !password, firstName: !firstName, lastName: !lastName })
+
+    // if (!username && !password && !firstName && !lastName) {
+    //   setError({
+    //     ...error,
+    //     username: true,
+    //     password: true,
+    //     firstName: true,
+    //     lastName: true,
+    //   });
+    // } else if (!username) {
+    //   setError({ ...error, username: true });
+    // } else if (!password) {
+    //   setError({ ...error, password: true });
+    // }
 
     if (username && password) {
       Axios.post(
@@ -68,14 +72,13 @@ const SignUp = () => {
           "content-type": "application/JSON",
         }
       )
-        .then((res) => res)
-        .then((data) => {
-          const token = data.data.token;
-          console.log("token", token)
-          const user = data.data.user;
+        .then((res) => {
+          const token = res.data.token;
           window.localStorage.setItem("token", token);
+          if (res.status === 200) {
+            navigate("/")
+          }
         })
-        .then(navigate("/login"))
 
         .catch((err) => {
           console.log(err);

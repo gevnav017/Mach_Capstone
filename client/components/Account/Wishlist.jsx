@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 
 // component imports
+import useCurrentUser from "../CurrentUser";
 
 // MUI imports
 import { Button, Grid } from "@mui/material";
@@ -16,21 +17,27 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
 
+  // get user logged in
+  const user = useCurrentUser()
+
   useEffect(() => {
-    const userId = "af7c1fe6-d669-414e-b066-e9733f0de7a8";
+    const userId = user && user.id;
     Axios.get(`http://localhost:3000/api/account/wishlist/${userId}`)
-      .then((res) => res)
       .then((data) => setWishlist(data.data))
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [user]);
 
 
   // add to cart button function
   // once clicked, add item to cart and remove from wishlist
-  const addToCart = () => {
+  const addToCart = (itemId) => {
+    console.log(itemId)
+  }
 
+  const removeFromWishlist = (itemId) => {
+    console.log(itemId)
   }
   
   return (
@@ -51,7 +58,7 @@ const Wishlist = () => {
               alt="earbud"
             />
             <Grid container>
-              <Grid item xs={12} md={5}>
+              <Grid item xs={12} md={5} sx={{ display: "flex", alignItems: "center" }}>
                 <CardContent>
                   <Typography component="div" variant="h5">
                     {item.products.name}
@@ -97,8 +104,8 @@ const Wishlist = () => {
                   p: 2,
                 }}
               >
-                <Button>Add to cart</Button>
-                <Button color="error">
+                <Button onClick={() => addToCart(item.id)}>Add to cart</Button>
+                <Button color="error" onClick={() => removeFromWishlist(item.id)}>
                   <CloseOutlinedIcon />
                 </Button>
               </Grid>

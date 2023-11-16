@@ -11,23 +11,22 @@ render deploy frontend and backend
 
 ###
 
-5. what should API errors respond with instead of console logging. error status and desc?
+5. what should API errors respond with instead of console logging. error status and error description? // next() middleware use(error, req, res, next)
 
-6. efficient way of looping through and setting errors state to true for all keys in state object in register page
+6. efficient way of looping through and setting errors state to true for all keys in state object in register page 
 
-7. how to extract the username, first name, last name from the jwt token that is passed to the client after verification
+7. how to use/access user info in authorized token globally. Please dont tell me we need redux // use custom hook for useEffect axios and import it to use it
 
-7. not be able to go to extensions login or register if already logged in and token is in window.localStorage
+8. how to go back to the page user was on prior to clicking the login button on the nav to login. After successful login redirect user back to that page
 
-8. how to authorize if user token from local storage is deleted but user is still found in db
-
-9. how to use/access user info in token globally. Please dont tell me we need redux
-
-10. how to go back to the page user was on prior to clicking the login button on the nav to login
-
-11. databse structure for chat/messaging
+9. database structure for chat/messaging //
+    messages table
+    two foreign keys // first from user // second to user
 
 ###
+
+10. how to await user data fetch first (useCurrentUser in Navbar) before using that data to make render the accounts page and hide the login button. Only works after resfreshing the page. Also, on logout click cant setUser to null, it is a custom hook.
+    // 
 
 update db:
 git pull the latest for updated seed file
