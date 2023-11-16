@@ -9,16 +9,13 @@ import { Container, Box, Typography } from "@mui/material";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
+  console.log(cart);
 
   useEffect(() => {
-    Axios.get("http://localhost:3000/api/account/orders", {
-      params: {
-        userId: "b7e93e4f-7da1-4af6-970d-3306f9d4f4c1",
-      },
-    })
+    Axios.get("http://localhost:3000/api/account/orders/b7e93e4f-7da1-4af6-970d-3306f9d4f4c1")
       .then((res) => {
-        console.log("Data from Axios:", typeof res.data);
-        setCart(res.data.data);
+        // console.log("Data from Axios:", res.data);
+        setCart(res.data);
       })
       // .then((data) => setCart(data.data))
       .catch((err) => {
@@ -36,10 +33,10 @@ const Cart = () => {
       <Typography variant="h5" sx={{ my: 2 }}>
         Cart
       </Typography>
-      {cart && cart.length > 0 ? (
+      {cart ? (
         cart.map((item) => (
           <Box key={item.id} sx={{ mb: 2 }}>
-            <Typography variant="h6">{item.name}</Typography>
+            <Typography variant="h6">{item.products.name}</Typography>
             <Typography>Quantity: {item.quantity}</Typography>
             {/* probably need to add more here ONCE I GET THIS TO WORK */}
           </Box>

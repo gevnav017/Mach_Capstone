@@ -9,13 +9,14 @@ router.get("/account/orders/:userId", async (req, res) => {
 
     const orders = await prisma.orders.findMany({
       where: {
-        userId: "b7e93e4f-7da1-4af6-970d-3306f9d4f4c1",
+        userId: userId,
       },
       include: {
         products: true,
       },
     });
 
+    console.log(orders);
     res.json(orders);
   } catch (err) {
     console.log(err);
