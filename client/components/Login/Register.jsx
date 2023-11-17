@@ -76,7 +76,7 @@ const SignUp = () => {
           const token = res.data.token;
           window.localStorage.setItem("token", token);
           if (res.status === 200) {
-            navigate("/")
+            navigate("/login")
           }
         })
 

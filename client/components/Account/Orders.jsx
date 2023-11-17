@@ -6,7 +6,7 @@ import React from 'react'
 // MUI imports
 import { Container } from '@mui/material'
 
-const Orders = () => {
+const Orders = ({ user }) => {
   return (
     <Container maxWidth="lg" sx={{ p: 3 }}>
       Orders

@@ -16,8 +16,6 @@ const MasonryImages = ({ item }) => {
   i++;
   let imgHeight = imgHeights[i];
 
-  console.log(imgHeight);
-
   return (
     <div style={{ width: "200px", height: imgHeight, border: "solid red" }}>
       <img

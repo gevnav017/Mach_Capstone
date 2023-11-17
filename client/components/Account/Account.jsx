@@ -23,14 +23,10 @@ const TabPanel = (props) => {
   );
 };
 
-const Account = () => {
+const Account = ({ user }) => {
   // const location = useLocation();
   // const page = location.pathname;
   const [value, setValue] = useState(0);
-
-  // get user logged in
-  const user = useCurrentUser();
-  console.log(user);
 
   // useEffect(() => {
   //   if (page.includes("profile")) {
@@ -69,13 +65,13 @@ const Account = () => {
           </Box>
 
           <TabPanel value={value} index={0}>
-            <Profile />
+            <Profile user={user} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Wishlist />
+            <Wishlist user={user} />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <Orders />
+            <Orders user={user} />
           </TabPanel>
         </Box>
       )}
