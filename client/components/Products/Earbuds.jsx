@@ -184,7 +184,7 @@ const Earbuds = () => {
     Axios.post(
       "http://localhost:3000/api/products",
       {
-        userId: user && user.id,
+        // userId: user.id,
         category: "Earbud",
       },
       {
