@@ -4,7 +4,7 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function Snackbar() {
+export default function SimpleSnackbar() {
   const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
@@ -37,7 +37,7 @@ export default function Snackbar() {
 
   return (
     <div>
-      <Button onClick={handleClick}>Open simple snackbar</Button>
+      <Button onClick={handleClick}>Added to Cart!</Button>
       <Snackbar
         open={open}
         autoHideDuration={6000}

@@ -13,9 +13,8 @@ import Stack from '@mui/material/Stack';
 // import Tab from "@mui/material/Tab";
 // import Typography from "@mui/material/Typography";
 
-import card from "@mui/joy/Typography";
-
 const Profile = () => {
+
   return (
     <Stack direction="row" spacing={2}>
       <Avatar  />

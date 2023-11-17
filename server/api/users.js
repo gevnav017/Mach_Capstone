@@ -49,16 +49,13 @@ router.post("/users/login", async (req, res) => {
       console.log("user not in db");
       res.status(401).json("User not found");
     } else {
-      const authUser = await bcrypt.compare(
-        req.body.password,
-        dbUser.password
-      );
+      const authUser = await bcrypt.compare(req.body.password, dbUser.password);
 
       if (!authUser) {
         res.status(401).json("not authorized");
       } else {
-        delete dbUser.discount
-        delete dbUser.freeShipping
+        delete dbUser.discount;
+        delete dbUser.freeShipping;
 
         const token = jwt.sign(dbUser, process.env.JWT_SECRET_KEY);
 
@@ -72,29 +69,39 @@ router.post("/users/login", async (req, res) => {
 
 router.post("/users/register", async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const user = {
-      userName: req.body.username,
-      password: hashedPassword,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-    };
-
-    // add username already exists check error status 409
-
-    // add user to database
-    const newUser = await prisma.users.create({
-      data: user,
+    // check if username already exists
+    const dbUser = await prisma.users.findFirst({
+      where: {
+        userName: req.body.username,
+      },
     });
 
-    delete newUser.discount;
-    delete newUser.freeShipping;
+    if (dbUser) {
+      res.status(409).json( { message: "User already exists" });
+    } else {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-    // create jwt token for user
-    if (newUser) {
-      const token = jwt.sign(newUser, process.env.JWT_SECRET_KEY);
+      const user = {
+        userName: req.body.username,
+        password: hashedPassword,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+      };
 
-      res.json({ token: token });
+      // add user to database
+      const newUser = await prisma.users.create({
+        data: user,
+      });
+
+      delete newUser.discount;
+      delete newUser.freeShipping;
+
+      // create jwt token for user
+      if (newUser) {
+        const token = jwt.sign(newUser, process.env.JWT_SECRET_KEY);
+
+        res.json({ token: token });
+      }
     }
   } catch (err) {
     console.log(err);
