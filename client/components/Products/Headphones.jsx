@@ -1,6 +1,9 @@
-// component imports
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import Axios from "axios";
+
+// component imports
+import useCurrentUser from "../CurrentUser";
 
 // MUI imports
 import {
@@ -14,62 +17,74 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-
-//code that I worked on from 11-6 to 11-8//
 import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import IconButton from "@mui/material/IconButton";
 
-const ItemsCard = ({ item }) => {
+const ItemsCard = ({ item, user }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
     setCount((prevCount) => prevCount > 1 && prevCount - 1);
   };
 
-  const addToWishlist = (headphonesId) => {
-    Axios.post(
-      "http://localhost:3000/api/account/wishlist",
-      {
-        userId: "b7e93e4f-7da1-4af6-970d-3306f9d4f4c1",
-        productId: headphonesId,
-      },
-      {
-        headers: {
-          "content-type": "application/JSON",
+  const addToWishlist = (headphoneId) => {
+    if (user) {
+      Axios.post(
+        "http://localhost:3000/api/account/wishlist",
+        {
+          userId: user.id,
+          productId: headphoneId,
         },
-      }
-    )
-      .then((res) => res)
-      .then((data) => console.log(data))
-      .catch((err) => {
-        console.log(err);
-      });
+        {
+          headers: {
+            "content-type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => console.log(res))
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("no user");
+    }
   };
 
-  const addToCart = (headphonesId) => {
-    Axios.post(
-      "http://localhost:3000/api/account/orders",
-      {
-        userId: "b7e93e4f-7da1-4af6-970d-3306f9d4f4c1",
-        productId: headphonesId,
-        quantity: count,
-      },
-      {
-        headers: {
-          "content-type": "application/JSON",
+  const addToCart = (headphoneId) => {
+    if (user) {
+      Axios.post(
+        "http://localhost:3000/api/account/orders",
+        {
+          userId: user.id,
+          productId: headphoneId,
+          quantity: count,
         },
-      }
-    )
-      .then((res) => res)
-      .then((data) => console.log(data))
-      .catch((err) => {
-        console.log(err);
-      });
+        {
+          headers: {
+            "content-type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => console.log(res))
+        .catch((err) => {
+          console.log(err);
+        });
+
+    } else {
+      console.log("no user")
+    }
+  };
+
+  const navigate = useNavigate();
+
+  const handleItemDetails = (itemId) => {
+    // sends with params to receive by details API
+    navigate(`/headphone/headphone-details/${itemId}`);
   };
 
   return (
@@ -122,7 +137,13 @@ const ItemsCard = ({ item }) => {
             <Typography gutterBottom variant="h6" component="div">
               ${item.price}
             </Typography>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
               <IconButton
                 onClick={decrementQty}
                 disabled={count === 1}
@@ -144,6 +165,7 @@ const ItemsCard = ({ item }) => {
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
+            checked={item.orders[0] && item.orders[0].inWishlist}
             color="error"
             sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}
@@ -154,7 +176,6 @@ const ItemsCard = ({ item }) => {
             onClick={() => addToCart(item.id)}
           >
             <ShoppingCartOutlinedIcon size="small" sx={{ mr: 1 }} />
-
             Add to cart
           </Button>
         </CardActions>
@@ -163,20 +184,19 @@ const ItemsCard = ({ item }) => {
   );
 };
 
-///////////////////////////////////////////
-const Headphones = () => {
+const Headphones = ({ user }) => {
   const [headphones, setHeadphones] = useState([]);
 
   useEffect(() => {
     Axios.post(
       "http://localhost:3000/api/products",
       {
-        // userId: user && user.id,
+        userId: user && user.id,
         category: "Headphone",
       },
       {
         headers: {
-          "Content-Type": "application/Json",
+          "Content-Type": "application/JSON",
         },
       }
     )
@@ -184,9 +204,7 @@ const Headphones = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-
-  console.log("Headphones state:", headphones); //just to double check some things
+  }, [user]);
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
@@ -195,8 +213,8 @@ const Headphones = () => {
       </Typography>
       <Grid container spacing={2}>
         {headphones &&
-          headphones.map((headphones) => (
-            <ItemsCard key={headphones.id} item={headphones} />
+          headphones.map((headphone) => (
+            <ItemsCard key={headphone.id} item={headphone} user={user} />
           ))}
       </Grid>
     </Container>
