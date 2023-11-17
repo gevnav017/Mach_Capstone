@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
+import { useNavigate } from "react-router";
 
 // component imports
 
@@ -70,6 +71,12 @@ const ItemsCard = ({ item }) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const navigate = useNavigate()
+
+  const handleItemDetails = (itemId) => {
+    navigate(`/speakers/product-details/${itemId}`)
   };
 
   return (
