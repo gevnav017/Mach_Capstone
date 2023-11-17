@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from "react";
 
 // component imports
+import Box from "@mui/joy/Box";
+// import Badge, { badgeClasses } from "@mui/joy/Badge";
+import Avatar from "@mui/material/Avatar";
+import Stack from '@mui/material/Stack';
+// import Avatar from '@mui/material/Avatar'
 
 // MUI imports
-import { Container } from "@mui/material";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+// import { Container } from "@mui/material";
+// import Tabs from "@mui/material/Tabs";
+// import Tab from "@mui/material/Tab";
+// import Typography from "@mui/material/Typography";
+
+import card from "@mui/joy/Typography";
 
 const Profile = () => {
-
   return (
-    <Container maxWidth="lg" sx={{ p: 3 }}>
-      Profile
-    </Container>
+    <Stack direction="row" spacing={2}>
+      <Avatar  />
+  </Stack>
   );
-};
+}
 
 export default Profile;
