@@ -74,7 +74,7 @@ const ItemsCard = ({ item, user }) => {
   const navigate = useNavigate()
 
   const handleItemDetails = (itemId) => {
-    navigate(`/earbuds/earbud-details/${itemId}`)
+    navigate(`/earbuds/product-details/${itemId}`)
   };
 
   return (
@@ -155,7 +155,7 @@ const ItemsCard = ({ item, user }) => {
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
-            checked={item.orders[0] && item.orders[0].inWishlist}
+            // checked={item.orders[0] && item.orders[0].inWishlist}
             color="error"
             sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}
@@ -179,12 +179,13 @@ const Earbuds = () => {
 
   // get user logged in
   const user = useCurrentUser();
+  console.log(typeof user);
 
   useEffect(() => {
     Axios.post(
       "http://localhost:3000/api/products",
       {
-        // userId: user && user.id,
+        // userId: user.id,
         category: "Earbud",
       },
       {

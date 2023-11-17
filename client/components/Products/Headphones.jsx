@@ -1,6 +1,8 @@
 // component imports
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import Axios from "axios";
+import useCurrentUser from "../CurrentUser";
 
 // MUI imports
 import {
@@ -15,8 +17,6 @@ import {
   Typography,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-
-//code that I worked on from 11-6 to 11-8//
 import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
@@ -24,7 +24,7 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
-const ItemsCard = ({ item }) => {
+const ItemsCard = ({ item, user }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
@@ -35,7 +35,7 @@ const ItemsCard = ({ item }) => {
     Axios.post(
       "http://localhost:3000/api/account/wishlist",
       {
-        userId: "b7e93e4f-7da1-4af6-970d-3306f9d4f4c1",
+        userId: user.id,
         productId: headphonesId,
       },
       {
@@ -44,8 +44,7 @@ const ItemsCard = ({ item }) => {
         },
       }
     )
-      .then((res) => res)
-      .then((data) => console.log(data))
+      .then((res) => console.log(res))
       .catch((err) => {
         console.log(err);
       });
@@ -55,7 +54,7 @@ const ItemsCard = ({ item }) => {
     Axios.post(
       "http://localhost:3000/api/account/orders",
       {
-        userId: "b7e93e4f-7da1-4af6-970d-3306f9d4f4c1",
+        userId: user.id,
         productId: headphonesId,
         quantity: count,
       },
@@ -65,11 +64,17 @@ const ItemsCard = ({ item }) => {
         },
       }
     )
-      .then((res) => res)
-      .then((data) => console.log(data))
+      .then((res) => console.log(res))
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  //this will be changed to one page for all products (once i get to it)
+  const navigate = useNavigate()
+
+  const handleItemDetails = (itemId) => {
+    navigate(`/headphones/product-details/${itemId}`)
   };
 
   return (
@@ -144,6 +149,7 @@ const ItemsCard = ({ item }) => {
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
+            checked={item.orders[0] && item.orders[0].inWishlist}
             color="error"
             sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}
@@ -167,11 +173,13 @@ const ItemsCard = ({ item }) => {
 const Headphones = () => {
   const [headphones, setHeadphones] = useState([]);
 
+  const user = useCurrentUser();
+
   useEffect(() => {
     Axios.post(
       "http://localhost:3000/api/products",
       {
-        // userId: user && user.id,
+        // userId: user.id,
         category: "Headphone",
       },
       {
@@ -196,7 +204,7 @@ const Headphones = () => {
       <Grid container spacing={2}>
         {headphones &&
           headphones.map((headphones) => (
-            <ItemsCard key={headphones.id} item={headphones} />
+            <ItemsCard key={headphones.id} item={headphones} user={user} />
           ))}
       </Grid>
     </Container>
