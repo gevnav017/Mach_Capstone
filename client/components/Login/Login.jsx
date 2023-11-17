@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 
@@ -26,7 +26,7 @@ const initialError = [
   },
 ];
 
-const Login = () => {
+const Login = ({ setUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(initialError);
@@ -38,29 +38,7 @@ const Login = () => {
     event.preventDefault();
   };
 
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    const token = window.localStorage.getItem("token");
-
-    if (token) {
-      Axios.post(
-        "http://localhost:3000/api/users/login",
-        {},
-        {
-          headers: {
-            authorization: token,
-          },
-        }
-      ).then((data) => {
-        if (data.status === 200) {
-          const token = data.data.token;
-          window.localStorage.setItem("token", token);
-          navigate(-1);
-        }
-      });
-    }
-  }, []);
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     setError(initialError);
@@ -76,7 +54,9 @@ const Login = () => {
       return;
     }
 
-    if (username && password) {
+    if (!username || !password) {
+      console.log("enter username and password");
+    } else {
       Axios.post(
         "http://localhost:3000/api/users/login",
         {
@@ -92,7 +72,15 @@ const Login = () => {
         if (data.status === 200) {
           const token = data.data.token;
           window.localStorage.setItem("token", token);
-          navigate("/");
+
+          Axios.get("http://localhost:3000/api/user/auth/me", {
+            headers: {
+              authorization: token,
+            },
+          }).then((res) => {
+            setUser(res.data);
+            navigate("/");
+          });
         }
       });
     }

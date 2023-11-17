@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Axios from "axios";
 import { useNavigate } from "react-router";
+import Axios from "axios";
 
 // component imports
+import useCurrentUser from "../CurrentUser";
 
 // MUI imports
 import {
@@ -23,54 +24,60 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import IconButton from "@mui/material/IconButton";
-// import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
-const ItemsCard = ({ item }) => {
+const ItemsCard = ({ item, user }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
-    setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : 1));
+    setCount((prevCount) => prevCount > 1 && prevCount - 1);
   };
 
   const addToWishlist = (speakerId) => {
-    Axios.post(
-      "http://localhost:3000/api/account/wishlist",
-      {
-        userId: "9e81a93b-4517-4b4f-9c7c-5609ad3a1b4a",
-        productId: speakerId,
-      },
-      {
-        headers: {
-          "Content-Type": "application/JSON",
+    if (user) {
+      Axios.post(
+        "http://localhost:3000/api/account/wishlist",
+        {
+          userId: user.id,
+          productId: speakerId,
         },
-      }
-    )
-      .then((res) => res)
-      .then((data) => console.log(data))
-      .catch((err) => {
-        console.log(err);
-      });
+        {
+          headers: {
+            "content-type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => console.log(res))
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("no user");
+    }
   };
 
   const addToCart = (speakerId) => {
-    Axios.post(
-      "http://localhost:3000/api/account/orders",
-      {
-        userId: "9e81a93b-4517-4b4f-9c7c-5609ad3a1b4a",
-        productId: speakerId,
-        quantity: count,
-      },
-      {
-        headers: {
-          "Content-Type": "application/JSON",
+    if (user) {
+      Axios.post(
+        "http://localhost:3000/api/account/orders",
+        {
+          userId: user.id,
+          productId: speakerId,
+          quantity: count,
         },
-      }
-    )
-      .then((res) => res)
-      .then((data) => console.log(data))
-      .catch((err) => {
-        console.log(err);
-      });
+        {
+          headers: {
+            "content-type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => console.log(res))
+        .catch((err) => {
+          console.log(err);
+        });
+
+    } else {
+      console.log("no user")
+    }
   };
 
   const navigate = useNavigate()
@@ -129,7 +136,13 @@ const ItemsCard = ({ item }) => {
             <Typography gutterBottom variant="h6" component="div">
               ${item.price}
             </Typography>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
               <IconButton
                 onClick={decrementQty}
                 disabled={count === 1}
@@ -151,6 +164,7 @@ const ItemsCard = ({ item }) => {
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
+            checked={item.orders[0] && item.orders[0].inWishlist}
             color="error"
             sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}
@@ -169,19 +183,19 @@ const ItemsCard = ({ item }) => {
   );
 };
 
-const Speakers = () => {
+const Speakers = ({ user }) => {
   const [speakers, setSpeakers] = useState([]);
 
   useEffect(() => {
     Axios.post(
       "http://localhost:3000/api/products",
       {
-        // userId: user && user.id,
+        userId: user && user.id,
         category: "Speaker",
       },
       {
         headers: {
-          "Content-Type": "application/Json",
+          "Content-Type": "application/JSON",
         },
       }
     )
@@ -189,17 +203,17 @@ const Speakers = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [user]);
 
   return (
-    <Container maxWidth="lg" sx={{ p: 3 }}>
+    <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
       <Typography variant="h5" sx={{ my: 2 }}>
         Speakers
       </Typography>
       <Grid container spacing={2}>
         {speakers &&
           speakers.map((speaker) => (
-            <ItemsCard key={speaker.id} item={speaker} />
+            <ItemsCard key={speaker.id} item={speaker} user={user} />
           ))}
       </Grid>
     </Container>

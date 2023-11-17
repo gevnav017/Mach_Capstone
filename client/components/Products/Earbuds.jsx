@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import Axios from "axios";
 
 // component imports
-import useCurrentUser from "../CurrentUser";
 
 // MUI imports
 import {
@@ -33,54 +32,64 @@ const ItemsCard = ({ item, user }) => {
   };
 
   const addToWishlist = (earbudId) => {
-    Axios.post(
-      "http://localhost:3000/api/account/wishlist",
-      {
-        userId: user.id,
-        productId: earbudId,
-      },
-      {
-        headers: {
-          "content-type": "application/JSON",
+    if (user) {
+      Axios.post(
+        "http://localhost:3000/api/account/wishlist",
+        {
+          userId: user.id,
+          productId: earbudId,
         },
-      }
-    )
-      .then((res) => console.log(res))
-      .catch((err) => {
-        console.log(err);
-      });
+        {
+          headers: {
+            "content-type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => console.log(res))
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("no user");
+    }
   };
 
   const addToCart = (earbudId) => {
-    Axios.post(
-      "http://localhost:3000/api/account/orders",
-      {
-        userId: user.id,
-        productId: earbudId,
-        quantity: count,
-      },
-      {
-        headers: {
-          "content-type": "application/JSON",
+    if (user) {
+      Axios.post(
+        "http://localhost:3000/api/account/orders",
+        {
+          userId: user.id,
+          productId: earbudId,
+          quantity: count,
         },
-      }
-    )
-      .then((res) => console.log(res))
-      .catch((err) => {
-        console.log(err);
-      });
+        {
+          headers: {
+            "content-type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => console.log(res))
+        .catch((err) => {
+          console.log(err);
+        });
+
+    } else {
+      console.log("no user")
+    }
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleItemDetails = (itemId) => {
-    navigate(`/earbuds/product-details/${itemId}`)
+    // sends with params to receive by details API
+    navigate(`/earbuds/earbud-details/${itemId}`);
   };
 
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Card sx={{ borderRadius: "10px" }}>
-        <Box sx={{ width: "100%", height: 240, boxSizing: "border-box", }}>
+        <Box sx={{ width: "100%", height: 240, boxSizing: "border-box" }}>
           <CardMedia
             component="img"
             sx={{
@@ -88,7 +97,7 @@ const ItemsCard = ({ item, user }) => {
               height: "100%",
               p: 1,
               objectFit: "contain",
-              boxSizing: "border-box"
+              boxSizing: "border-box",
             }}
             className="productCardImg"
             image={item.image}
@@ -174,23 +183,19 @@ const ItemsCard = ({ item, user }) => {
   );
 };
 
-const Earbuds = () => {
+const Earbuds = ({ user }) => {
   const [earbuds, setEarbuds] = useState([]);
-
-  // get user logged in
-  const user = useCurrentUser();
-  console.log(typeof user);
 
   useEffect(() => {
     Axios.post(
       "http://localhost:3000/api/products",
       {
-        // userId: user.id,
+        userId: user && user.id,
         category: "Earbud",
       },
       {
         headers: {
-          "Content-Type": "application/Json",
+          "Content-Type": "application/JSON",
         },
       }
     )
@@ -198,7 +203,7 @@ const Earbuds = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [user]);
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>

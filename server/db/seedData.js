@@ -25,14 +25,14 @@ const products = [
   { brand: "SONY", name: "LSPX-S3 Glass Sound Speaker", type: "Bluetooth", price: 349.99, category: "Speaker", image: "/images/sony/sony-glass.jpg" },
   { brand: "SONY", name: "WH-1000XM5 Wireless", type: "Wireless", price: 399.99, category: "Headphone", image: "/images/sony/sony-wh.jpg" },
   { brand: "SONY", name: "WH-CH720N Wireless", type: "Noise-Cancellation", price: 149.99, category: "Headphone", image: "/images/sony/sony-ch.jpg" },
-  { brand: "SONY", name: "IER-Z1R Signature Series", type: "High-Resolution", price: 1699.99, category: "Headphone", image: "/images/sony/sony-ier.jpg" },
+  { brand: "SONY", name: "IER-Z1R Signature Series", type: "High-Resolution", price: 1699.99, category: "Earbud", image: "/images/sony/sony-ier.jpg" },
   { brand: "SONY", name: "WF-1000XM5 Wireless", type: "Wireless", price: 299.99, category: "Earbud", image: "/images/sony/sony-wf.jpg" },
   { brand: "SONY", name: "LinkBuds", type: "Wireless", price: 139.99, category: "Earbud", image: "/images/sony/sony-link.jpg" },
 
   { brand: "Harman Kardon", name: "Onyx Studio 8", type: "Bluetooth", price: 499.95, category: "Speaker", image: "/images/harman/harman-onyx.jpg" },
   { brand: "Harman Kardon", name: "Aura Studio 4", type: "Bluetooth", price: 299.95, category: "Speaker", image: "/images/harman/harman-aura.jpg" },
   { brand: "Harman Kardon", name: "FLY ANC", type: "Wireless", price: 174.97, category: "Headphone", image: "/images/harman/harman-fly.jpg" },
-  { brand: "Harman Kardon", name: "FLY TWS", type: "Wireless", price: 149.95, category: "Headphone", image: "/images/harman/harman-tws.jpg" },
+  { brand: "Harman Kardon", name: "FLY TWS", type: "Wireless", price: 149.95, category: "Earbud", image: "/images/harman/harman-tws.jpg" },
 
   { brand: "Beats by Dre", name: "Beats Studio Pro", type: "Noise-Cancellation", price: 349.99, category: "Headphone", image: "/images/beats/beats-pro.jpg" },
   { brand: "Beats by Dre", name: "Beats Solo3 Wireless", type: "Wireless", price: 199.95, category: "Headphone", image: "/images/beats/beats-solo.jpg" },

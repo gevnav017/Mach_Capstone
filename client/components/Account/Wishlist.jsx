@@ -14,11 +14,8 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
-const Wishlist = () => {
+const Wishlist = ({ user }) => {
   const [wishlist, setWishlist] = useState([]);
-
-  // get user logged in
-  const user = useCurrentUser()
 
   useEffect(() => {
     const userId = user && user.id;
