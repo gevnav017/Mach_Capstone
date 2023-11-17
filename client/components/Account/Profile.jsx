@@ -9,7 +9,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-const Profile = () => {
+const Profile = ({ user }) => {
 
   return (
     <Container maxWidth="lg" sx={{ p: 3 }}>

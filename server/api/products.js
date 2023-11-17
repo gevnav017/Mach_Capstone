@@ -6,7 +6,7 @@ const prisma = require("../db/client");
 router.get("/products", async (req, res) => {
   try {
     const products = await prisma.products.findMany();
-    
+
     res.json(products);
   } catch (err) {
     console.log(err);
@@ -17,8 +17,7 @@ router.get("/products", async (req, res) => {
 router.post("/products", async (req, res) => {
   try {
     const { userId, category } = req.body;
-    console.log(userId, category);
-    
+
     const products = await prisma.products.findMany({
       where: {
         category: category,
@@ -31,8 +30,7 @@ router.post("/products", async (req, res) => {
         },
       },
     });
-    console.log(products);
-    
+
     res.json(products);
   } catch (err) {
     console.log(err);
@@ -43,14 +41,14 @@ router.post("/products", async (req, res) => {
 router.get("/products", async (req, res) => {
   try {
     const { category } = req.body;
-    console.log(category)
-    
+    console.log(category);
+
     const products = await prisma.products.findMany({
       where: {
         category: category,
       },
     });
-    
+
     res.json(products);
   } catch (err) {
     console.log(err);

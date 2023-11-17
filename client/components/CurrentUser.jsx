@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 
-const useCurrentUser = () => {
+const useCurrentUser = (tokenFromArg) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {

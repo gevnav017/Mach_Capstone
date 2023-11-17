@@ -26,7 +26,8 @@ render deploy frontend and backend
 ###
 
 10. how to await user data fetch first (useCurrentUser in Navbar) before using that data to make render the accounts page and hide the login button. Only works after resfreshing the page. Also, on logout click cant setUser to null, it is a custom hook.
-    // 
+    // pass setUser state to login to set the user upon authorized login
+    // the user is set in navbar with the user data and can be passed down to all components
 
 update db:
 git pull the latest for updated seed file

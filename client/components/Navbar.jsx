@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, NavLink } from "react-router-dom";
+import Axios from "axios";
 
 // component imports
 import useCurrentUser from "./CurrentUser";
@@ -24,7 +25,6 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
@@ -39,8 +39,20 @@ const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  // get user logged in
-  const user = useCurrentUser();
+  // user logged in
+  const [user, setUser] = useState(null);
+  
+  useEffect(() => {
+    const token = window.localStorage.getItem("token");
+
+    Axios.get("http://localhost:3000/api/user/auth/me", {
+      headers: {
+        authorization: token,
+      },
+    })
+      .then((res) => setUser(res.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleLogout = () => {
     handleCloseUserMenu();
@@ -246,25 +258,31 @@ const Navbar = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route exact path="/speakers" element={<Speakers />} />
-        <Route path="/speakers/speaker-details/:itemId" element={<SpeakerDetails />} />
-        <Route exact path="/headphones" element={<Headphones />} />
+        <Route exact path="/speakers" element={<Speakers user={user} />} />
+        <Route
+          path="/speakers/speaker-details/:itemId"
+          element={<SpeakerDetails />}
+        />
+        <Route exact path="/headphones" element={<Headphones user={user} />} />
         <Route
           path="/headphones/headphone-details/:itemId"
           element={<HeadphoneDetails />}
         />
-        <Route exact path="/earbuds" element={<Earbuds />} />
-        <Route path="/earbuds/earbud-details/:itemId" element={<EarbudDetails />} />
-        <Route exact path="/cart" element={<Cart />}>
-          <Route path="/cart/checkout" element={<Checkout />}>
+        <Route exact path="/earbuds" element={<Earbuds user={user} />} />
+        <Route
+          path="/earbuds/earbud-details/:itemId"
+          element={<EarbudDetails />}
+        />
+        <Route exact path="/cart" element={<Cart user={user} />}>
+          <Route path="/cart/checkout" element={<Checkout user={user} />}>
             <Route
               path="/cart/checkout/order-confirmation"
-              element={<OrderConfirmation />}
+              element={<OrderConfirmation user={user} />}
             />
           </Route>
         </Route>
-        <Route path="/account" element={<Account />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/account" element={<Account user={user} />} />
+        <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/*" element={<NoPathError />} />
       </Routes>
