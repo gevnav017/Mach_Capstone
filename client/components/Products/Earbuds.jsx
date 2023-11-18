@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import Axios from "axios";
 
 // component imports
-import useCurrentUser from "../CurrentUser";
 
 // MUI imports
 import {
@@ -165,7 +164,7 @@ const ItemsCard = ({ item, user }) => {
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
-            checked={item.orders[0] && item.orders[0].inWishlist}
+            // checked={item.orders[0] && item.orders[0].inWishlist}
             color="error"
             sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}

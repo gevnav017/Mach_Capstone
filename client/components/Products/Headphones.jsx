@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import Axios from "axios";
+import useCurrentUser from "../CurrentUser";
 
 // component imports
-import useCurrentUser from "../CurrentUser";
 
 // MUI imports
 import {
@@ -80,11 +80,11 @@ const ItemsCard = ({ item, user }) => {
     }
   };
 
-  const navigate = useNavigate();
+  //this will be changed to one page for all products (once i get to it)
+  const navigate = useNavigate()
 
   const handleItemDetails = (itemId) => {
-    // sends with params to receive by details API
-    navigate(`/headphone/headphone-details/${itemId}`);
+    navigate(`/headphones/product-details/${itemId}`)
   };
 
   return (

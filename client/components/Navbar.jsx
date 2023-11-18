@@ -6,11 +6,12 @@ import Axios from "axios";
 import useCurrentUser from "./CurrentUser";
 import Home from "./Home";
 import Speakers from "./Products/Speakers";
-import SpeakerDetails from "./ProductDetails/SpeakerDetails";
+// import SpeakerDetails from "./ProductDetails/SpeakerDetails";
 import Headphones from "./Products/Headphones";
-import HeadphoneDetails from "./ProductDetails/HeadphoneDetails";
+// import HeadphoneDetails from "./ProductDetails/HeadphoneDetails";
 import Earbuds from "./Products/Earbuds";
-import EarbudDetails from "./ProductDetails/EarbudDetails";
+// import EarbudDetails from "./ProductDetails/EarbudDetails";
+import ProductDetails from "./ProductDetails/Product-Details";
 import Cart from "./Cart/Cart";
 import Checkout from "./Cart/Checkout";
 import OrderConfirmation from "./Cart/OrderConfirmation";
@@ -259,20 +260,14 @@ const Navbar = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route exact path="/speakers" element={<Speakers user={user} />} />
-        <Route
-          path="/speakers/speaker-details/:itemId"
-          element={<SpeakerDetails />}
-        />
+        <Route path="/speakers/product-details/:itemId" element={<ProductDetails user={user} />} />
         <Route exact path="/headphones" element={<Headphones user={user} />} />
         <Route
-          path="/headphones/headphone-details/:itemId"
-          element={<HeadphoneDetails />}
+          path="/headphones/product-details/:itemId"
+          element={<ProductDetails user={user} />}
         />
         <Route exact path="/earbuds" element={<Earbuds user={user} />} />
-        <Route
-          path="/earbuds/earbud-details/:itemId"
-          element={<EarbudDetails />}
-        />
+        <Route path="/earbuds/product-details/:itemId" element={<ProductDetails user={user} />} />
         <Route exact path="/cart" element={<Cart user={user} />}>
           <Route path="/cart/checkout" element={<Checkout user={user} />}>
             <Route
