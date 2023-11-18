@@ -42,6 +42,10 @@ export default function SimpleSnackbar() {
         open={open}
         autoHideDuration={6000}
         onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
         message="Note archived"
         action={action}
       />
