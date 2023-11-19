@@ -2,17 +2,29 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 
 // component imports
+import useCurrentUser from "../CurrentUser";
+
 
 // MUI imports
 import { Container, Box, Typography } from "@mui/material";
+import { Button, Grid } from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import IconButton from "@mui/material/IconButton";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
-
+//making cart updates to user now, removing hard coded user
 const Cart = () => {
   const [cart, setCart] = useState([]);
   console.log(cart);
 
+  //new Current user info added (state)
+  const user = useCurrentUser()
+
   useEffect(() => {
-    Axios.get("http://localhost:3000/api/account/orders/b7e93e4f-7da1-4af6-970d-3306f9d4f4c1")
+    const userId = user && user.id;
+    Axios.get(`http://localhost:3000/api/account/orders/${userId}`)
       .then((res) => {
         // console.log("Data from Axios:", res.data);
         setCart(res.data);
@@ -21,7 +33,7 @@ const Cart = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [user]);
   // console.log("Cart state:", ); //just to double check again
 
   // add to wishlist function

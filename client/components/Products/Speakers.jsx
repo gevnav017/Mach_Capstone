@@ -282,11 +282,10 @@ const ItemsCard = ({ item, user, onAddToCart }) => {
     }
   };
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleItemDetails = (itemId) => {
-    // sends with params to receive by details API
-    navigate(`/speakers/speaker-details/${itemId}`);
+    navigate(`/speakers/product-details/${itemId}`)
   };
 
   return (

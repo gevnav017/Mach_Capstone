@@ -3,18 +3,16 @@ import React, { useState, useEffect } from "react";
 // component imports
 
 // MUI imports
-import { Container } from "@mui/material";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
+import Stack from "@mui/material/Stack";
 
 const Profile = ({ user }) => {
+  console.log(user);
 
   return (
-    <Container maxWidth="lg" sx={{ p: 3 }}>
-      Profile
-    </Container>
+    <Stack direction="row" spacing={2}>
+      <Avatar />
+    </Stack>
   );
 };
 
