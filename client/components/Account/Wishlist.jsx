@@ -40,8 +40,8 @@ const Wishlist = ({ user }) => {
   return (
     <>
       {wishlist &&
-        wishlist.map((item, idx) => (
-          <Card key={idx} sx={{ display: "flex", minWidth: "400px", mb: 2 }}>
+        wishlist.map((item) => (
+          <Card key={item.id} sx={{ display: "flex", minWidth: "400px", mb: 2 }}>
             <CardMedia
               component="img"
               sx={{

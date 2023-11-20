@@ -4,7 +4,6 @@ import Axios from "axios";
 
 // component imports
 
-
 // MUI imports
 import {
   Container,
@@ -46,9 +45,15 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
           },
         }
       )
-        .then((res) => console.log(res))
+        .then((res) => {
+          if (res.status === 200) {
+            setSnackbarMessage("Successfully added item to wishlist");
+            setOpenSnackbar(true);
+          }
+        })
         .catch((err) => {
-          console.log(err);
+          setSnackbarMessage("Error: " + err);
+          setOpenSnackbar(true);
         });
     } else {
       console.log("no user");
@@ -72,16 +77,16 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
       )
         .then((res) => {
           if (res.status === 200) {
-            setSnackbarMessage("Successfully added item to cart")
-            setOpenSnackbar(true)
+            setSnackbarMessage("Successfully added item to cart");
+            setOpenSnackbar(true);
           }
         })
         .catch((err) => {
-          console.log(err);
+          setSnackbarMessage("Error: " + err);
+          setOpenSnackbar(true);
         });
-
     } else {
-      console.log("no user")
+      console.log("no user");
     }
   };
 
@@ -219,7 +224,13 @@ const Earbuds = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
       <Grid container spacing={2}>
         {earbuds &&
           earbuds.map((earbud) => (
-            <ItemsCard key={earbud.id} item={earbud} user={user} setOpenSnackbar={setOpenSnackbar} setSnackbarMessage={setSnackbarMessage} />
+            <ItemsCard
+              key={earbud.id}
+              item={earbud}
+              user={user}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+            />
           ))}
       </Grid>
     </Container>
