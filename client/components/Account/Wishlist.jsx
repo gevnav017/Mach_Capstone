@@ -19,7 +19,7 @@ const Wishlist = ({ user }) => {
 
   useEffect(() => {
     const userId = user && user.id;
-    Axios.get(`http://localhost:3000/api/account/wishlist/${userId}`)
+    Axios.get(`http://localhost:3000/api/wishlist/${userId}`)
       .then((data) => setWishlist(data.data))
       .catch((err) => {
         console.log(err);

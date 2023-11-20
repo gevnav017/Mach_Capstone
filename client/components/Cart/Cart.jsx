@@ -4,7 +4,6 @@ import Axios from "axios";
 // component imports
 import useCurrentUser from "../CurrentUser";
 
-
 // MUI imports
 import { Container, Box, Typography } from "@mui/material";
 import { Button, Grid } from "@mui/material";
@@ -15,33 +14,23 @@ import IconButton from "@mui/material/IconButton";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
 //making cart updates to user now, removing hard coded user
-const Cart = () => {
+const Cart = ({ user }) => {
   const [cart, setCart] = useState([]);
-  console.log(cart);
-
-  //new Current user info added (state)
-  const user = useCurrentUser()
 
   useEffect(() => {
-    const userId = user && user.id;
-    Axios.get(`http://localhost:3000/api/account/orders/${userId}`)
-      .then((res) => {
-        // console.log("Data from Axios:", res.data);
-        setCart(res.data);
-      })
-      // .then((data) => setCart(data.data))
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [user]);
-  // console.log("Cart state:", ); //just to double check again
+    const userId = user && user.id
+    const inCart = true;
 
-  // add to wishlist function
+    Axios.get(`http://localhost:3000/api/orders/${userId}/${inCart}`)
+      .then((res) => setCart(res.data))
+      .catch((err) => console.log(err));
+  }, [user]);
+
   //add item to wishlist and remove from cart
   const addToWishlist = () => {};
 
   return (
-    <Container maxWidth="lg" sx={{ minWidth: "400px" }}>
+    <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
       <Typography variant="h5" sx={{ my: 2 }}>
         Cart
       </Typography>
@@ -58,7 +47,6 @@ const Cart = () => {
       )}
     </Container>
   );
-  
 };
 
 export default Cart;

@@ -35,7 +35,7 @@ const ItemsCard = ({ item, user }) => {
   const addToWishlist = (speakerId) => {
     if (user) {
       Axios.post(
-        "http://localhost:3000/api/account/wishlist",
+        "http://localhost:3000/api/wishlist",
         {
           userId: user.id,
           productId: speakerId,
@@ -58,7 +58,7 @@ const ItemsCard = ({ item, user }) => {
   const addToCart = (speakerId) => {
     if (user) {
       Axios.post(
-        "http://localhost:3000/api/account/orders",
+        "http://localhost:3000/api/orders/new",
         {
           userId: user.id,
           productId: speakerId,

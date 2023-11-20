@@ -3,7 +3,7 @@ const router = express.Router();
 const prisma = require("../db/client");
 
 // get all wishlist by user
-router.get("/account/wishlist/:userId", async (req, res) => {
+router.get("/wishlist/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
 
@@ -24,7 +24,7 @@ router.get("/account/wishlist/:userId", async (req, res) => {
 });
 
 // post user wishlist item to wishlist table
-router.post("/account/wishlist", async (req, res) => {
+router.post("/wishlist", async (req, res) => {
   try {
     const { userId, productId } = req.body;
 

@@ -4,6 +4,7 @@ import Axios from "axios";
 
 // component imports
 
+
 // MUI imports
 import {
   Container,
@@ -24,7 +25,7 @@ import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import IconButton from "@mui/material/IconButton";
 
-const ItemsCard = ({ item, user }) => {
+const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
@@ -34,7 +35,7 @@ const ItemsCard = ({ item, user }) => {
   const addToWishlist = (earbudId) => {
     if (user) {
       Axios.post(
-        "http://localhost:3000/api/account/wishlist",
+        "http://localhost:3000/api/wishlist",
         {
           userId: user.id,
           productId: earbudId,
@@ -57,7 +58,7 @@ const ItemsCard = ({ item, user }) => {
   const addToCart = (earbudId) => {
     if (user) {
       Axios.post(
-        "http://localhost:3000/api/account/orders",
+        "http://localhost:3000/api/orders/new",
         {
           userId: user.id,
           productId: earbudId,
@@ -69,7 +70,12 @@ const ItemsCard = ({ item, user }) => {
           },
         }
       )
-        .then((res) => console.log(res))
+        .then((res) => {
+          if (res.status === 200) {
+            setSnackbarMessage("Successfully added item to cart")
+            setOpenSnackbar(true)
+          }
+        })
         .catch((err) => {
           console.log(err);
         });
@@ -164,7 +170,7 @@ const ItemsCard = ({ item, user }) => {
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
-            // checked={item.orders[0] && item.orders[0].inWishlist}
+            checked={item.orders[0] && item.orders[0].inWishlist}
             color="error"
             sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}
@@ -183,7 +189,7 @@ const ItemsCard = ({ item, user }) => {
   );
 };
 
-const Earbuds = ({ user }) => {
+const Earbuds = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
   const [earbuds, setEarbuds] = useState([]);
 
   useEffect(() => {
@@ -213,7 +219,7 @@ const Earbuds = ({ user }) => {
       <Grid container spacing={2}>
         {earbuds &&
           earbuds.map((earbud) => (
-            <ItemsCard key={earbud.id} item={earbud} user={user} />
+            <ItemsCard key={earbud.id} item={earbud} user={user} setOpenSnackbar={setOpenSnackbar} setSnackbarMessage={setSnackbarMessage} />
           ))}
       </Grid>
     </Container>
