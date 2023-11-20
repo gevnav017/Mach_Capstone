@@ -261,7 +261,7 @@ const Navbar = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route exact path="/speakers" element={<Speakers user={user} />} />
+        <Route exact path="/speakers" element={<Speakers user={user} setOpenSnackbar={setOpenSnackbar} setSnackbarMessage={setSnackbarMessage}/>} />
         <Route
           path="/speakers/product-details/:itemId"
           element={<ProductDetails user={user} />}
