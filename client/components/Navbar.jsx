@@ -261,30 +261,91 @@ const Navbar = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route exact path="/speakers" element={<Speakers user={user} setOpenSnackbar={setOpenSnackbar} setSnackbarMessage={setSnackbarMessage}/>} />
         <Route
-          path="/speakers/product-details/:itemId"
-          element={<ProductDetails user={user} />}
+          exact
+          path="/speakers"
+          element={
+            <Speakers
+              user={user}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+            />
+          }
         />
-        <Route exact path="/headphones" element={<Headphones user={user} />} />
+        <Route
+          exact
+          path="/headphones"
+          element={
+            <Headphones
+              user={user}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+            />
+          }
+        />
+        <Route
+          exact
+          path="/earbuds"
+          element={
+            <Earbuds
+              user={user}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+            />
+          }
+        />
         <Route
           path="/headphones/product-details/:itemId"
-          element={<ProductDetails user={user} />}
+          element={
+            <ProductDetails
+              user={user}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+            />
+          }
         />
-        <Route exact path="/earbuds" element={<Earbuds user={user} setOpenSnackbar={setOpenSnackbar} setSnackbarMessage={setSnackbarMessage} />} />
         <Route
-          path="/earbuds/product-details/:itemId"
-          element={<ProductDetails user={user} />}
+          exact
+          path="/cart"
+          element={
+            <Cart
+              user={user}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+            />
+          }
         />
-        <Route exact path="/cart" element={<Cart user={user} />} />
         <Route path="/cart/checkout" element={<Checkout user={user} />} />
         <Route
           path="/cart/checkout/order-confirmation"
           element={<OrderConfirmation user={user} />}
         />
-        <Route path="/account" element={<Account user={user} />} />
-        <Route path="/login" element={<Login setUser={setUser} />} />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/account"
+          element={
+            <Account
+              user={user}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+            />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Login
+              setUser={setUser}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+            />
+          }
+        />
+        <Route
+          path="/register"
+          element={<Register />}
+          setOpenSnackbar={setOpenSnackbar}
+          setSnackbarMessage={setSnackbarMessage}
+        />
         <Route path="/*" element={<NoPathError />} />
       </Routes>
 
@@ -296,7 +357,9 @@ const Navbar = () => {
           horizontal: "center",
         }}
         message={snackbarMessage}
-        onClose={() => {setOpenSnackbar(false)}}
+        onClose={() => {
+          setOpenSnackbar(false);
+        }}
       />
     </>
   );
