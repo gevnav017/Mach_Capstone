@@ -80,7 +80,8 @@ const addToCart = (speakerId) => {
   })
 
       .catch((err) => {
-        console.log(err);
+       setSnackbarMessage("Error: " + err);
+       setOpenSnackbar(true);
       });
 
   } else {
