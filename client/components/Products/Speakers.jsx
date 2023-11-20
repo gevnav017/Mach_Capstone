@@ -60,21 +60,48 @@ import IconButton from "@mui/material/IconButton";
 //       </React.Fragment>
 //     );
 
-//     return (
-//       <Snackbar
-//       open={open}
-//       autoHideDuration={6000}
-//       onClose={handleClose}
-//       anchorOrigin={{
-//         vertical: 'bottom',
-//         horizontal: 'center',
-//       }}
-//       message="Added to cart!"
-//       action={action}
-//       />
-//     );
-//   };
+  const addToWishlist = (speakerId) => {
+    if (user) {
+      Axios.post(
+        "http://localhost:3000/api/wishlist",
+        {
+          userId: user.id,
+          productId: speakerId,
+        },
+        {
+          headers: {
+            "content-type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => console.log(res))
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("no user");
+    }
+  };
 
+  const addToCart = (speakerId) => {
+    if (user) {
+      Axios.post(
+        "http://localhost:3000/api/orders/new",
+        {
+          userId: user.id,
+          productId: speakerId,
+          quantity: count,
+        },
+        {
+          headers: {
+            "content-type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => console.log(res))
+        .catch((err) => {
+          console.log(err);
+        });
 
 // const ItemsCard = ({ item, user }) => {
 //   const [count, setCount] = useState(1);

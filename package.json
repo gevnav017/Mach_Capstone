@@ -17,9 +17,8 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.16",
-    "@mui/joy": "^5.0.0-beta.15",
     "@mui/lab": "^5.0.0-alpha.152",
-    "@mui/material": "^5.14.17",
+    "@mui/material": "^5.14.18",
     "@mui/styled-engine-sc": "^6.0.0-alpha.4",
     "@prisma/client": "^5.5.2",
     "axios": "^1.6.0",
@@ -35,7 +34,7 @@
     "react-material-ui-carousel": "^3.4.2",
     "react-router": "^6.18.0",
     "react-router-dom": "^6.18.0",
-    "styled-components": "^6.1.0"
+    "styled-components": "^6.1.1"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.22.15",

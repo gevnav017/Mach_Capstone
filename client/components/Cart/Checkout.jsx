@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Axios from "axios";
 
 // component imports
 
@@ -27,8 +28,23 @@ const steps = [
   },
 ];
 
-const Checkout = () => {
+// cart items component
+const CartItems = () => {
+  return <div>test</div>;
+};
+
+const Checkout = ({ user }) => {
+  const [cart, setCart] = useState([]);
   const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    const userId = user && user.id;
+    const inCart = true;
+
+    Axios.get(`http://localhost:3000/api/orders/${userId}/${inCart}`)
+      .then((res) => setCart(res.data))
+      .catch((err) => console.log(err));
+  }, [user]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -43,7 +59,7 @@ const Checkout = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ minWidth: "400px" }}>
+    <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
       <Stepper activeStep={activeStep} orientation="vertical">
         {steps.map((step, index) => (
           <Step key={step.label}>
@@ -57,7 +73,8 @@ const Checkout = () => {
               {step.label}
             </StepLabel>
             <StepContent>
-              {step.element}
+              {cart && cart.map}
+              <CartItems />
               <Box sx={{ mb: 2 }}>
                 <div>
                   <Button
