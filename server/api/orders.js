@@ -2,32 +2,34 @@ const express = require("express");
 const router = express.Router();
 const prisma = require("../db/client");
 
-// get all orders by user
-router.get("/account/orders/:userId", async (req, res) => {
+// get all past/archived orders by user
+router.get("/orders/:userId/:inCart", async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId, inCart } = req.params;
+
+    const inCartValue = inCart === "true" ? true : false;
 
     const orders = await prisma.orders.findMany({
       where: {
         userId: userId,
-        inCart: false,
+        inCart: inCartValue,
       },
       include: {
         products: true,
       },
     });
 
-    console.log(orders);
     res.json(orders);
   } catch (err) {
     console.log(err);
   }
 });
 
-// post user order of product to orders table
-router.post("/account/orders", async (req, res) => {
+// create user order of product to orders table
+router.post("/orders/new", async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
+    console.log("new order ", userId, productId, quantity);
 
     // check if item is already in cart
     const inCart = await prisma.orders.findFirst({
@@ -42,7 +44,7 @@ router.post("/account/orders", async (req, res) => {
     if (!inCart) {
       // add item to cart
       const addToCart = await prisma.orders.create({
-         data: {
+        data: {
           userId,
           productId,
           quantity,
@@ -54,12 +56,11 @@ router.post("/account/orders", async (req, res) => {
       res.json(addToCart);
     } else {
       // already in cart, update qty
-      const itemInCartId = inCart.id;
       const newQty = inCart.quantity + quantity;
 
       const updateQty = await prisma.orders.update({
         data: { quantity: newQty },
-        where: { id: itemInCartId },
+        where: { id: inCart.id },
       });
 
       // console.log("updated");
@@ -71,6 +72,3 @@ router.post("/account/orders", async (req, res) => {
 });
 
 module.exports = router;
-
-
-

@@ -3,7 +3,6 @@ import { Routes, Route, NavLink } from "react-router-dom";
 import Axios from "axios";
 
 // component imports
-import useCurrentUser from "./CurrentUser";
 import Home from "./Home";
 import Speakers from "./Products/Speakers";
 // import SpeakerDetails from "./ProductDetails/SpeakerDetails";
@@ -34,15 +33,18 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Badge from "@mui/material/Badge";
+import Snackbar from "@mui/material/Snackbar";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState(false);
 
   // user logged in
   const [user, setUser] = useState(null);
-  
+
   useEffect(() => {
     const token = window.localStorage.getItem("token");
 
@@ -260,27 +262,42 @@ const Navbar = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route exact path="/speakers" element={<Speakers user={user} />} />
-        <Route path="/speakers/product-details/:itemId" element={<ProductDetails user={user} />} />
+        <Route
+          path="/speakers/product-details/:itemId"
+          element={<ProductDetails user={user} />}
+        />
         <Route exact path="/headphones" element={<Headphones user={user} />} />
         <Route
           path="/headphones/product-details/:itemId"
           element={<ProductDetails user={user} />}
         />
-        <Route exact path="/earbuds" element={<Earbuds user={user} />} />
-        <Route path="/earbuds/product-details/:itemId" element={<ProductDetails user={user} />} />
-        <Route exact path="/cart" element={<Cart user={user} />}>
-          <Route path="/cart/checkout" element={<Checkout user={user} />}>
-            <Route
-              path="/cart/checkout/order-confirmation"
-              element={<OrderConfirmation user={user} />}
-            />
-          </Route>
-        </Route>
+        <Route exact path="/earbuds" element={<Earbuds user={user} setOpenSnackbar={setOpenSnackbar} setSnackbarMessage={setSnackbarMessage} />} />
+        <Route
+          path="/earbuds/product-details/:itemId"
+          element={<ProductDetails user={user} />}
+        />
+        <Route exact path="/cart" element={<Cart user={user} />} />
+        <Route path="/cart/checkout" element={<Checkout user={user} />} />
+        <Route
+          path="/cart/checkout/order-confirmation"
+          element={<OrderConfirmation user={user} />}
+        />
         <Route path="/account" element={<Account user={user} />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/*" element={<NoPathError />} />
       </Routes>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        message={snackbarMessage}
+        onClose={() => {setOpenSnackbar(false)}}
+      />
     </>
   );
 };
