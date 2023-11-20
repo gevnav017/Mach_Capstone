@@ -35,9 +35,11 @@ export default function SimpleSnackbar() {
     </React.Fragment>
   );
 
+  SimpleSnackbar.handleClick = handleClick;
+  
   return (
     <div>
-      <Button onClick={handleClick}>Added to Cart!</Button>
+      {/* <Button onClick={handleClick}>Added to Cart!</Button> */}
       <Snackbar
         open={open}
         autoHideDuration={6000}
@@ -46,7 +48,7 @@ export default function SimpleSnackbar() {
           vertical: 'bottom',
           horizontal: 'center',
         }}
-        message="Note archived"
+        message="Added To Cart!"
         action={action}
       />
     </div>
