@@ -305,6 +305,26 @@ const Navbar = () => {
           }
         />
         <Route
+          path="/earbuds/product-details/:itemId"
+          element={
+            <ProductDetails
+              user={user}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+            />
+          }
+        />
+        <Route
+          path="/speakers/product-details/:itemId"
+          element={
+            <ProductDetails
+              user={user}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+            />
+          }
+        />
+        <Route
           exact
           path="/cart"
           element={
