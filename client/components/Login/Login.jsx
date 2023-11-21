@@ -68,21 +68,23 @@ const Login = ({ setUser }) => {
             "Content-Type": "application/JSON",
           },
         }
-      ).then((data) => {
-        if (data.status === 200) {
-          const token = data.data.token;
-          window.localStorage.setItem("token", token);
+      )
+        .then((data) => {
+          if (data.status === 200) {
+            const token = data.data.token;
+            window.localStorage.setItem("token", token);
 
-          Axios.get("http://localhost:3000/api/user/auth/me", {
-            headers: {
-              authorization: token,
-            },
-          }).then((res) => {
-            setUser(res.data);
-            navigate("/");
-          });
-        }
-      });
+            Axios.get("http://localhost:3000/api/user/auth/me", {
+              headers: {
+                authorization: token,
+              },
+            }).then((res) => {
+              setUser(res.data);
+              navigate("/");
+            });
+          }
+        })
+        .catch((err) => console.log(err));
     }
   };
 

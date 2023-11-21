@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Axios from "axios";
 
 // component imports
 import MasonryImageList from "./MasonryImageList";
@@ -21,7 +22,7 @@ const MasonryImages = ({ item }) => {
       <img
         srcSet={item.image}
         src={item.image}
-        alt={item.title}
+        alt={item.name}
         loading="lazy"
         style={{
           borderBottomLeftRadius: 4,
@@ -40,7 +41,11 @@ const Home = () => {
   const [items, setItems] = useState([]);
 
   // make axios call here to the API to get all items
-  useEffect(() => {}, []);
+  useEffect(() => {
+    Axios.get("http://localhost:3000/api/products")
+    .then(res => setItems(res.data))
+    .catch((err) => console.log(err))
+  }, []);
 
   const itemsss = [
     {
@@ -112,7 +117,7 @@ const Home = () => {
 
         <Box sx={{ width: 600, minHeight: 450 }}>
           <Masonry columns={4} spacing={2}>
-            {itemsss.map((item, index) => (
+            {items.map((item, index) => (
               <MasonryImages key={index} item={item} />
             ))}
           </Masonry>

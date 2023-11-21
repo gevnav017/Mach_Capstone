@@ -5,7 +5,15 @@ import Axios from "axios";
 // component imports
 
 // MUI imports
-import { Container, Box, Card, CardContent, CardActions, Button, Typography } from "@mui/material";
+import {
+  Container,
+  Box,
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+  Typography,
+} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
@@ -27,17 +35,7 @@ const ProductDetails = () => {
   const { itemId } = useParams();
 
   useEffect(() => {
-    Axios.get(
-      `http://localhost:3000/api/product/${itemId}`,
-      {
-        // userId: user && user.id,
-      },
-      {
-        headers: {
-          "Content-Type": "application/Json",
-        },
-      }
-    )
+    Axios.get(`http://localhost:3000/api/product/${itemId}`)
       .then((res) => setItem(res.data))
       .catch((err) => {
         console.log(err);
@@ -194,6 +192,8 @@ const ProductDetails = () => {
           </Card>
         </Box>
       </Box>
+
+      {/* list of potential products customer could like */}
       <Box
         sx={{
           mt: 5,
@@ -203,24 +203,25 @@ const ProductDetails = () => {
           borderRadius: "10px",
         }}
       >
-        {alsoLikes && alsoLikes.map((item, idx) => (
-          <Box
-            key={item.id}
-            sx={{
-              display: "inline-block",
-              width: "20%",
-              p: 2,
-              height: "100%",
-              boxSizing: "border-box",
-            }}
-          >
-            <img
-              src="./images/logo/mach-logo.png"
-              alt=""
-              style={{ width: "100%", height: "100%", objectFit: "contain" }}
-            />
-          </Box>
-        ))}
+        {alsoLikes &&
+          alsoLikes.map((item, idx) => (
+            <Box
+              key={item.id}
+              sx={{
+                display: "inline-block",
+                width: "20%",
+                p: 2,
+                height: "100%",
+                boxSizing: "border-box",
+              }}
+            >
+              <img
+                src="./images/logo/mach-logo.png"
+                alt=""
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
+              />
+            </Box>
+          ))}
       </Box>
     </Container>
   );

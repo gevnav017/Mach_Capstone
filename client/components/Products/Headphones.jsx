@@ -24,7 +24,7 @@ import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import IconButton from "@mui/material/IconButton";
 
-const ItemsCard = ({ item, user }) => {
+const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
@@ -45,9 +45,15 @@ const ItemsCard = ({ item, user }) => {
           },
         }
       )
-        .then((res) => console.log(res))
+        .then((res) => {
+          if (res.status === 200) {
+            setSnackbarMessage("Successfully added to wishlist")
+            setOpenSnackbar(true)
+          }
+        })
         .catch((err) => {
-          console.log(err);
+          setSnackbarMessage("Error: " + err)
+          setOpenSnackbar(true)
         });
     } else {
       console.log("no user");
@@ -69,9 +75,15 @@ const ItemsCard = ({ item, user }) => {
           },
         }
       )
-        .then((res) => console.log(res))
+        .then((res) => {
+          if (res.status === 200) {
+            setSnackbarMessage("Successfully added to cart")
+            setOpenSnackbar(true)
+          }
+        })
         .catch((err) => {
-          console.log(err);
+          setSnackbarMessage("Error: " + err)
+          setOpenSnackbar(true)
         });
 
     } else {
