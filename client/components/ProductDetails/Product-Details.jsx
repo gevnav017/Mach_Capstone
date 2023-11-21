@@ -44,7 +44,7 @@ const ProductDetails = () => {
       });
   }, [itemId]);
 
-  useEffect(() => { //do i need to pass itemId in here
+  useEffect(() => {
     Axios.post(
       "http://localhost:3000/api/products",
       {
@@ -62,7 +62,7 @@ const ProductDetails = () => {
       });
   }, []);
 
-  console.log("this is a test from Product-details")
+  // console.log("this is a test from Product-details")
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>

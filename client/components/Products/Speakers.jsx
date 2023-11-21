@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import Axios from "axios";
 
 // component imports
-import useCurrentUser from "../CurrentUser";
 
 // MUI imports
 import {

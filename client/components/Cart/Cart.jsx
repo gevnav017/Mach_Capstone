@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 
 // component imports
-import useCurrentUser from "../CurrentUser";
 
 // MUI imports
 import { Container, Box, Typography } from "@mui/material";
@@ -12,13 +11,17 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
+import Checkbox from "@mui/material/Checkbox";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import Favorite from "@mui/icons-material/Favorite";
 
-//making cart updates to user now, removing hard coded user
 const Cart = ({ user }) => {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    const userId = user && user.id
+    const userId = user && user.id;
     const inCart = true;
 
     Axios.get(`http://localhost:3000/api/orders/${userId}/${inCart}`)
@@ -26,26 +29,134 @@ const Cart = ({ user }) => {
       .catch((err) => console.log(err));
   }, [user]);
 
+  const removeFromCart = (item) => {
+    console.log(item);
+  };
+
+  const decrementQty = (item) => {
+    // setCount((prevCount) => prevCount > 1 && prevCount - 1);
+    console.log("Decrement quantity for item:", item);
+  };
+
   //add item to wishlist and remove from cart
-  const addToWishlist = () => {};
+  const addToWishlist = (item) => {
+    console.log(item);
+  };
+
+  console.log(cart);
+
 
   return (
-    <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
-      <Typography variant="h5" sx={{ my: 2 }}>
-        Cart
-      </Typography>
-      {cart ? (
-        cart.map((item) => (
-          <Box key={item.id} sx={{ mb: 2 }}>
-            <Typography variant="h6">{item.products.name}</Typography>
-            <Typography>Quantity: {item.quantity}</Typography>
-            {/* probably need to add more here ONCE I GET THIS TO WORK */}
-          </Box>
-        ))
+    <>
+      {cart.length === 0 ? (
+        <Container>
+          <Typography>Your cart is empty</Typography>
+        </Container>
       ) : (
-        <Typography>Your cart is empty</Typography>
+        cart.map((item) => (
+          <Card
+            key={item.id}
+            sx={{ display: "flex", minWidth: "400px", mb: 2 }}
+          >
+            <CardMedia
+              component="img"
+              sx={{
+                width: { xs: "180px", md: "140px" },
+                height: "150px",
+                objectFit: "contain",
+                p: 1,
+                height: "100%",
+              }}
+              image={item.products.image}
+            />
+            <Grid container>
+              <Grid
+                item
+                xs={12}
+                md={5}
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                <CardContent>
+                  <Typography component="div" variant="h5">
+                    {item.products.name}
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    color="text.secondary"
+                    component="div"
+                  >
+                    {item.products.brand}
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    color="text.secondary"
+                    component="div"
+                  >
+                    {item.products.type}
+                  </Typography>
+                </CardContent>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={4}
+                md={3}
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                <CardContent>
+                  <Typography component="div" variant="h5">
+                    ${item.products.price}
+                  </Typography>
+                </CardContent>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={8}
+                md={4}
+                sx={{
+                  display: "flex",
+                  justifyContent: { xs: "space-between", sm: "end" },
+                  alignItems: "center",
+                  p: 2,
+                }}
+              >
+                <Button onClick={() => addToWishlist(item.id)}>
+                  {" "}
+                  Add to Wishlist{" "}
+                </Button>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  <IconButton
+                    onClick={decrementQty}
+                    disabled={item.quantity === 1}
+                    sx={{ color: "primary.main" }}
+                  >
+                    <RemoveOutlinedIcon />
+                  </IconButton>
+                  <Typography color="text.secondary">{item.quantity}</Typography>
+                  <IconButton
+                    // onClick={() => setCount((c) => c + 1)}
+                    sx={{ color: "primary.main" }}
+                  >
+                    <AddOutlinedIcon />
+                  </IconButton>
+                  <Typography color="text.secondary">{item.quantity}</Typography>
+                </Box>
+                <Button color="error" onClick={() => removeFromCart(item)}>
+                  <CloseOutlinedIcon />
+                </Button>
+              </Grid>
+            </Grid>
+          </Card>
+        ))
       )}
-    </Container>
+    </>
   );
 };
 

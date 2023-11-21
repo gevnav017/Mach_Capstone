@@ -93,8 +93,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
   const navigate = useNavigate();
 
   const handleItemDetails = (itemId) => {
-    // sends with params to receive by details API
-    navigate(`/earbuds/earbud-details/${itemId}`);
+    navigate(`/earbuds/product-details/${itemId}`);
   };
 
   return (
