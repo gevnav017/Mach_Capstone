@@ -34,7 +34,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
   const addToWishlist = (speakerId) => {
     if (user) {
       Axios.post(
-        "http://localhost:3000/api/account/wishlist",
+        "http://localhost:3000/api/wishlist",
         {
           userId: user.id,
           productId: speakerId,
@@ -45,7 +45,12 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
           },
         }
       )
-        .then((res) => console.log(res))
+        .then((res) => {
+          if (res.status === 200) {
+            setSnackbarMessage("Successfully added item to wishlist");
+            setOpenSnackbar(true);
+          }
+        })
         .catch((err) => {
           setSnackbarMessage("Error: " + err);
           setOpenSnackbar(true);
@@ -58,7 +63,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
   const addToCart = (speakerId) => {
     if (user) {
       Axios.post(
-        "http://localhost:3000/api/account/orders",
+        "http://localhost:3000/api/orders/new",
         {
           userId: user.id,
           productId: speakerId,
