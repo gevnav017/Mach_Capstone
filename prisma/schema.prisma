@@ -16,12 +16,12 @@ model users {
   password      String
   firstName     String
   lastName      String
-  email         String?    @unique
-  birthDate     String    @default("MM-DDTHH-YYYY")
+  email         String?   @unique
+  birthDate     String    @default("MM-DD-YYYY")
   streetAddress String?
   city          String?
   state         String?
-  zipCode       String?
+  zipCode       Int?
   discount      Boolean   @default(false)
   freeShipping  Boolean   @default(false)
   dateCreated   DateTime  @default(now()) @db.Date
