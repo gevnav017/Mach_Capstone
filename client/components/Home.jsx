@@ -54,10 +54,7 @@ const Home = () => {
           <Carousel>
             {items &&
               items.map((item, index) => (
-                <Box
-                  key={index}
-                  sx={{ width: "600px", height: "600px" }}
-                >
+                <Box key={index} sx={{ width: "600px", height: "600px" }}>
                   <img
                     src={item.image}
                     alt={item.caption}
@@ -65,7 +62,7 @@ const Home = () => {
                       width: "100%",
                       height: "100%",
                       backgroundSize: "cover",
-                      objectFit: "contain"
+                      objectFit: "contain",
                     }}
                   />
                   <p>{item.caption}</p>
@@ -74,7 +71,11 @@ const Home = () => {
           </Carousel>
         </Box>
 
-        <Masonry columns={6} spacing={2}>
+        <Masonry
+          columns={6}
+          spacing={2}
+          sx={{ display: "flex", justifyContent: "center" }}
+        >
           {items.map((item, index) => (
             <MasonryImages key={index} item={item} />
           ))}

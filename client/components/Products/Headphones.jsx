@@ -47,13 +47,13 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
       )
         .then((res) => {
           if (res.status === 200) {
-            setSnackbarMessage("Successfully added to wishlist")
-            setOpenSnackbar(true)
+            setSnackbarMessage("Successfully added to wishlist");
+            setOpenSnackbar(true);
           }
         })
         .catch((err) => {
-          setSnackbarMessage("Error: " + err)
-          setOpenSnackbar(true)
+          setSnackbarMessage("Error: " + err);
+          setOpenSnackbar(true);
         });
     } else {
       console.log("no user");
@@ -77,25 +77,24 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
       )
         .then((res) => {
           if (res.status === 200) {
-            setSnackbarMessage("Successfully added to cart")
-            setOpenSnackbar(true)
+            setSnackbarMessage("Successfully added to cart");
+            setOpenSnackbar(true);
           }
         })
         .catch((err) => {
-          setSnackbarMessage("Error: " + err)
-          setOpenSnackbar(true)
+          setSnackbarMessage("Error: " + err);
+          setOpenSnackbar(true);
         });
-
     } else {
-      console.log("no user")
+      console.log("no user");
     }
   };
 
   //this will be changed to one page for all products (once i get to it)
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleItemDetails = (itemId) => {
-    navigate(`/headphones/product-details/${itemId}`)
+    navigate(`/headphones/product-details/${itemId}`);
   };
 
   return (
@@ -195,7 +194,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
   );
 };
 
-const Headphones = ({ user }) => {
+const Headphones = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
   const [headphones, setHeadphones] = useState([]);
 
   useEffect(() => {
@@ -225,7 +224,13 @@ const Headphones = ({ user }) => {
       <Grid container spacing={2}>
         {headphones &&
           headphones.map((headphone) => (
-            <ItemsCard key={headphone.id} item={headphone} user={user} />
+            <ItemsCard
+              key={headphone.id}
+              item={headphone}
+              user={user}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+            />
           ))}
       </Grid>
     </Container>
