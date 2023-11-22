@@ -25,8 +25,9 @@ const Profile = ({ user }) => {
       <div>{"Shipping Address:"}</div>
       <hr></hr>
       <div className="boldHeading">{"PAYMENT METHODS"}</div>
-      <CreditCardIcon />
-      <CreditCardIcon />
+      <CreditCardIcon  /><div>{"VISA: **** 0808  EXP: 12/28"}</div> 
+      <CreditCardIcon /><div>{"MASTERCARD: **** 0606  EXP: 03/26"}</div>
+      <CreditCardIcon /><div>{"AMEX: **** 0303  EXP: 06/23"}</div>
     </Stack>
   );
 };
