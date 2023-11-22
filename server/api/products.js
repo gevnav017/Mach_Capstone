@@ -37,24 +37,6 @@ router.post("/products", async (req, res) => {
   }
 });
 
-// all products based on category
-router.get("/products", async (req, res) => {
-  try {
-    const { category } = req.body;
-    console.log(category);
-
-    const products = await prisma.products.findMany({
-      where: {
-        category: category,
-      },
-    });
-
-    res.json(products);
-  } catch (err) {
-    console.log(err);
-  }
-});
-
 // single product by id
 router.get("/product/:itemId", async (req, res) => {
   try {

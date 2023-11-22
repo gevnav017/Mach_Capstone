@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import Axios from "axios";
 
 // component imports
@@ -43,120 +44,130 @@ const Cart = ({ user }) => {
     console.log(item);
   };
 
-  console.log(cart);
-
+  const navigate = useNavigate()
 
   return (
-    <>
+    <Container>
       {cart.length === 0 ? (
-        <Container>
-          <Typography>Your cart is empty</Typography>
-        </Container>
+        <Typography>Your cart is empty</Typography>
       ) : (
-        cart.map((item) => (
-          <Card
-            key={item.id}
-            sx={{ display: "flex", minWidth: "400px", mb: 2 }}
+        <>
+          <Button
+            onClick={() => {
+              navigate("/cart/checkout");
+            }}
           >
-            <CardMedia
-              component="img"
-              sx={{
-                width: { xs: "180px", md: "140px" },
-                height: "150px",
-                objectFit: "contain",
-                p: 1,
-                height: "100%",
-              }}
-              image={item.products.image}
-            />
-            <Grid container>
-              <Grid
-                item
-                xs={12}
-                md={5}
-                sx={{ display: "flex", alignItems: "center" }}
-              >
-                <CardContent>
-                  <Typography component="div" variant="h5">
-                    {item.products.name}
-                  </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    color="text.secondary"
-                    component="div"
-                  >
-                    {item.products.brand}
-                  </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    color="text.secondary"
-                    component="div"
-                  >
-                    {item.products.type}
-                  </Typography>
-                </CardContent>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={4}
-                md={3}
-                sx={{ display: "flex", alignItems: "center" }}
-              >
-                <CardContent>
-                  <Typography component="div" variant="h5">
-                    ${item.products.price}
-                  </Typography>
-                </CardContent>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={8}
-                md={4}
+            Checkout
+          </Button>
+          {cart.map((item) => (
+            <Card
+              key={item.id}
+              sx={{ display: "flex", minWidth: "400px", mb: 2 }}
+            >
+              <CardMedia
+                component="img"
                 sx={{
-                  display: "flex",
-                  justifyContent: { xs: "space-between", sm: "end" },
-                  alignItems: "center",
-                  p: 2,
+                  width: { xs: "180px", md: "140px" },
+                  height: "150px",
+                  objectFit: "contain",
+                  p: 1,
+                  height: "100%",
                 }}
-              >
-                <Button onClick={() => addToWishlist(item.id)}>
-                  {" "}
-                  Add to Wishlist{" "}
-                </Button>
-                <Box
+                image={item.products.image}
+              />
+              <Grid container>
+                <Grid
+                  item
+                  xs={12}
+                  md={5}
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
+                  <CardContent>
+                    <Typography component="div" variant="h5">
+                      {item.products.name}
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      color="text.secondary"
+                      component="div"
+                    >
+                      {item.products.brand}
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      color="text.secondary"
+                      component="div"
+                    >
+                      {item.products.type}
+                    </Typography>
+                  </CardContent>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={4}
+                  md={3}
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
+                  <CardContent>
+                    <Typography component="div" variant="h5">
+                      ${item.products.price}
+                    </Typography>
+                  </CardContent>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={8}
+                  md={4}
                   sx={{
                     display: "flex",
+                    justifyContent: { xs: "space-between", sm: "end" },
                     alignItems: "center",
-                    gap: 1,
+                    p: 2,
                   }}
                 >
-                  <IconButton
-                    onClick={decrementQty}
-                    disabled={item.quantity === 1}
-                    sx={{ color: "primary.main" }}
+                  <Button onClick={() => addToWishlist(item.id)}>
+                    {" "}
+                    Add to Wishlist{" "}
+                  </Button>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                    }}
                   >
-                    <RemoveOutlinedIcon />
-                  </IconButton>
-                  <Typography color="text.secondary">{item.quantity}</Typography>
-                  <IconButton
-                    // onClick={() => setCount((c) => c + 1)}
-                    sx={{ color: "primary.main" }}
-                  >
-                    <AddOutlinedIcon />
-                  </IconButton>
-                  <Typography color="text.secondary">{item.quantity}</Typography>
-                </Box>
-                <Button color="error" onClick={() => removeFromCart(item)}>
-                  <CloseOutlinedIcon />
-                </Button>
+                    <IconButton
+                      onClick={decrementQty}
+                      disabled={item.quantity === 1}
+                      sx={{ color: "primary.main" }}
+                    >
+                      <RemoveOutlinedIcon />
+                    </IconButton>
+                    <Typography color="text.secondary">
+                      {item.quantity}
+                    </Typography>
+                    <IconButton
+                      // onClick={() => setCount((c) => c + 1)}
+                      sx={{ color: "primary.main" }}
+                    >
+                      <AddOutlinedIcon />
+                    </IconButton>
+                    <Typography color="text.secondary">
+                      {item.quantity}
+                    </Typography>
+                  </Box>
+                  <Button color="error" onClick={() => removeFromCart(item)}>
+                    <CloseOutlinedIcon />
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </Card>
-        ))
+            </Card>
+          ))}
+        </>
       )}
-    </>
+    </Container>
   );
 };
 

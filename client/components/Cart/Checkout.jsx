@@ -65,7 +65,6 @@ const CartItems = ({ item }) => {
         <Grid
           item
           xs={12}
-          sm={4}
           md={3}
           sx={{ display: "flex", alignItems: "center" }}
         >
@@ -78,7 +77,6 @@ const CartItems = ({ item }) => {
         <Grid
           item
           xs={12}
-          sm={8}
           md={4}
           sx={{
             display: "flex",
@@ -114,45 +112,68 @@ const Checkout = ({ user }) => {
     {
       label: "Order Details",
       element: (
-        <Paper
-          elevation={2}
+        <Box
           sx={{
             maxHeight: "calc(100vh - 400px)",
+            display: "flex",
             overflow: "auto",
-            p: 3,
+            gap: 2,
           }}
         >
-          {cart && cart.map((item) => <CartItems key={item.id} item={item} />)}
-        </Paper>
+          <Box>
+            {cart &&
+              cart.map((item) => <CartItems key={item.id} item={item} />)}
+          </Box>
+          <Paper
+            sx={{
+              position: "sticky",
+              top: 0,
+              p: 3,
+              width: "20%",
+              minWidth: "200px",
+            }}
+          >
+            <Typography gutterBottom>Item Qty</Typography>
+            <Typography gutterBottom>Tax</Typography>
+            <Typography gutterBottom>Total</Typography>
+          </Paper>
+        </Box>
       ),
     },
     {
       label: "Payment",
       element: (
-        <Paper
-          elevation={2}
+        <Box
           sx={{
             maxHeight: "calc(100vh - 400px)",
             overflow: "auto",
-            p: 3,
           }}
         >
           Stipe payment
-        </Paper>
+        </Box>
       ),
     },
     {
       label: "Order Confirmation",
       element: (
         <Paper
-          elevation={2}
           sx={{
             maxHeight: "calc(100vh - 400px)",
             overflow: "auto",
             p: 3,
           }}
         >
-          Order confirmation
+          <Typography gutterBottom variant="h6" component="div">
+            Thank you for shopping with us!
+          </Typography>
+          <Typography gutterBottom variant="subtitle">
+            We have recieve your order. Your order confirmation #
+            {Math.round(Math.random() * 1000000)}.
+          </Typography>
+
+          <Box>
+            Items and total here
+          </Box>
         </Paper>
       ),
     },
@@ -196,7 +217,7 @@ const Checkout = ({ user }) => {
                       ? "Continue shopping"
                       : "Continue"}
                   </Button>
-                  {index < 2 && (
+                  {index < 2 && index !== 0 && (
                     <Button
                       disabled={index === 0}
                       onClick={() => {
