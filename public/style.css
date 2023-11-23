@@ -32,24 +32,26 @@ body {
 }
 
 @keyframes logoDance {
-    /* 25% {
-        transform: rotate(90deg) scale(1.1); 
+    0% {
+        transform: rotate(40deg) scale(0);
     }
-    50% {
-        transform: rotate(180deg) scale(1.3); 
+    15% {
+        transform: rotate(90deg) scale(0.30); 
     }
-    75% {
-        transform: rotate(270deg) scale(1.1); 
-    }
-    100% {
-        transform: rotate(360deg);
-    } */
-
     30% {
-        transform: translate(-25%, -25%); 
+        transform: rotate(90deg) scale(0.30); 
+    }
+    45% {
+        transform: rotate(180deg) scale(0.60); 
     }
     60% {
-        transform: translate(25%, 25%); 
+        transform: rotate(270deg) scale(1.2); 
+    }
+    75% {
+        transform: rotate(360deg) scale(1.5); 
+    }
+    100% {
+        transform: scale(1);
     }
 }
 
