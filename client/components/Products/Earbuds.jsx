@@ -56,7 +56,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
           setOpenSnackbar(true);
         });
     } else {
-      console.log("no user");
+      console.log("log in or create an account to save your changes");
     }
   };
 
@@ -86,7 +86,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
           setOpenSnackbar(true);
         });
     } else {
-      console.log("no user");
+      console.log("log in or create an account to save your changes");
     }
   };
 
@@ -174,7 +174,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
-            checked={item.orders[0] && item.orders[0].inWishlist}
+            checked={item.orders && item.orders[0].inWishlist}
             color="error"
             sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}

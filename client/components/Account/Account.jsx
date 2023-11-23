@@ -46,12 +46,12 @@ const Account = ({ user }) => {
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
       {!user ? (
         <Box>Loading</Box>
-      ) : (
+      ) : ( <div className="welcomeImage"> 
         <Box sx={{ width: "100%" }}>
           <Box sx={{ my: 2 }}>
             <Typography variant="h5">Welcome, {user.firstName}</Typography>
           </Box>
-
+          
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs
               value={value}
@@ -73,7 +73,9 @@ const Account = ({ user }) => {
           <TabPanel value={value} index={2}>
             <Orders user={user} />
           </TabPanel>
+          
         </Box>
+        </div>
       )}
     </Container>
   );
