@@ -3,7 +3,7 @@ import Axios from "axios";
 
 // component imports
 import MasonryImageList from "./MasonryImageList";
-
+import MaxWidthDialog from "./MaxWidthDialog";
 // MUI imports
 import Carousel from "react-material-ui-carousel";
 import { Container, Box } from "@mui/material";
@@ -80,8 +80,10 @@ const Home = () => {
             <MasonryImages key={index} item={item} />
           ))}
         </Masonry>
+        <MaxWidthDialog />
       </Box>
     </Container>
+
   );
 };
 
