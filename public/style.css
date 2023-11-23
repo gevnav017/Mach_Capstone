@@ -59,3 +59,24 @@ body {
     font-weight: bold;
     text-decoration: underline;
 }
+
+
+.backgroundImage {
+    background: linear-gradient(-225deg, #5D9FFF 0%, #2998e2 45%, #e2e7ec 100%);
+    opacity: 0.9;
+    background-size: cover;
+    padding: 5%;
+    line-height: 200% ;
+    border-radius: 10px;
+   
+   
+  
+} 
+
+/* .welcomeImage {
+    background-image: url(https://us.123rf.com/450wm/yuriybogdanov/yuriybogdanov1802/yuriybogdanov180200053/94690067-wave-of-the-many-colored-lines-abstract-wavy-stripes-on-a-white-background-isolated-creative-line.jpg?ver=6);
+    background-size: cover;
+    padding: 5%;
+
+
+} */
