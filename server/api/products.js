@@ -18,20 +18,30 @@ router.post("/products", async (req, res) => {
   try {
     const { userId, category } = req.body;
 
-    const products = await prisma.products.findMany({
-      where: {
-        category: category,
-      },
-      include: {
-        orders: {
-          where: {
-            userId: userId,
+    if (userId) {
+      const products = await prisma.products.findMany({
+        where: {
+          category: category,
+        },
+        include: {
+          orders: {
+            where: {
+              userId: userId,
+            },
           },
         },
-      },
-    });
+      });
 
-    res.json(products);
+      res.json(products);
+    } else {
+      const products = await prisma.products.findMany({
+        where: {
+          category: category,
+        },
+      });
+
+      res.json(products);
+    }
   } catch (err) {
     console.log(err);
   }

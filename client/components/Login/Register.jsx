@@ -31,6 +31,11 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zipcode, setZipcode] = useState("");
   const [error, setError] = useState(initialError);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -43,7 +48,13 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const handleSignUp = () => {
-    setError({ ...error, username: !username, password: !password, firstName: !firstName, lastName: !lastName })
+    setError({
+      ...error,
+      username: !username,
+      password: !password,
+      firstName: !firstName,
+      lastName: !lastName,
+    });
 
     // if (!username && !password && !firstName && !lastName) {
     //   setError({
@@ -76,7 +87,7 @@ const SignUp = () => {
           const token = res.data.token;
           window.localStorage.setItem("token", token);
           if (res.status === 200) {
-            navigate("/login")
+            navigate("/login");
           }
         })
 
@@ -113,8 +124,9 @@ const SignUp = () => {
             display: "flex",
             flexDirection: "column",
             bgcolor: "background.main",
-            minWidth: { xs: "250px", md: "60%", xl: "500px" },
+            minWidth: { xs: "250px", md: "50%", xl: "500px" },
             boxSizing: "border-box",
+            mx: { xs: 0, md: 2 },
             my: { xs: 5, md: 0 },
             blockSize: "fit-content",
             p: 4,
@@ -125,76 +137,137 @@ const SignUp = () => {
         >
           <Typography variant="h5">Sign Up</Typography>
 
-          <FormControl variant="outlined">
-            <InputLabel htmlFor="firstName-input">First name</InputLabel>
-            <OutlinedInput
-              id="firstName-input"
-              label="First name"
-              onChange={(e) => {
-                setFirstName(e.target.value);
+          <Box sx={{ display: "flex", gap: 3 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 3,
               }}
-              error={error.firstName}
-            />
-          </FormControl>
+            >
+              <FormControl variant="outlined">
+                <InputLabel htmlFor="username-input">Username</InputLabel>
+                <OutlinedInput
+                  id="username-input"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <AccountCircle />
+                    </InputAdornment>
+                  }
+                  label="Username"
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
+                  error={error.username}
+                />
+              </FormControl>
 
-          <FormControl variant="outlined">
-            <InputLabel htmlFor="lastName-input">Last name</InputLabel>
-            <OutlinedInput
-              id="lastName-input"
-              label="Last name"
-              onChange={(e) => {
-                setLastName(e.target.value);
+              <FormControl variant="outlined">
+                <InputLabel htmlFor="password-input">Password</InputLabel>
+                <OutlinedInput
+                  id="password-input"
+                  type={showPassword ? "text" : "password"}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  error={error.password}
+                />
+              </FormControl>
+
+              <FormControl variant="outlined">
+                <InputLabel htmlFor="firstName-input">First name</InputLabel>
+                <OutlinedInput
+                  id="firstName-input"
+                  label="First name"
+                  onChange={(e) => {
+                    setFirstName(e.target.value);
+                  }}
+                  error={error.firstName}
+                />
+              </FormControl>
+
+              <FormControl variant="outlined">
+                <InputLabel htmlFor="lastName-input">Last name</InputLabel>
+                <OutlinedInput
+                  id="lastName-input"
+                  label="Last name"
+                  onChange={(e) => {
+                    setLastName(e.target.value);
+                  }}
+                  error={error.lastName}
+                />
+              </FormControl>
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 3,
               }}
-              error={error.lastName}
-            />
-          </FormControl>
+            >
+              <FormControl variant="outlined">
+                <InputLabel htmlFor="street-input">Street</InputLabel>
+                <OutlinedInput
+                  id="street-input"
+                  label="Street"
+                  onChange={(e) => {
+                    setFirstName(e.target.value);
+                  }}
+                  error={error.firstName}
+                />
+              </FormControl>
 
-          <FormControl variant="outlined">
-            <InputLabel htmlFor="username-input">Username</InputLabel>
-            <OutlinedInput
-              id="username-input"
-              endAdornment={
-                <InputAdornment position="end">
-                  <AccountCircle />
-                </InputAdornment>
-              }
-              label="Username"
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
-              error={error.username}
-            />
-          </FormControl>
+              <FormControl variant="outlined">
+                <InputLabel htmlFor="city-input">City</InputLabel>
+                <OutlinedInput
+                  id="city-input"
+                  label="City"
+                  onChange={(e) => {
+                    setLastName(e.target.value);
+                  }}
+                  error={error.lastName}
+                />
+              </FormControl>
 
-          <FormControl variant="outlined">
-            <InputLabel htmlFor="password-input">Password</InputLabel>
-            <OutlinedInput
-              id="password-input"
-              type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              error={error.password}
-            />
-          </FormControl>
+              <FormControl variant="outlined">
+                <InputLabel htmlFor="state-input">State</InputLabel>
+                <OutlinedInput
+                  id="state-input"
+                  label="State"
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
+                  error={error.username}
+                />
+              </FormControl>
 
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label="Remember me"
-          />
+              <FormControl variant="outlined">
+                <InputLabel htmlFor="zipcode-input">Zipcode</InputLabel>
+                <OutlinedInput
+                  id="zipcode-input"
+                  label="Zipcode"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  error={error.password}
+                />
+              </FormControl>
+            </Box>
+          </Box>
 
           <Button variant="contained" color="primary" onClick={handleSignUp}>
             Sign Up
