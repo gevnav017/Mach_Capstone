@@ -62,7 +62,7 @@ const MasonryImageList = () => {
         width: "600px",
         height: "600px",
         backgroundSize: "cover",
-        overflowY: "scroll",
+        overflowY: "scroll"
       }}
     >
       <ImageList variant="masonry" cols={3} gap={8}>
