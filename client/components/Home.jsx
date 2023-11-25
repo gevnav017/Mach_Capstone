@@ -82,9 +82,9 @@ const Home = () => {
             <MasonryImages key={index} item={item} />
           ))}
         </Masonry>
-        <MaxWidthDialog />
         {/* <BasicTextField /> */}
       </Box>
+      <MaxWidthDialog />
     </Container>
 
   );

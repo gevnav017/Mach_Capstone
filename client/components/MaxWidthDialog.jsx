@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -13,13 +13,14 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
 import DialogInputForm from './DialogInputForm';
-
+import { Container } from '@mui/material';
 
 export default function MaxWidthDialog() {
   const [open, setOpen] = React.useState(false);
+  const [showSubscribedDialog, setShowSubscribedDialog] = useState(false);
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState('sm');
-// const [email, setEmail] = React.useState('');
+ 
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -40,21 +41,33 @@ export default function MaxWidthDialog() {
     setFullWidth(event.target.checked);
   };
 
-  // const handleEmailChange = (e) => {
-  //   e.preventDefault();
-  //   console.log('Email submitted:', email);
-  // }
+  const handleSubscribe = (email) => {
+   console.log('Email submitted:', email);
+   setOpen(false);
+   setShowSubscribedDialog(true);
+  };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log('Email submitted:', email);
-  // }
+  const handleCloseSubscribedDialog = () => {
+    setShowSubscribedDialog(false);
+  };
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Container sx={{
+    position: "fixed",
+    left: 0,
+    bottom: '20px'}}>
+      <Button 
+      variant="outlined" 
+      onClick={handleClickOpen}
+      style={{
+        fontSize: '18px',
+        fontWeight: 'bold'
+      }}
+      >
         GET 10% OFF
       </Button>
+      </Container>
       <Dialog
         fullWidth={fullWidth}
         maxWidth={maxWidth}
@@ -66,8 +79,7 @@ export default function MaxWidthDialog() {
           <DialogContentText>
             Join our email list and be the first to know about exciting sales, gifting and more!
           </DialogContentText>
-          {/* <form onSubmit={handleSubmit}> */}
-          <DialogInputForm />
+          <DialogInputForm onSubscribe={handleSubscribe} />
           <Box
             noValidate
             component="form"
@@ -78,25 +90,24 @@ export default function MaxWidthDialog() {
               width: 'fit-content',
             }}
           >
-            <FormControl sx={{ mt: 2, minWidth: 120 }}>
-              <InputLabel htmlFor="email">Email Address</InputLabel>
-              {/* <input 
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={handleEmailChange}
-              required
-              /> */}
-            </FormControl>
-            {/* <Button type="submit" variant="contained" color="primary">Submit</Button> */}
           </Box>
-          {/* </form> */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
+        
+       {/* Subscribed Dialog Box */}
+      <Dialog open={showSubscribedDialog} onClose={handleCloseSubscribedDialog}>
+        <DialogTitle>Thanks for subscribing!</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Check your email for your 10% discount code!</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSubscribedDialog}>Close</Button>
+        </DialogActions>
+      </Dialog>
+
     </React.Fragment>
   );
 }
