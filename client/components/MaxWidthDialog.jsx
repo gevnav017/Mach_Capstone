@@ -12,15 +12,14 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
-import InputSubscription from './InputSubscription';
-
-
+import DialogInputForm from './DialogInputForm';
 
 
 export default function MaxWidthDialog() {
   const [open, setOpen] = React.useState(false);
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState('sm');
+// const [email, setEmail] = React.useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,6 +40,16 @@ export default function MaxWidthDialog() {
     setFullWidth(event.target.checked);
   };
 
+  // const handleEmailChange = (e) => {
+  //   e.preventDefault();
+  //   console.log('Email submitted:', email);
+  // }
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log('Email submitted:', email);
+  // }
+
   return (
     <React.Fragment>
       <Button variant="outlined" onClick={handleClickOpen}>
@@ -57,40 +66,32 @@ export default function MaxWidthDialog() {
           <DialogContentText>
             Join our email list and be the first to know about exciting sales, gifting and more!
           </DialogContentText>
+          {/* <form onSubmit={handleSubmit}> */}
+          <DialogInputForm />
           <Box
             noValidate
             component="form"
             sx={{
               display: 'flex',
-              flexDirection: 'column',
+              flexDirection: 'row',
               m: 'auto',
               width: 'fit-content',
             }}
           >
             <FormControl sx={{ mt: 2, minWidth: 120 }}>
-              <InputLabel htmlFor="max-width">maxWidth</InputLabel>
-              {/* <Select
-                autoFocus
-                value={maxWidth}
-                onChange={handleMaxWidthChange}
-                label="maxWidth"
-                inputProps={{
-                  name: 'max-width',
-                  id: 'max-width',
-                }}
-              >
-                <MenuItem value={false}>false</MenuItem>
-                <MenuItem value="sm">sm</MenuItem>
-                </Select> */}
+              <InputLabel htmlFor="email">Email Address</InputLabel>
+              {/* <input 
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={handleEmailChange}
+              required
+              /> */}
             </FormControl>
-            {/* <FormControlLabel
-              sx={{ mt: 1 }}
-              control={
-                <Switch checked={fullWidth} onChange={handleFullWidthChange} />
-              }
-              label="Full width"
-            /> */}
+            {/* <Button type="submit" variant="contained" color="primary">Submit</Button> */}
           </Box>
+          {/* </form> */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>

@@ -4,6 +4,8 @@ import Axios from "axios";
 // component imports
 import MasonryImageList from "./MasonryImageList";
 import MaxWidthDialog from "./MaxWidthDialog";
+// import BasicTextField from "./BasicTextField";
+
 // MUI imports
 import Carousel from "react-material-ui-carousel";
 import { Container, Box } from "@mui/material";
@@ -81,6 +83,7 @@ const Home = () => {
           ))}
         </Masonry>
         <MaxWidthDialog />
+        {/* <BasicTextField /> */}
       </Box>
     </Container>
 
