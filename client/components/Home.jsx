@@ -27,6 +27,7 @@ const MasonryImages = ({ item }) => {
         style={{
           borderBottomLeftRadius: 4,
           borderBottomRightRadius: 4,
+          borderRadius: "10px",
           display: "block",
           width: "100%",
           height: "100%",
@@ -49,20 +50,24 @@ const Home = () => {
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
-      <Box sx={{ display: "grid", justifyContent: "center", gap: 4 }}>
+      <Box sx={{ display: "grid", justifyContent: "center", gap: 4}}>
         <Box>
           <Carousel>
             {items &&
               items.map((item, index) => (
                 <Box key={index} sx={{ width: "600px", height: "600px" }}>
                   <img
+                    
                     src={item.image}
                     alt={item.caption}
                     style={{
-                      width: "100%",
-                      height: "100%",
+                      width: "475px",
+                      height: "600px",
                       backgroundSize: "cover",
-                      objectFit: "contain",
+                      objectFit: "cover",
+                      borderRadius: "7px"
+                      
+                     
                     }}
                   />
                   <p>{item.caption}</p>
