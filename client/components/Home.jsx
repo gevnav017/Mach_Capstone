@@ -51,47 +51,52 @@ const Home = () => {
   }, []);
 
   return (
-    <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
-      <Box sx={{ display: "grid", justifyContent: "center", gap: 4}}>
-        <Box>
-          <Carousel>
-            {items &&
-              items.map((item, index) => (
-                <Box key={index} sx={{ width: "600px", height: "600px" }}>
-                  <img
-                    
-                    src={item.image}
-                    alt={item.caption}
-                    style={{
-                      width: "475px",
-                      height: "600px",
-                      backgroundSize: "cover",
-                      objectFit: "cover",
-                      borderRadius: "7px"
-                      
-                     
-                    }}
-                  />
-                  <p>{item.caption}</p>
-                </Box>
-              ))}
-          </Carousel>
-        </Box>
+    <Container maxWidth="lg" sx={{ width: "100%", minWidth: "400px", p: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 5,
+        }}
+      >
+        <Carousel sx={{ width: "800px" }}>
+          {items &&
+            items.map((item) => (
+              <Box
+                key={item.id}
+                sx={{
+                  width: "100%",
+                  height: "600px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <img
+                  src={item.image}
+                  alt={item.caption}
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    objectFit: "cover",
+                    borderRadius: "50px",
+                    boxSizing: "border-box",
+                  }}
+                />
+              </Box>
+            ))}
+        </Carousel>
 
-        <Masonry
-          columns={6}
-          spacing={2}
-          sx={{ display: "flex", justifyContent: "center" }}
-        >
-          {items.map((item, index) => (
-            <MasonryImages key={index} item={item} />
+        <Masonry spacing={4} >
+          {items.map((item) => (
+            <MasonryImages key={item.id} item={item} />
           ))}
         </Masonry>
-        {/* <BasicTextField /> */}
       </Box>
+
       <MaxWidthDialog />
     </Container>
-
   );
 };
 
