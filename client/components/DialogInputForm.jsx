@@ -41,7 +41,7 @@ const DialogInputForm = ({ onSubscribe }) => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <form
         method="post"
         onSubmit={handleSubmit}
@@ -78,7 +78,7 @@ const DialogInputForm = ({ onSubscribe }) => {
         </button>
       </form>
 
-     {/* This is for the Error Dialog */}
+      {/* This is for the Error Dialog */}
       <Dialog open={openErrorDialog} onClose={handleCloseErrorDialog}>
         <DialogTitle>Error</DialogTitle>
         <DialogContent>
@@ -92,7 +92,7 @@ const DialogInputForm = ({ onSubscribe }) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </React.Fragment>
+    </>
   );
 };
 
