@@ -2,7 +2,29 @@ const express = require("express");
 const router = express.Router();
 const prisma = require("../db/client");
 
-// get all past/archived orders by user
+// get cart qty total for user in Navbar
+router.get("/cartCount/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const cartCount = await prisma.orders.groupBy({
+      by: "userId",
+      where: {
+        userId: userId,
+        inCart: true,
+      },
+      _sum: {
+        quantity: true
+      }
+    });
+
+    res.json(cartCount);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// get all current in cart or past/archived orders by user
 router.get("/orders/:userId/:inCart", async (req, res) => {
   try {
     const { userId, inCart } = req.params;
@@ -25,23 +47,22 @@ router.get("/orders/:userId/:inCart", async (req, res) => {
   }
 });
 
-// create user order of product to orders table
+// create user order in orders table
 router.post("/orders/new", async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
     console.log("new order ", userId, productId, quantity);
 
     // check if item is already in cart
-    const inCart = await prisma.orders.findFirst({
+    const inOrders = await prisma.orders.findFirst({
       where: {
         userId,
         productId,
-        inCart: true,
       },
     });
 
     // if already in cart
-    if (!inCart) {
+    if (!inOrders) {
       // add item to cart
       const addToCart = await prisma.orders.create({
         data: {
@@ -56,11 +77,11 @@ router.post("/orders/new", async (req, res) => {
       res.json(addToCart);
     } else {
       // already in cart, update qty
-      const newQty = inCart.quantity + quantity;
+      const newQty = inOrders.quantity + quantity;
 
       const updateQty = await prisma.orders.update({
-        data: { quantity: newQty },
-        where: { id: inCart.id },
+        data: { quantity: newQty, inCart: true },
+        where: { id: inOrders.id },
       });
 
       // console.log("updated");

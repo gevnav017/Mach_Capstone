@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { token } = require("morgan");
 
-// all users
+// get all users
 router.get("/users", async (req, res) => {
   try {
     const users = await prisma.users.findMany();
