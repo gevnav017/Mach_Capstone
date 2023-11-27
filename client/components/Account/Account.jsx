@@ -23,7 +23,7 @@ const TabPanel = (props) => {
   );
 };
 
-const Account = ({ user }) => {
+const Account = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
   // const location = useLocation();
   // const page = location.pathname;
   const [value, setValue] = useState(0);
@@ -68,10 +68,10 @@ const Account = ({ user }) => {
             <Profile user={user} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Wishlist user={user} />
+            <Wishlist user={user} setOpenSnackbar={setOpenSnackbar} setSnackbarMessage={setSnackbarMessage} />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <Orders user={user} />
+            <Orders user={user} setOpenSnackbar={setOpenSnackbar} setSnackbarMessage={setSnackbarMessage} />
           </TabPanel>
           
         </Box>

@@ -24,7 +24,14 @@ import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import IconButton from "@mui/material/IconButton";
 
-const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
+const ItemsCard = ({
+  item,
+  user,
+  setOpenSnackbar,
+  setSnackbarMessage,
+  getProducts,
+  getCartCount,
+}) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
@@ -47,7 +54,8 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
       )
         .then((res) => {
           if (res.status === 200) {
-            setSnackbarMessage("Successfully added item to wishlist");
+            getProducts();
+            setSnackbarMessage("Successfully added wishlist");
             setOpenSnackbar(true);
           }
         })
@@ -56,7 +64,10 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
           setOpenSnackbar(true);
         });
     } else {
-      console.log("no user");
+      setSnackbarMessage(
+        "You must log in or create an account to save your changes"
+      );
+      setOpenSnackbar(true);
     }
   };
 
@@ -77,17 +88,20 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
       )
         .then((res) => {
           if (res.status === 200) {
-            setSnackbarMessage("Successfully added item to cart");
+            getCartCount();
+            setSnackbarMessage("Successfully added cart");
             setOpenSnackbar(true);
           }
         })
-
         .catch((err) => {
           setSnackbarMessage("Error: " + err);
           setOpenSnackbar(true);
         });
     } else {
-      console.log("no user");
+      setSnackbarMessage(
+        "You must log in or create an account to save your changes"
+      );
+      setOpenSnackbar(true);
     }
   };
 
@@ -99,8 +113,16 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
 
   return (
     <Grid item xs={12} sm={6} md={4}>
-      <Card sx={{ borderRadius: "10px" }}>
-        <Box sx={{ width: "100%", height: 240, boxSizing: "border-box" }}>
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          borderRadius: "10px",
+          height: "100%",
+        }}
+      >
+        <Box sx={{ width: "100%", height: 300, boxSizing: "border-box" }}>
           <CardMedia
             component="img"
             sx={{
@@ -145,7 +167,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
             }}
           >
             <Typography gutterBottom variant="h6" component="div">
-              ${item.price}
+              ${parseFloat(item.price).toFixed(2)}
             </Typography>
             <Box
               sx={{
@@ -171,13 +193,16 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
             </Box>
           </Box>
         </CardContent>
-        <CardActions>
+        <CardActions sx={{ justifyContent: "space-between" }}>
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
-            checked={item.orders && item.orders[0].inWishlist}
+            checked={
+              item.orders && Object.keys(item.orders).length > 0
+                ? item.orders[0].inWishlist
+                : false
+            }
             color="error"
-            sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}
           />
           <Button
@@ -194,27 +219,54 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
   );
 };
 
-const Speakers = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
+const Speakers = ({
+  user,
+  setOpenSnackbar,
+  setSnackbarMessage,
+  getCartCount,
+}) => {
   const [speakers, setSpeakers] = useState([]);
 
   useEffect(() => {
-    Axios.post(
-      "http://localhost:3000/api/products",
-      {
-        userId: user && user.id,
-        category: "Speaker",
-      },
-      {
-        headers: {
-          "Content-Type": "application/JSON",
-        },
-      }
-    )
-      .then((res) => setSpeakers(res.data))
-      .catch((err) => {
-        console.log(err);
-      });
+    getProducts();
   }, [user]);
+
+  const getProducts = () => {
+    if (user) {
+      Axios.post(
+        "http://localhost:3000/api/productsWithUser",
+        {
+          userId: user && user.id,
+          category: "Speaker",
+        },
+        {
+          headers: {
+            "Content-Type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => setSpeakers(res.data))
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Axios.get(
+        "http://localhost:3000/api/products",
+        {
+          category: "Speaker",
+        },
+        {
+          headers: {
+            "Content-Type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => setSpeakers(res.data))
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
@@ -230,6 +282,8 @@ const Speakers = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
               user={user}
               setOpenSnackbar={setOpenSnackbar}
               setSnackbarMessage={setSnackbarMessage}
+              getProducts={getProducts}
+              getCartCount={getCartCount}
             />
           ))}
       </Grid>

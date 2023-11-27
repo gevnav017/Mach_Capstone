@@ -10,7 +10,7 @@ router.get("/wishlist/:userId", async (req, res) => {
     const wishlist = await prisma.orders.findMany({
       where: {
         userId: userId,
-        inWishlist: true
+        inWishlist: true,
       },
       include: {
         products: true,
@@ -45,10 +45,29 @@ router.post("/wishlist", async (req, res) => {
           inWishlist: true,
         },
       });
+
       res.json(addToWishlist);
     } else {
       res.status(400).json("already in wishlist");
     }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// remove user wishlist item from wishlist table
+router.post("/wishlist/remove", async (req, res) => {
+  try {
+    const { orderId } = req.body;
+    console.log(orderId)
+
+    const removeFromWishlist = await prisma.orders.delete({
+      where: {
+        id: orderId,
+      },
+    });
+
+    res.json(removeFromWishlist);
   } catch (err) {
     console.log(err);
   }

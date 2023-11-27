@@ -24,7 +24,14 @@ import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import IconButton from "@mui/material/IconButton";
 
-const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCartCount }) => {
+const ItemsCard = ({
+  item,
+  user,
+  setOpenSnackbar,
+  setSnackbarMessage,
+  getProducts,
+  getCartCount,
+}) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
@@ -47,7 +54,8 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCartCou
       )
         .then((res) => {
           if (res.status === 200) {
-            setSnackbarMessage("Successfully added item to wishlist");
+            getProducts();
+            setSnackbarMessage("Successfully added wishlist");
             setOpenSnackbar(true);
           }
         })
@@ -56,7 +64,9 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCartCou
           setOpenSnackbar(true);
         });
     } else {
-      setSnackbarMessage("You must log in or create an account to save your changes");
+      setSnackbarMessage(
+        "You must log in or create an account to save your changes"
+      );
       setOpenSnackbar(true);
     }
   };
@@ -78,8 +88,8 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCartCou
       )
         .then((res) => {
           if (res.status === 200) {
-            getCartCount()
-            setSnackbarMessage("Successfully added item to cart");
+            getCartCount();
+            setSnackbarMessage("Successfully added cart");
             setOpenSnackbar(true);
           }
         })
@@ -88,7 +98,9 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCartCou
           setOpenSnackbar(true);
         });
     } else {
-      setSnackbarMessage("You must log in or create an account to save your changes");
+      setSnackbarMessage(
+        "You must log in or create an account to save your changes"
+      );
       setOpenSnackbar(true);
     }
   };
@@ -101,8 +113,16 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCartCou
 
   return (
     <Grid item xs={12} sm={6} md={4}>
-      <Card sx={{ borderRadius: "10px", height: "100%" }}>
-        <Box sx={{ width: "100%", height: 240, boxSizing: "border-box" }}>
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          borderRadius: "10px",
+          height: "100%",
+        }}
+      >
+        <Box sx={{ width: "100%", height: 300, boxSizing: "border-box" }}>
           <CardMedia
             component="img"
             sx={{
@@ -173,7 +193,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCartCou
             </Box>
           </Box>
         </CardContent>
-        <CardActions sx={{ border: "solid red" }}>
+        <CardActions sx={{ justifyContent: "space-between" }}>
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
@@ -183,7 +203,6 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCartCou
                 : false
             }
             color="error"
-            sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}
           />
           <Button
@@ -200,10 +219,19 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCartCou
   );
 };
 
-const Earbuds = ({ user, setOpenSnackbar, setSnackbarMessage, getCartCount }) => {
+const Earbuds = ({
+  user,
+  setOpenSnackbar,
+  setSnackbarMessage,
+  getCartCount,
+}) => {
   const [earbuds, setEarbuds] = useState([]);
 
   useEffect(() => {
+    getProducts();
+  }, [user]);
+
+  const getProducts = () => {
     if (user) {
       Axios.post(
         "http://localhost:3000/api/productsWithUser",
@@ -238,7 +266,7 @@ const Earbuds = ({ user, setOpenSnackbar, setSnackbarMessage, getCartCount }) =>
           console.log(err);
         });
     }
-  }, [user]);
+  };
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
@@ -254,6 +282,7 @@ const Earbuds = ({ user, setOpenSnackbar, setSnackbarMessage, getCartCount }) =>
               user={user}
               setOpenSnackbar={setOpenSnackbar}
               setSnackbarMessage={setSnackbarMessage}
+              getProducts={getProducts}
               getCartCount={getCartCount}
             />
           ))}

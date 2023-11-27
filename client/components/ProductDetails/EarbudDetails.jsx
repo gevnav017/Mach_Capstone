@@ -38,9 +38,6 @@ const EarbudDetails = () => {
     Axios.get(
       `http://localhost:3000/api/product/${itemId}`,
       {
-        // userId: user && user.id,
-      },
-      {
         headers: {
           "Content-Type": "application/Json",
         },
