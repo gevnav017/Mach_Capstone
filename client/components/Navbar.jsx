@@ -41,7 +41,7 @@ const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState(false);
-  const [cartCount, setCartCount] = useState(0)
+  const [cartCount, setCartCount] = useState(0);
 
   // user logged in
   const [user, setUser] = useState(null);
@@ -59,7 +59,7 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    getCartCount()
+    getCartCount();
   }, [user]);
 
   const getCartCount = () => {
@@ -67,16 +67,20 @@ const Navbar = () => {
     const inCart = true;
 
     Axios.get(`http://localhost:3000/api/cartCount/${userId}`)
-      .then((res) => setCartCount(res.data[0]._sum.quantity))
+      .then((res) => {
+        if (res.data[0]._sum.quantity > 0) {
+          setCartCount(res.data[0]._sum.quantity);
+        }
+      })
       .catch((err) => console.log(err));
-  }
+  };
 
   const handleLogout = () => {
     handleCloseUserMenu();
-    setCartCount(0)
+    setCartCount(0);
 
     window.localStorage.removeItem("token");
-    setUser(null)
+    setUser(null);
   };
 
   const handleOpenNavMenu = (event) => {

@@ -14,8 +14,8 @@ router.get("/cartCount/:userId", async (req, res) => {
         inCart: true,
       },
       _sum: {
-        quantity: true
-      }
+        quantity: true,
+      },
     });
 
     res.json(cartCount);
@@ -47,11 +47,10 @@ router.get("/orders/:userId/:inCart", async (req, res) => {
   }
 });
 
-// create user order in orders table
+// create order in orders table
 router.post("/orders/new", async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
-    console.log("new order ", userId, productId, quantity);
 
     // check if item is already in cart
     const inOrders = await prisma.orders.findFirst({
@@ -86,6 +85,36 @@ router.post("/orders/new", async (req, res) => {
 
       // console.log("updated");
       res.json(updateQty);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.post("/wishlistToOrder", async (req, res) => {
+  try {
+    const { orderId } = req.body;
+
+    const alreadyInCart = await prisma.orders.findFirst({
+      where: {
+        id: orderId,
+        inCart: true,
+      },
+    });
+
+    if (!alreadyInCart) {
+      const wishlistToOrder = await prisma.orders.update({
+        data: {
+          inCart: true,
+        },
+        where: {
+          id: orderId,
+        },
+      });
+
+      res.json(wishlistToOrder);
+    } else {
+      res.status(400).json("already in cart")
     }
   } catch (err) {
     console.log(err);

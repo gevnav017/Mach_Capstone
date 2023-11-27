@@ -14,34 +14,79 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
-const Wishlist = ({ user }) => {
+const Wishlist = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
   const [wishlist, setWishlist] = useState([]);
 
   useEffect(() => {
+    getWishlist();
+  }, [user]);
+
+  const getWishlist = () => {
     const userId = user && user.id;
+
     Axios.get(`http://localhost:3000/api/wishlist/${userId}`)
       .then((data) => setWishlist(data.data))
       .catch((err) => {
         console.log(err);
       });
-  }, [user]);
+  };
 
+  const addToCart = (orderId) => {
+    console.log(orderId);
+    Axios.post(
+      `http://localhost:3000/api/wishlistToOrder`,
+      {
+        orderId: orderId,
+      },
+      {
+        headers: {
+          "content-type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.status === 200) {
+          setSnackbarMessage("Successfully added to cart");
+          setOpenSnackbar(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  // add to cart button function
-  // once clicked, add item to cart and remove from wishlist
-  const addToCart = (itemId) => {
-    console.log(itemId)
-  }
+  const removeFromWishlist = (orderId) => {
+    Axios.post(
+      `http://localhost:3000/api/wishlist/remove`,
+      {
+        orderId: orderId,
+      },
+      {
+        headers: {
+          "content-type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.status === 200) {
+          getWishlist();
+          setSnackbarMessage("Successfully removed from wishlist");
+          setOpenSnackbar(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  const removeFromWishlist = (itemId) => {
-    console.log(itemId)
-  }
-  
   return (
     <>
       {wishlist &&
         wishlist.map((item) => (
-          <Card key={item.id} sx={{ display: "flex", minWidth: "400px", mb: 2 }}>
+          <Card
+            key={item.id}
+            sx={{ display: "flex", minWidth: "400px", mb: 2 }}
+          >
             <CardMedia
               component="img"
               sx={{
@@ -49,13 +94,18 @@ const Wishlist = ({ user }) => {
                 height: "150px",
                 objectFit: "contain",
                 p: 1,
-                height: "100%"
+                height: "100%",
               }}
               image={item.products.image}
               alt="earbud"
             />
             <Grid container>
-              <Grid item xs={12} md={5} sx={{ display: "flex", alignItems: "center" }}>
+              <Grid
+                item
+                xs={12}
+                md={5}
+                sx={{ display: "flex", alignItems: "center" }}
+              >
                 <CardContent>
                   <Typography component="div" variant="h5">
                     {item.products.name}
@@ -102,7 +152,10 @@ const Wishlist = ({ user }) => {
                 }}
               >
                 <Button onClick={() => addToCart(item.id)}>Add to cart</Button>
-                <Button color="error" onClick={() => removeFromWishlist(item.id)}>
+                <Button
+                  color="error"
+                  onClick={() => removeFromWishlist(item.id)}
+                >
                   <CloseOutlinedIcon />
                 </Button>
               </Grid>
