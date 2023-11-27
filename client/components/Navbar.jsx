@@ -41,6 +41,7 @@ const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState(false);
+  const [cartCount, setCartCount] = useState(0)
 
   // user logged in
   const [user, setUser] = useState(null);
@@ -57,10 +58,25 @@ const Navbar = () => {
       .catch((err) => console.log(err));
   }, []);
 
+  useEffect(() => {
+    getCartCount()
+  }, [user]);
+
+  const getCartCount = () => {
+    const userId = user && user.id;
+    const inCart = true;
+
+    Axios.get(`http://localhost:3000/api/cartCount/${userId}`)
+      .then((res) => setCartCount(res.data[0]._sum.quantity))
+      .catch((err) => console.log(err));
+  }
+
   const handleLogout = () => {
     handleCloseUserMenu();
+    setCartCount(0)
 
     window.localStorage.removeItem("token");
+    setUser(null)
   };
 
   const handleOpenNavMenu = (event) => {
@@ -197,7 +213,7 @@ const Navbar = () => {
             <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
               <IconButton sx={{ mr: 2 }}>
                 <NavLink to="/cart" className={activeClassStyle}>
-                  <Badge badgeContent={4} color="primary">
+                  <Badge badgeContent={cartCount} color="primary">
                     <ShoppingCartOutlinedIcon />
                   </Badge>
                 </NavLink>
@@ -269,6 +285,7 @@ const Navbar = () => {
               user={user}
               setOpenSnackbar={setOpenSnackbar}
               setSnackbarMessage={setSnackbarMessage}
+              getCartCount={getCartCount}
             />
           }
         />
@@ -280,6 +297,7 @@ const Navbar = () => {
               user={user}
               setOpenSnackbar={setOpenSnackbar}
               setSnackbarMessage={setSnackbarMessage}
+              getCartCount={getCartCount}
             />
           }
         />
@@ -291,6 +309,7 @@ const Navbar = () => {
               user={user}
               setOpenSnackbar={setOpenSnackbar}
               setSnackbarMessage={setSnackbarMessage}
+              getCartCount={getCartCount}
             />
           }
         />
@@ -301,6 +320,7 @@ const Navbar = () => {
               user={user}
               setOpenSnackbar={setOpenSnackbar}
               setSnackbarMessage={setSnackbarMessage}
+              getCartCount={getCartCount}
             />
           }
         />
@@ -311,6 +331,7 @@ const Navbar = () => {
               user={user}
               setOpenSnackbar={setOpenSnackbar}
               setSnackbarMessage={setSnackbarMessage}
+              getCartCount={getCartCount}
             />
           }
         />
@@ -321,6 +342,7 @@ const Navbar = () => {
               user={user}
               setOpenSnackbar={setOpenSnackbar}
               setSnackbarMessage={setSnackbarMessage}
+              getCartCount={getCartCount}
             />
           }
         />
@@ -371,7 +393,7 @@ const Navbar = () => {
 
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={6000}
+        autoHideDuration={5000}
         anchorOrigin={{
           vertical: "top",
           horizontal: "center",

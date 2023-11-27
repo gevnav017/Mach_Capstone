@@ -14,34 +14,43 @@ router.get("/products", async (req, res) => {
 });
 
 // all products based on category and userId
-router.post("/products", async (req, res) => {
+router.get("/products", async (req, res) => {
+  try {
+    const { category } = req.body;
+
+    const products = await prisma.products.findMany({
+      where: {
+        category: category,
+      },
+    });
+    console.log("no user")
+
+    res.json(products);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// all products based on category and userId
+router.post("/productsWithUser", async (req, res) => {
   try {
     const { userId, category } = req.body;
 
-    if (userId) {
-      const products = await prisma.products.findMany({
-        where: {
-          category: category,
-        },
-        include: {
-          orders: {
-            where: {
-              userId: userId,
-            },
+    const products = await prisma.products.findMany({
+      where: {
+        category: category,
+      },
+      include: {
+        orders: {
+          where: {
+            userId: userId,
           },
         },
-      });
+      },
+    });
+    console.log("with user")
 
-      res.json(products);
-    } else {
-      const products = await prisma.products.findMany({
-        where: {
-          category: category,
-        },
-      });
-
-      res.json(products);
-    }
+    res.json(products);
   } catch (err) {
     console.log(err);
   }

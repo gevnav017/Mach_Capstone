@@ -24,7 +24,7 @@ import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import IconButton from "@mui/material/IconButton";
 
-const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
+const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCartCount }) => {
   const [count, setCount] = useState(1);
 
   const decrementQty = () => {
@@ -56,7 +56,8 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
           setOpenSnackbar(true);
         });
     } else {
-      console.log("log in or create an account to save your changes");
+      setSnackbarMessage("You must log in or create an account to save your changes");
+      setOpenSnackbar(true);
     }
   };
 
@@ -77,6 +78,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
       )
         .then((res) => {
           if (res.status === 200) {
+            getCartCount()
             setSnackbarMessage("Successfully added item to cart");
             setOpenSnackbar(true);
           }
@@ -86,7 +88,8 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
           setOpenSnackbar(true);
         });
     } else {
-      console.log("log in or create an account to save your changes");
+      setSnackbarMessage("You must log in or create an account to save your changes");
+      setOpenSnackbar(true);
     }
   };
 
@@ -98,7 +101,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
 
   return (
     <Grid item xs={12} sm={6} md={4}>
-      <Card sx={{ borderRadius: "10px" }}>
+      <Card sx={{ borderRadius: "10px", height: "100%" }}>
         <Box sx={{ width: "100%", height: 240, boxSizing: "border-box" }}>
           <CardMedia
             component="img"
@@ -144,7 +147,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
             }}
           >
             <Typography gutterBottom variant="h6" component="div">
-              ${item.price}
+              ${parseFloat(item.price).toFixed(2)}
             </Typography>
             <Box
               sx={{
@@ -170,11 +173,15 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
             </Box>
           </Box>
         </CardContent>
-        <CardActions>
+        <CardActions sx={{ border: "solid red" }}>
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
-            checked={item.orders && item.orders[0].inWishlist}
+            checked={
+              item.orders && Object.keys(item.orders).length > 0
+                ? item.orders[0].inWishlist
+                : false
+            }
             color="error"
             sx={{ mr: "auto" }}
             onClick={() => addToWishlist(item.id)}
@@ -193,26 +200,44 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage }) => {
   );
 };
 
-const Earbuds = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
+const Earbuds = ({ user, setOpenSnackbar, setSnackbarMessage, getCartCount }) => {
   const [earbuds, setEarbuds] = useState([]);
 
   useEffect(() => {
-    Axios.post(
-      "http://localhost:3000/api/products",
-      {
-        userId: user && user.id,
-        category: "Earbud",
-      },
-      {
-        headers: {
-          "Content-Type": "application/JSON",
+    if (user) {
+      Axios.post(
+        "http://localhost:3000/api/productsWithUser",
+        {
+          userId: user && user.id,
+          category: "Earbud",
         },
-      }
-    )
-      .then((res) => setEarbuds(res.data))
-      .catch((err) => {
-        console.log(err);
-      });
+        {
+          headers: {
+            "Content-Type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => setEarbuds(res.data))
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Axios.get(
+        "http://localhost:3000/api/products",
+        {
+          category: "Earbud",
+        },
+        {
+          headers: {
+            "Content-Type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => setEarbuds(res.data))
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, [user]);
 
   return (
@@ -229,6 +254,7 @@ const Earbuds = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
               user={user}
               setOpenSnackbar={setOpenSnackbar}
               setSnackbarMessage={setSnackbarMessage}
+              getCartCount={getCartCount}
             />
           ))}
       </Grid>
