@@ -87,7 +87,7 @@ const Orders = ({ user }) => {
           marginBottom: "40px",
         }}
       >
-        <h2>Order History</h2>
+       <Typography variant="h5">Order History</Typography>
 
         <BasicSelect />
       </div>
