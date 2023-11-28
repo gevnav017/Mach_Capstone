@@ -3,32 +3,32 @@ const router = express.Router();
 const prisma = require("../db/client");
 
 // get cart qty total for user in Navbar
-router.get("/cartCount/:userId", async (req, res) => {
-  try {
-    const { userId } = req.params;
+// router.get("/cartCount/:userId", async (req, res) => {
+//   try {
+//     const { userId } = req.params;
 
-    const cartCount = await prisma.orders.groupBy({
-      by: "userId",
-      where: {
-        userId: userId,
-        inCart: true,
-      },
-      _sum: {
-        quantity: true,
-      },
-    });
+//     const cartCount = await prisma.orders.groupBy({
+//       by: "userId",
+//       where: {
+//         userId: userId,
+//         inCart: true,
+//       },
+//       _sum: {
+//         quantity: true,
+//       },
+//     });
 
-    res.json(cartCount);
-  } catch (err) {
-    console.log(err);
-  }
-});
+//     res.json(cartCount);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// });
 
 // get all current in cart or past/archived orders by user
 router.get("/orders/:userId/:inCart", async (req, res) => {
   try {
     const { userId, inCart } = req.params;
-
+    console.log(userId, inCart);
     const inCartValue = inCart === "true" ? true : false;
 
     const orders = await prisma.orders.findMany({
