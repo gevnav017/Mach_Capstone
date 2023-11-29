@@ -14,6 +14,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import Card from "@mui/material/Card"
 
 const BasicSelect = () => {
   const [ordersPlaced, setOrdersPlaced] = React.useState("");
@@ -56,13 +57,11 @@ const Orders = ({ user }) => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await Axios.get(`http://localhost:3000/api/orders`, {
-          params: {
-            userId: user.id,
-            inCart: false,
-          },
-        });
+        const userId = user.id
+        const inCart = false
+        const response = await Axios.get(`http://localhost:3000/api/orders/${userId}/${inCart}`);
         setOrders(response.data);
+        console.log(response)
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -101,8 +100,7 @@ const Orders = ({ user }) => {
           background: "#d8d7d7",
         }}
       >
-        {Array.isArray(orders) && orders.length > 0 ? (
-          orders.map((order) => (
+        {orders.map((order) => (
             <Grid item key={order.id} xs={12} md={5} lg={4}>
               <Card sx={{ height: "100%" }}>
                 <CardContent>
@@ -117,7 +115,7 @@ const Orders = ({ user }) => {
                     Total: ${order.total}
                   </Typography>
                   {/* Displaying images and product names */}
-                  {order.items.map((item) => (
+                  {/* {order.items.map((item) => (
                     <div
                       key={item.id}
                       style={{
@@ -127,8 +125,8 @@ const Orders = ({ user }) => {
                       }}
                     >
                       <img
-                        src={item.product.image}
-                        alt={item.product.name}
+                        src={item.products.image}
+                        alt={item.products.name}
                         style={{
                           marginRight: "8px",
                           width: "50px",
@@ -137,20 +135,20 @@ const Orders = ({ user }) => {
                         }}
                       />
                       <Typography variant="body1">
-                        {item.product.name}
+                        {item.products.name}
                       </Typography>
                     </div>
                   ))}
                   <Button onClick={() => viewOrderDetails(order.id)}>
                     View Details
-                  </Button>
+                  </Button> */}
                 </CardContent>
               </Card>
             </Grid>
-          ))
-        ) : (
-          <Typography variant="h6">No Orders Available</Typography>
-        )}
+          ))}
+         
+          // <Typography variant="h6">No Orders Available</Typography>
+        
       </Grid>
     </Container>
   );
