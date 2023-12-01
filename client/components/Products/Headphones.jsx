@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 import Axios from "axios";
 
 // component imports
+import FilterPage from "../FilterPage";
+
 
 // MUI imports
 import {
@@ -270,6 +272,7 @@ const Headphones = ({
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
+      <FilterPage />
       <Typography variant="h5" sx={{ my: 2 }}>
         Headphones
       </Typography>

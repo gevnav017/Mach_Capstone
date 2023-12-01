@@ -14,9 +14,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.16",
     "@mui/lab": "^5.0.0-alpha.152",
-    "@mui/material": "^5.14.18",
+    "@mui/material": "^5.14.19",
     "@mui/styled-engine-sc": "^6.0.0-alpha.4",
     "@prisma/client": "^5.5.2",
     "axios": "^1.6.0",

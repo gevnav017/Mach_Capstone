@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import Axios from "axios";
 
 // component imports
+import FilterPage from "../FilterPage";
 
 // MUI imports
 import {
@@ -270,9 +271,11 @@ const Speakers = ({
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
+      <FilterPage />
       <Typography variant="h5" sx={{ my: 2 }}>
         Speakers
       </Typography>
+
       <Grid container spacing={2}>
         {speakers &&
           speakers.map((speaker) => (
