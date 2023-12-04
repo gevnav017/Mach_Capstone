@@ -49,9 +49,13 @@ const BasicSelect = () => {
   );
 };
 
+
 const Orders = ({ user }) => {
   // state to hold orders
   const [orders, setOrders] = useState([]);
+
+  // state to track whether orders are loading
+  const [loading, setLoading] = useState(true);
 
   // axios call to get orders that have inCart column false by logged in user from db
   useEffect(() => {
@@ -61,6 +65,7 @@ const Orders = ({ user }) => {
         const inCart = false
         const response = await Axios.get(`http://localhost:3000/api/orders/${userId}/${inCart}`);
         setOrders(response.data);
+        setLoading(false);
         console.log(response)
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -90,28 +95,45 @@ const Orders = ({ user }) => {
 
         <BasicSelect />
       </div>
-      {/* map through orders state to display all orders from the logged in user */}
-      {/* button on each order item to click and view order details...dialog box opens up */}
-      {/* Grid to display orders as cards */}
+      {/* Conditional rendering based on the presence of orders */}
+      {loading ? (
+        <Typography variant="h6">Loading...</Typography>
+      ) : orders.length === 0 ? (
+        <Typography variant="h6">No Order History</Typography>
+      ) : (
       <Grid
         container
         spacing={2}
         style={{
           background: "#d8d7d7",
+          display: "flex",
+          flexDirection: "column",
+
         }}
       >
+        {/* map through orders state to display all orders from the logged in user */}
+      {/* button on each order item to click and view order details...dialog box opens up */}
+      {/* Grid to display orders as cards */}
+
         {orders.map((order) => (
-            <Grid item key={order.id} xs={12} md={5} lg={4}>
-              <Card sx={{ height: "100%" }}>
-                <CardContent>
+            // <Grid item key={order.id} xs={12} md={5} lg={4}>
+            <Grid item key={order.id}>
+              {/* <Card sx={{ height: "100%" }}> */}
+              <Card style={{
+                maxWidth: '98%',
+              }}>
+                <CardContent style={{
+                  display: "flex",
+                  flexDirection: "column"
+                }}>
                   {/* Display order info */}
-                  <Typography variant="h5" gutterBottom>
-                    Order Date {order.date}
+                  <Typography variant="h8" gutterBottom>
+                    Order Date: {order.dateOrdered}
                   </Typography>
-                  <Typography variant="h5" gutterBottom>
-                    Order #{order.id}
+                  <Typography variant="h8" gutterBottom>
+                    Order #:{order.id}
                   </Typography>
-                  <Typography variant="h5" gutterBottom>
+                  <Typography variant="h8" gutterBottom>
                     Total: ${order.total}
                   </Typography>
                   {/* Displaying images and product names */}
@@ -145,13 +167,14 @@ const Orders = ({ user }) => {
                 </CardContent>
               </Card>
             </Grid>
-          ))}
-         
-          // <Typography variant="h6">No Orders Available</Typography>
-        
+          ))}     
       </Grid>
+      )}
     </Container>
   );
 };
 
 export default Orders;
+
+
+
