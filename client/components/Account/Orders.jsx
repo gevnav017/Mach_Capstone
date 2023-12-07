@@ -128,7 +128,7 @@ const Orders = ({ user }) => {
                 }}>
                   {/* Display order info */}
                   <Typography variant="h8" gutterBottom>
-                    Order Date: {order.dateOrdered}
+                    Order Date: {order.dateOrdered.slice(0,10)}
                   </Typography>
                   <Typography variant="h8" gutterBottom>
                     Order #:{order.id}
