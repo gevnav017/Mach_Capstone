@@ -14,7 +14,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import Card from "@mui/material/Card"
+import Card from "@mui/material/Card";
 
 const BasicSelect = () => {
   const [ordersPlaced, setOrdersPlaced] = React.useState("");
@@ -57,11 +57,13 @@ const Orders = ({ user }) => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const userId = user.id
-        const inCart = false
-        const response = await Axios.get(`http://localhost:3000/api/orders/${userId}/${inCart}`);
+        const userId = user.id;
+        const inCart = false;
+        const response = await Axios.get(
+          `http://localhost:3000/api/orders/${userId}/${inCart}`
+        );
         setOrders(response.data);
-        console.log(response)
+        console.log(response);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -86,7 +88,7 @@ const Orders = ({ user }) => {
           marginBottom: "40px",
         }}
       >
-       <Typography variant="h5">Order History</Typography>
+        <Typography variant="h5">Order History</Typography>
 
         <BasicSelect />
       </div>
@@ -101,21 +103,21 @@ const Orders = ({ user }) => {
         }}
       >
         {orders.map((order) => (
-            <Grid item key={order.id} xs={12} md={5} lg={4}>
-              <Card sx={{ height: "100%" }}>
-                <CardContent>
-                  {/* Display order info */}
-                  <Typography variant="h5" gutterBottom>
-                    Order Date {order.date}
-                  </Typography>
-                  <Typography variant="h5" gutterBottom>
-                    Order #{order.id}
-                  </Typography>
-                  <Typography variant="h5" gutterBottom>
-                    Total: ${order.total}
-                  </Typography>
-                  {/* Displaying images and product names */}
-                  {/* {order.items.map((item) => (
+          <Grid item key={order.id} xs={12} md={5} lg={4}>
+            <Card sx={{ height: "100%" }}>
+              <CardContent>
+                {/* Display order info */}
+                <Typography variant="h5" gutterBottom>
+                  Order Date {order.date}
+                </Typography>
+                <Typography variant="h5" gutterBottom>
+                  Order #{order.id}
+                </Typography>
+                <Typography variant="h5" gutterBottom>
+                  Total: ${order.total}
+                </Typography>
+                {/* Displaying images and product names */}
+                {/* {order.items.map((item) => (
                     <div
                       key={item.id}
                       style={{
@@ -142,13 +144,11 @@ const Orders = ({ user }) => {
                   <Button onClick={() => viewOrderDetails(order.id)}>
                     View Details
                   </Button> */}
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-         
-          // <Typography variant="h6">No Orders Available</Typography>
-        
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+        // <Typography variant="h6">No Orders Available</Typography>
       </Grid>
     </Container>
   );
