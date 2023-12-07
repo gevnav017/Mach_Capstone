@@ -23,6 +23,28 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getProduct
 
   const removeFromCart = (item) => {
     console.log(item);
+
+    // Axios.post(
+    //   `http://localhost:3000/api/cart/remove`,
+    //   {
+    //     orderId: orderId,
+    //   },
+    //   {
+    //     headers: {
+    //       "content-type": "application/JSON",
+    //     },
+    //   }
+    // )
+    //   .then((res) => {
+    //     if (res.status === 200) {
+    //       getCart();
+    //       setSnackbarMessage("Successfully removed from cart");
+    //       setOpenSnackbar(true);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   const decrementQty = (item) => {
@@ -31,12 +53,43 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getProduct
   };
 
   //add item to wishlist and remove from cart
-  const addToWishlist = (item) => {
+  const addToWishlist = (itemId) => {
     console.log(item);
+
+    if (user) {
+      Axios.post(
+        "http://localhost:3000/api/wishlist",
+        {
+          userId: user.id,
+          productId: itemId,
+        },
+        {
+          headers: {
+            "content-type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => {
+          if (res.status === 200) {
+            getProducts();
+            setSnackbarMessage("Successfully added wishlist");
+            setOpenSnackbar(true);
+          }
+        })
+        .catch((err) => {
+          setSnackbarMessage("Error: " + err);
+          setOpenSnackbar(true);
+        });
+    } else {
+      setSnackbarMessage(
+        "You must log in or create an account to save your changes"
+      );
+      setOpenSnackbar(true);
+    }
   };
 
   return (
-    <Card key={item.id} sx={{ display: "flex", minWidth: "400px", mb: 2 }}>
+    <Card key={itemId} sx={{ display: "flex", minWidth: "400px", mb: 2 }}>
       <CardMedia
         component="img"
         sx={{
@@ -100,7 +153,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getProduct
             p: 2,
           }}
         >
-          <Button onClick={() => addToWishlist(item.id)}>
+          <Button onClick={() => addToWishlist(itemId)}>
             {" "}
             Add to Wishlist{" "}
           </Button>
