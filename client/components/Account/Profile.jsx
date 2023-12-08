@@ -13,7 +13,7 @@ const Profile = ({ user }) => {
   return (
     <Stack direction="column" spacing={5}>
       <div className="backgroundImage">
-        <Avatar sx={{ width: 56, height: 56 }} />
+        <Avatar sx={{ width: 56, height: 56 }}>{`${user.firstName}`}</Avatar>
         <div className="boldHeading">{"ACCOUNT INFORMATION"}</div>
         <div
           style={{
