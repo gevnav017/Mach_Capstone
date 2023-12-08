@@ -271,10 +271,20 @@ const Earbuds = ({
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
-      <FilterPage />
-      <Typography variant="h5" sx={{ my: 2 }}>
-        Earbuds
-      </Typography>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "40px",
+        }}
+      >
+        <Typography variant="h5" sx={{ my: 2 }}>
+          Earbuds
+        </Typography>
+        <FilterPage />
+      </div>
       <Grid container spacing={2}>
         {earbuds &&
           earbuds.map((earbud) => (
