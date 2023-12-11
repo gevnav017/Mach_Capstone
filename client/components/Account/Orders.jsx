@@ -20,7 +20,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-
 const BasicSelect = () => {
   const [ordersPlaced, setOrdersPlaced] = React.useState("");
 
@@ -89,9 +88,11 @@ const Orders = ({ user }) => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const userId = user.id
-        const inCart = false
-        const response = await Axios.get(`http://localhost:3000/api/orders/${userId}/${inCart}`);
+        const userId = user.id;
+        const inCart = false;
+        const response = await Axios.get(
+          `http://localhost:3000/api/orders/${userId}/${inCart}`
+        );
         setOrders(response.data);
         setLoading(false);
         console.log(response)
@@ -119,7 +120,7 @@ const Orders = ({ user }) => {
           marginBottom: "40px",
         }}
       >
-       <Typography variant="h5">Order History</Typography>
+        <Typography variant="h5">Order History</Typography>
 
         <BasicSelect />
       </div>
