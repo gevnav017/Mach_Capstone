@@ -14,7 +14,11 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import Card from "@mui/material/Card";
+import Card from "@mui/material/Card"
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const BasicSelect = () => {
   const [ordersPlaced, setOrdersPlaced] = React.useState("");
@@ -49,9 +53,36 @@ const BasicSelect = () => {
   );
 };
 
+
+const BasicAccordion = () => {
+  return (
+    <div>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography variant="h8" style={{color: '#2998e2', fontWeight: 'bold'}}>See Order Details</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+    </div>
+  );
+}
+
+
 const Orders = ({ user }) => {
   // state to hold orders
   const [orders, setOrders] = useState([]);
+
+  // state to track whether orders are loading
+  const [loading, setLoading] = useState(true);
 
   // axios call to get orders that have inCart column false by logged in user from db
   useEffect(() => {
@@ -63,7 +94,8 @@ const Orders = ({ user }) => {
           `http://localhost:3000/api/orders/${userId}/${inCart}`
         );
         setOrders(response.data);
-        console.log(response);
+        setLoading(false);
+        console.log(response)
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -92,32 +124,58 @@ const Orders = ({ user }) => {
 
         <BasicSelect />
       </div>
-      {/* map through orders state to display all orders from the logged in user */}
-      {/* button on each order item to click and view order details...dialog box opens up */}
-      {/* Grid to display orders as cards */}
+      {/* Conditional rendering based on the presence of orders */}
+      {loading ? (
+        <Typography variant="h6">Loading...</Typography>
+      ) : orders.length === 0 ? (
+        <Typography variant="h6" style={{
+          display: 'flex',
+          justifyContent: 'center'
+        }}>NO ORDER HISTORY AVAILABLE</Typography>
+      ) : (
       <Grid
         container
         spacing={2}
         style={{
-          background: "#d8d7d7",
+          background: 'linear-gradient(-225deg, #5D9FFF 0%, #2998e2 45%, #e2e7ec 100%)',
+          display: "flex",
+          flexDirection: "column",
+
         }}
       >
+        {/* map through orders state to display all orders from the logged in user */}
+      {/* button on each order item to click and view order details...dialog box opens up */}
+      {/* Grid to display orders as cards */}
+
         {orders.map((order) => (
-          <Grid item key={order.id} xs={12} md={5} lg={4}>
-            <Card sx={{ height: "100%" }}>
-              <CardContent>
-                {/* Display order info */}
-                <Typography variant="h5" gutterBottom>
-                  Order Date {order.date}
-                </Typography>
-                <Typography variant="h5" gutterBottom>
-                  Order #{order.id}
-                </Typography>
-                <Typography variant="h5" gutterBottom>
-                  Total: ${order.total}
-                </Typography>
-                {/* Displaying images and product names */}
-                {/* {order.items.map((item) => (
+            // <Grid item key={order.id} xs={12} md={5} lg={4}>
+            <Grid item key={order.id}>
+              {/* <Card sx={{ height: "100%" }}> */}
+              <Card style={{
+                maxWidth: '98%',
+                marginBottom: '16px'
+              }}>
+                <CardContent style={{
+                  display: "flex",
+                  flexDirection: "column"
+                }}>
+                  {/* Display order info */}
+                  <Typography variant="h7" gutterBottom>
+                    Order Date: {order.dateOrdered.slice(0,10)}
+                  </Typography>
+                  <Typography variant="h7" gutterBottom>
+                    {/* Order #: {order.id} */}
+                    Order #: {order.id.slice(0,8)}
+                  </Typography>
+                  <Typography variant="h7" gutterBottom style={{marginBottom: '10px'}}>
+                    Total: ${order.total}
+                  </Typography>
+                  {/* To show items in order summary */}
+                  <BasicAccordion style={{
+              
+                  }}/>
+                  {/* Displaying images and product names */}
+                  {/* {order.items.map((item) => (
                     <div
                       key={item.id}
                       style={{
@@ -144,14 +202,17 @@ const Orders = ({ user }) => {
                   <Button onClick={() => viewOrderDetails(order.id)}>
                     View Details
                   </Button> */}
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-        // <Typography variant="h6">No Orders Available</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}     
       </Grid>
+      )}
     </Container>
   );
 };
 
 export default Orders;
+
+
+
