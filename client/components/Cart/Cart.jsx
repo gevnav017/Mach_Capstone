@@ -18,17 +18,8 @@ import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 
-const Cart = ({ user }) => {
-  const [cart, setCart] = useState([]);
-
-  useEffect(() => {
-    const userId = user && user.id;
-    const inCart = true;
-
-    Axios.get(`http://localhost:3000/api/orders/${userId}/${inCart}`)
-      .then((res) => setCart(res.data))
-      .catch((err) => console.log(err));
-  }, [user]);
+///////////////////////////////////////////////////
+const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getProducts, getCartCount }) => {
 
   const removeFromCart = (item) => {
     console.log(item);
@@ -43,6 +34,120 @@ const Cart = ({ user }) => {
   const addToWishlist = (item) => {
     console.log(item);
   };
+
+  return (
+    <Card key={item.id} sx={{ display: "flex", minWidth: "400px", mb: 2 }}>
+      <CardMedia
+        component="img"
+        sx={{
+          width: { xs: "180px", md: "140px" },
+          height: "150px",
+          objectFit: "contain",
+          p: 1,
+          height: "100%",
+        }}
+        image={item.products.image}
+      />
+      <Grid container>
+        <Grid
+          item
+          xs={12}
+          md={5}
+          sx={{ display: "flex", alignItems: "center" }}
+        >
+          <CardContent>
+            <Typography component="div" variant="h5">
+              {item.products.name}
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              component="div"
+            >
+              {item.products.brand}
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              component="div"
+            >
+              {item.products.type}
+            </Typography>
+          </CardContent>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={4}
+          md={3}
+          sx={{ display: "flex", alignItems: "center" }}
+        >
+          <CardContent>
+            <Typography component="div" variant="h5">
+              ${item.products.price}
+            </Typography>
+          </CardContent>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={8}
+          md={4}
+          sx={{
+            display: "flex",
+            justifyContent: { xs: "space-between", sm: "end" },
+            alignItems: "center",
+            p: 2,
+          }}
+        >
+          <Button onClick={() => addToWishlist(item.id)}>
+            {" "}
+            Add to Wishlist{" "}
+          </Button>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <IconButton
+              onClick={decrementQty}
+              disabled={item.quantity === 1}
+              sx={{ color: "primary.main" }}
+            >
+              <RemoveOutlinedIcon />
+            </IconButton>
+            <Typography color="text.secondary">{item.quantity}</Typography>
+            <IconButton
+              // onClick={() => setCount((c) => c + 1)}
+              sx={{ color: "primary.main" }}
+            >
+              <AddOutlinedIcon />
+            </IconButton>
+            <Typography color="text.secondary">{item.quantity}</Typography>
+          </Box>
+          <Button color="error" onClick={() => removeFromCart(item)}>
+            <CloseOutlinedIcon />
+          </Button>
+        </Grid>
+      </Grid>
+    </Card>
+  );
+};
+
+//////////////////////////////////////////////////
+const Cart = ({ user }) => {
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    const userId = user && user.id;
+    const inCart = true;
+
+    Axios.get(`http://localhost:3000/api/orders/${userId}/${inCart}`)
+      .then((res) => setCart(res.data))
+      .catch((err) => console.log(err));
+  }, [user]);
 
   const navigate = useNavigate()
 
@@ -60,110 +165,16 @@ const Cart = ({ user }) => {
             Checkout
           </Button>
           {cart.map((item) => (
-            <Card
+            <ItemsCard
               key={item.id}
-              sx={{ display: "flex", minWidth: "400px", mb: 2 }}
-            >
-              <CardMedia
-                component="img"
-                sx={{
-                  width: { xs: "180px", md: "140px" },
-                  height: "150px",
-                  objectFit: "contain",
-                  p: 1,
-                  height: "100%",
-                }}
-                image={item.products.image}
-              />
-              <Grid container>
-                <Grid
-                  item
-                  xs={12}
-                  md={5}
-                  sx={{ display: "flex", alignItems: "center" }}
-                >
-                  <CardContent>
-                    <Typography component="div" variant="h5">
-                      {item.products.name}
-                    </Typography>
-                    <Typography
-                      variant="subtitle1"
-                      color="text.secondary"
-                      component="div"
-                    >
-                      {item.products.brand}
-                    </Typography>
-                    <Typography
-                      variant="subtitle1"
-                      color="text.secondary"
-                      component="div"
-                    >
-                      {item.products.type}
-                    </Typography>
-                  </CardContent>
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  sm={4}
-                  md={3}
-                  sx={{ display: "flex", alignItems: "center" }}
-                >
-                  <CardContent>
-                    <Typography component="div" variant="h5">
-                      ${item.products.price}
-                    </Typography>
-                  </CardContent>
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  sm={8}
-                  md={4}
-                  sx={{
-                    display: "flex",
-                    justifyContent: { xs: "space-between", sm: "end" },
-                    alignItems: "center",
-                    p: 2,
-                  }}
-                >
-                  <Button onClick={() => addToWishlist(item.id)}>
-                    {" "}
-                    Add to Wishlist{" "}
-                  </Button>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1,
-                    }}
-                  >
-                    <IconButton
-                      onClick={decrementQty}
-                      disabled={item.quantity === 1}
-                      sx={{ color: "primary.main" }}
-                    >
-                      <RemoveOutlinedIcon />
-                    </IconButton>
-                    <Typography color="text.secondary">
-                      {item.quantity}
-                    </Typography>
-                    <IconButton
-                      // onClick={() => setCount((c) => c + 1)}
-                      sx={{ color: "primary.main" }}
-                    >
-                      <AddOutlinedIcon />
-                    </IconButton>
-                    <Typography color="text.secondary">
-                      {item.quantity}
-                    </Typography>
-                  </Box>
-                  <Button color="error" onClick={() => removeFromCart(item)}>
-                    <CloseOutlinedIcon />
-                  </Button>
-                </Grid>
-              </Grid>
-            </Card>
+              item={item}
+              user={user}
+              // setOpenSnackbar={setOpenSnackbar}
+              // setSnackbarMessage={setSnackbarMessage}
+              // getProducts={getProducts}
+              // getCartCount={getCartCount}
+            />
+
           ))}
         </>
       )}

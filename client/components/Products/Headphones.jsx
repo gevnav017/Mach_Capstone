@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 import Axios from "axios";
 
 // component imports
+import FilterPage from "../FilterPage";
+
 
 // MUI imports
 import {
@@ -270,9 +272,24 @@ const Headphones = ({
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "40px",
+
+        }}
+
+      >
+      
       <Typography variant="h5" sx={{ my: 2 }}>
         Headphones
       </Typography>
+      <FilterPage />
+      </div>
       <Grid container spacing={2}>
         {headphones &&
           headphones.map((headphone) => (

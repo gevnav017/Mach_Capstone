@@ -2,6 +2,19 @@ const express = require("express");
 const router = express.Router();
 const prisma = require("../db/client");
 
+
+// all orders
+router.get("/orders", async (req, res) => {
+  try {
+    const orders = await prisma.orders.findMany();
+
+    res.json(orders);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
 // get cart qty total for user in Navbar
 router.get("/cartCount/:userId", async (req, res) => {
   try {
@@ -29,7 +42,7 @@ router.get("/orders/:userId/:inCart", async (req, res) => {
   try {
     const { userId, inCart } = req.params;
 
-    const inCartValue = inCart === "true" ? true : false;
+    const inCartValue = inCart === "true" 
 
     const orders = await prisma.orders.findMany({
       where: {
@@ -120,5 +133,31 @@ router.post("/wishlistToOrder", async (req, res) => {
     console.log(err);
   }
 });
+
+// get orders by user id and with dateOrdered not null
+router.get("/orders/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const orderHistory = await prisma.orders.findMany({
+      where: {
+        userId: userId,
+        dateOrdered: { not: null },
+        
+        // deciding if we need this portion below:
+        // inCart: false,
+        // inWishlist: false
+      },
+      include: {
+        products: true,
+      },
+    });
+
+    res.json(orderHistory);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 
 module.exports = router;
