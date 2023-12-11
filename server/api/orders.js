@@ -134,5 +134,30 @@ router.post("/wishlistToOrder", async (req, res) => {
   }
 });
 
+// get orders by user id and with dateOrdered not null
+router.get("/orders/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const orderHistory = await prisma.orders.findMany({
+      where: {
+        userId: userId,
+        dateOrdered: { not: null },
+        
+        // deciding if we need this portion below:
+        // inCart: false,
+        // inWishlist: false
+      },
+      include: {
+        products: true,
+      },
+    });
+
+    res.json(orderHistory);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 
 module.exports = router;

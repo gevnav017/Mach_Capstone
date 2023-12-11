@@ -127,7 +127,10 @@ const Orders = ({ user }) => {
       {loading ? (
         <Typography variant="h6">Loading...</Typography>
       ) : orders.length === 0 ? (
-        <Typography variant="h6">No Order History</Typography>
+        <Typography variant="h6" style={{
+          display: 'flex',
+          justifyContent: 'center'
+        }}>NO ORDER HISTORY AVAILABLE</Typography>
       ) : (
       <Grid
         container
