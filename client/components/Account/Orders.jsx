@@ -89,10 +89,10 @@ const Orders = ({ user }) => {
     const fetchOrders = async () => {
       try {
         const userId = user.id;
-        const inCart = false;
         const response = await Axios.get(
-          `http://localhost:3000/api/orders/${userId}/${inCart}`
+          `http://localhost:3000/api/orders/archive/${userId}`
         );
+          console.log(userId)
         setOrders(response.data);
         setLoading(false);
         console.log(response)
@@ -105,9 +105,9 @@ const Orders = ({ user }) => {
   }, [user.id]);
 
   // function to add view order details
-  const viewOrderDetails = (orderId) => {
-    console.log(orderId);
-  };
+  // const viewOrderDetails = (orderId) => {
+  //   console.log(orderId);
+  // };
 
   return (
     <Container maxWidth="lg" sx={{ p: 3 }}>
