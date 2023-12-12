@@ -153,7 +153,7 @@ const Checkout = ({ user }) => {
             overflow: "auto",
           }}
         >
-          Stipe payment
+          Stripe Payment
         </Box>
       ),
     },
