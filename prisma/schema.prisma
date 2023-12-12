@@ -52,6 +52,7 @@ model orders {
   userId      String   @default(uuid())
   users       users    @relation(fields: [userId], references: [id])
   archived    DateTime @default(now())
+  dateOrdered DateTime @default(now()) @db.Date
 }
 
 model reviews {

@@ -129,13 +129,17 @@ const Checkout = ({ user }) => {
               position: "sticky",
               top: 0,
               p: 3,
-              width: "20%",
-              minWidth: "200px",
+              width: { xs: "40%", md: "30%" },
+              // minWidth: "200px",
             }}
           >
-            <Typography gutterBottom>Item Qty</Typography>
-            <Typography gutterBottom>Tax</Typography>
-            <Typography gutterBottom>Total</Typography>
+            <Box sx={{ border: "solid red", }}>
+              <Typography gutterBottom>
+                Item Qty
+              </Typography>
+              <Typography gutterBottom>Tax</Typography>
+              <Typography gutterBottom>Total</Typography>
+            </Box>
           </Paper>
         </Box>
       ),
@@ -171,9 +175,7 @@ const Checkout = ({ user }) => {
             {Math.round(Math.random() * 1000000)}.
           </Typography>
 
-          <Box>
-            Items and total here
-          </Box>
+          <Box>Items and total here</Box>
         </Paper>
       ),
     },

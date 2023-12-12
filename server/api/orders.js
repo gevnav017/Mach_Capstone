@@ -2,6 +2,19 @@ const express = require("express");
 const router = express.Router();
 const prisma = require("../db/client");
 
+
+// all orders
+router.get("/orders", async (req, res) => {
+  try {
+    const orders = await prisma.orders.findMany();
+
+    res.json(orders);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
 // get cart qty total for user in Navbar
 router.get("/cartCount/:userId", async (req, res) => {
   try {
