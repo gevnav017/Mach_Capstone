@@ -121,4 +121,25 @@ router.post("/wishlistToOrder", async (req, res) => {
   }
 });
 
+// remove items from cart
+router.post("/orders/remove/:userId", async (req, res) => {
+  try {
+    const { userId, inCart } = req.params;
+    const { productId } = req.body;
+    console.log(productId, userId, inCart)
+
+    const removeFromCart = await prisma.orders.delete({
+      where: {
+        id: productId,
+        userId: userId,
+        inCart: true
+      },
+    });
+    console.log(removeFromCart)
+    res.json(removeFromCart);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 module.exports = router;
