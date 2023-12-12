@@ -3,12 +3,22 @@ const router = express.Router();
 const prisma = require("../db/client");
 
 
-// all orders
-router.get("/orders", async (req, res) => {
+// all orders by user
+router.get("/all-orders/:userId", async (req, res) => {
   try {
-    const orders = await prisma.orders.findMany();
+    const { userId } = req.params;
 
-    res.json(orders);
+    const orderHistory = await prisma.orders.findMany({
+      where: {
+        userId: userId,
+        ordered: true
+      },
+      include: {
+        products: true,
+      },
+    });
+
+    res.json(orderHistory);
   } catch (err) {
     console.log(err);
   }
@@ -41,9 +51,8 @@ router.get("/cartCount/:userId", async (req, res) => {
 router.get("/orders/:userId/:inCart", async (req, res) => {
   try {
     const { userId, inCart } = req.params;
-
     const inCartValue = inCart === "true" 
-    console.log(userId, "finding userId")
+
     const orders = await prisma.orders.findMany({
       where: {
         userId: userId,
@@ -103,8 +112,6 @@ router.post("/orders/new", async (req, res) => {
     console.log(err);
   }
 });
-//this is just a test
-console.log("prisma.users")
 
 router.post("/wishlistToOrder", async (req, res) => {
   try {
@@ -131,27 +138,6 @@ router.post("/wishlistToOrder", async (req, res) => {
     } else {
       res.status(400).json("already in cart")
     }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-// get orders by user id and with dateOrdered not null
-router.get("/orders/archive/:userId", async (req, res) => {
-  try {
-    const { userId } = req.params;
-    console.log(userId);
-    const orderHistory = await prisma.orders.findMany({
-      where: {
-        userId: userId,
-        // dateOrdered: { not: null },
-      },
-      include: {
-        products: true,
-      },
-    });
-
-    res.json(orderHistory);
   } catch (err) {
     console.log(err);
   }
