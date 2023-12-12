@@ -103,6 +103,8 @@ router.post("/orders/new", async (req, res) => {
     console.log(err);
   }
 });
+//this is just a test
+console.log("prisma.users")
 
 router.post("/wishlistToOrder", async (req, res) => {
   try {
@@ -150,6 +152,27 @@ router.get("/orders/archive/:userId", async (req, res) => {
     });
 
     res.json(orderHistory);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// remove items from cart
+router.post("/orders/remove/:userId", async (req, res) => {
+  try {
+    const { userId, inCart } = req.params;
+    const { productId } = req.body;
+    console.log(productId, userId, inCart)
+
+    const removeFromCart = await prisma.orders.delete({
+      where: {
+        id: productId,
+        userId: userId,
+        inCart: true
+      },
+    });
+    console.log(removeFromCart)
+    res.json(removeFromCart);
   } catch (err) {
     console.log(err);
   }
