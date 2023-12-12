@@ -134,30 +134,25 @@ router.post("/wishlistToOrder", async (req, res) => {
   }
 });
 
-// get orders by user id and with dateOrdered not null
-router.get("/orders/:userId", async (req, res) => {
+// remove items from cart
+router.post("/orders/remove/:userId", async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId, inCart } = req.params;
+    const { productId } = req.body;
+    console.log(productId, userId, inCart)
 
-    const orderHistory = await prisma.orders.findMany({
+    const removeFromCart = await prisma.orders.delete({
       where: {
+        id: productId,
         userId: userId,
-        dateOrdered: { not: null },
-        
-        // deciding if we need this portion below:
-        // inCart: false,
-        // inWishlist: false
-      },
-      include: {
-        products: true,
+        inCart: true
       },
     });
-
-    res.json(orderHistory);
+    console.log(removeFromCart)
+    res.json(removeFromCart);
   } catch (err) {
     console.log(err);
   }
 });
-
 
 module.exports = router;

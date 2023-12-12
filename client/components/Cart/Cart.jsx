@@ -22,8 +22,43 @@ import Favorite from "@mui/icons-material/Favorite";
 const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getProducts, getCartCount }) => {
 
   const removeFromCart = (item) => {
-    console.log(item);
+    console.log(user); // checking 404 error
+
+    const userId = user && user.id;
+
+    Axios.post(
+      `http://localhost:3000/api/orders/remove/${userId}`,
+      {
+        userId: userId,
+        productId: item.id,
+      },
+      {
+        headers: {
+          "content-type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.status === 200) {
+          // Update the cart state after successful removal
+          setCart((prevCart) =>
+            prevCart.filter((cartItem) => cartItem.id !== item.id)
+          );
+
+          // show snackbar
+          setOpenSnackbar(true);
+          setSnackbarMessage("Product removed from cart successfully");
+          getProducts();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        // Handle error, show snackbar, or perform other actions
+        setOpenSnackbar(true);
+        setSnackbarMessage("Error removing product from cart");
+      });
   };
+  
 
   const decrementQty = (item) => {
     // setCount((prevCount) => prevCount > 1 && prevCount - 1);
@@ -139,6 +174,8 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getProduct
 //////////////////////////////////////////////////
 const Cart = ({ user }) => {
   const [cart, setCart] = useState([]);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
     const userId = user && user.id;
@@ -150,6 +187,8 @@ const Cart = ({ user }) => {
   }, [user]);
 
   const navigate = useNavigate()
+
+  console.log(user, "this is the user test")
 
   return (
     <Container>
@@ -169,10 +208,11 @@ const Cart = ({ user }) => {
               key={item.id}
               item={item}
               user={user}
-              // setOpenSnackbar={setOpenSnackbar}
-              // setSnackbarMessage={setSnackbarMessage}
-              // getProducts={getProducts}
-              // getCartCount={getCartCount}
+              setCart={setCart}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+              getProducts={getProducts}
+              getCartCount={getCartCount}
             />
 
           ))}
