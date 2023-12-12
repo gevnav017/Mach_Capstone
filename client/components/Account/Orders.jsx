@@ -56,7 +56,6 @@ const BasicSelect = () => {
 };
 
 const OrderDetails = ({price, quantity}) => {
-  console.log(price, quantity)
 
   return (
     <div>
