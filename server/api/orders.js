@@ -134,22 +134,22 @@ router.post("/wishlistToOrder", async (req, res) => {
   }
 });
 
-// remove items from cart
-router.post("/orders/remove/:userId", async (req, res) => {
+// get orders by user id and with dateOrdered not null
+router.get("/orders/archive/:userId", async (req, res) => {
   try {
-    const { userId, inCart } = req.params;
-    const { productId } = req.body;
-    console.log(productId, userId, inCart)
+    const { userId } = req.params;
+    console.log(userId);
+    // const orderHistory = await prisma.orders.findMany({
+    //   where: {
+    //     userId: userId,
+    //     dateOrdered: { not: null },
+    //   },
+    //   include: {
+    //     products: true,
+    //   },
+    // });
 
-    const removeFromCart = await prisma.orders.delete({
-      where: {
-        id: productId,
-        userId: userId,
-        inCart: true
-      },
-    });
-    console.log(removeFromCart)
-    res.json(removeFromCart);
+    // res.json(orderHistory);
   } catch (err) {
     console.log(err);
   }
