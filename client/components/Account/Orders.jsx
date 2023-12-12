@@ -55,6 +55,7 @@ const BasicSelect = () => {
   );
 };
 
+// details drop down
 const OrderDetails = ({price, quantity}) => {
 
   return (
