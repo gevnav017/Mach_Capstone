@@ -103,6 +103,8 @@ router.post("/orders/new", async (req, res) => {
     console.log(err);
   }
 });
+//this is just a test
+console.log("prisma.users")
 
 router.post("/wishlistToOrder", async (req, res) => {
   try {
