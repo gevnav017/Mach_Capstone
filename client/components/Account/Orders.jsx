@@ -137,7 +137,7 @@ const Orders = ({ user }) => {
         container
         spacing={2}
         style={{
-          background: 'linear-gradient(-225deg, #5D9FFF 0%, #2998e2 45%, #e2e7ec 100%)',
+          // background: 'linear-gradient(-225deg, #5D9FFF 0%, #2998e2 45%, #e2e7ec 100%)',
           display: "flex",
           flexDirection: "column",
 
