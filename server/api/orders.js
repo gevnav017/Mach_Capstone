@@ -43,7 +43,7 @@ router.get("/orders/:userId/:inCart", async (req, res) => {
     const { userId, inCart } = req.params;
 
     const inCartValue = inCart === "true" 
-
+    console.log(userId, "finding userId")
     const orders = await prisma.orders.findMany({
       where: {
         userId: userId,

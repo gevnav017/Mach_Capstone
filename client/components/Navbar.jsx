@@ -358,6 +358,8 @@ const Navbar = () => {
               user={user}
               setOpenSnackbar={setOpenSnackbar}
               setSnackbarMessage={setSnackbarMessage}
+              // getProducts={getProducts}
+              getCartCount={getCartCount}
             />
           }
         />
