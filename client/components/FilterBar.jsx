@@ -20,7 +20,7 @@ const MenuProps = {
 
 const names = ["BEATS", "BOSE", "HARMAN", "JBL", "SONY"];
 
-const FilterPage = () => {
+const FilterBar = () => {
   const [selectedItem, setSelectedItem] = useState([]);
 
   const handleChange = (event) => {
@@ -63,4 +63,4 @@ const FilterPage = () => {
   );
 };
 
-export default FilterPage;
+export default FilterBar;
