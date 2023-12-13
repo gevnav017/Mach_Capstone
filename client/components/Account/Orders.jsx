@@ -107,13 +107,18 @@ const Orders = ({ user }) => {
     const userId = user && user.id;
     const apiUrl = `http://localhost:3000/api/all-orders/${userId}`;
 
-    //Check if a time range is selected
+    // check if time range is selected
     const onTimeRangeParam = selectedTimeRange
       ? `?timeRange=${selectedTimeRange}`
       : "";
 
     Axios.get(apiUrl + onTimeRangeParam)
-      .then((res) => setOrders(res.data))
+      .then((res) => {
+        const sortedOrders = res.data.sort((a, b) => {
+        return new Date(b.dateUpdated) - new Date(a.dateUpdated);
+      });
+      setOrders(sortedOrders)
+    })
       .then(() => setLoading(false));
   }, [user.id, selectedTimeRange]);
 
