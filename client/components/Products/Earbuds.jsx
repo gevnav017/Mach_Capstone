@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import Axios from "axios";
 
 // component imports
-import FilterPage from "../FilterPage";
+import FilterBar from "../FilterBar";
 
 // MUI imports
 import {
@@ -283,7 +283,7 @@ const Earbuds = ({
         <Typography variant="h5" sx={{ my: 2 }}>
           Earbuds
         </Typography>
-        <FilterPage />
+        <FilterBar />
       </div>
       <Grid container spacing={2}>
         {earbuds &&
