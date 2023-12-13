@@ -14,16 +14,23 @@ import IconButton from "@mui/material/IconButton";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
-import Checkbox from "@mui/material/Checkbox";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import Favorite from "@mui/icons-material/Favorite";
 
 ///////////////////////////////////////////////////
-const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCart }) => {
+const ItemsCard = ({
+  item,
+  user,
+  setOpenSnackbar,
+  setSnackbarMessage,
+  getCart,
+  getCartCount,
+}) => {
+  const [count, setCount] = useState(item.quantity);
+
+  useEffect(() => {
+    getCartCount();
+  }, [count]);
 
   const removeFromCart = (item) => {
-    console.log(user); // checking 404 error
-
     const userId = user && user.id;
 
     Axios.post(
@@ -50,12 +57,42 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCart })
         setOpenSnackbar(true);
         setSnackbarMessage("Error removing product from cart");
       });
-  };
-  
 
-  const decrementQty = (item) => {
-    // setCount((prevCount) => prevCount > 1 && prevCount - 1);
-    console.log("Decrement quantity for item:", item);
+    getCartCount();
+  };
+
+  const incrementQty = (itemId) => {
+    setCount((prevCount) => prevCount + 1);
+
+    Axios.post(
+      `http://localhost:3000/api/cartQtyChange`,
+      {
+        itemId: itemId,
+        cartQtyChange: count + 1,
+      },
+      {
+        headers: {
+          "content-type": "application/JSON",
+        },
+      }
+    );
+  };
+
+  const decrementQty = (itemId) => {
+    setCount((prevCount) => prevCount > 1 && prevCount - 1);
+
+    Axios.post(
+      `http://localhost:3000/api/cartQtyChange`,
+      {
+        itemId: itemId,
+        cartQtyChange: count - 1,
+      },
+      {
+        headers: {
+          "content-type": "application/JSON",
+        },
+      }
+    );
   };
 
   //add item to wishlist and remove from cart
@@ -112,7 +149,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCart })
         >
           <CardContent>
             <Typography component="div" variant="h5">
-              ${item.products.price}
+              ${parseInt(item.products.price).toFixed(2)}
             </Typography>
           </CardContent>
         </Grid>
@@ -129,8 +166,7 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCart })
           }}
         >
           <Button onClick={() => addToWishlist(item.id)}>
-            {" "}
-            Add to Wishlist{" "}
+            Add to Wishlist
           </Button>
           <Box
             sx={{
@@ -140,20 +176,19 @@ const ItemsCard = ({ item, user, setOpenSnackbar, setSnackbarMessage, getCart })
             }}
           >
             <IconButton
-              onClick={decrementQty}
-              disabled={item.quantity === 1}
+              onClick={() => decrementQty(item.id)}
+              disabled={count === 1}
               sx={{ color: "primary.main" }}
             >
               <RemoveOutlinedIcon />
             </IconButton>
-            <Typography color="text.secondary">{item.quantity}</Typography>
+            <Typography color="text.secondary">{count}</Typography>
             <IconButton
-              // onClick={() => setCount((c) => c + 1)}
+              onClick={() => incrementQty(item.id)}
               sx={{ color: "primary.main" }}
             >
               <AddOutlinedIcon />
             </IconButton>
-            <Typography color="text.secondary">{item.quantity}</Typography>
           </Box>
           <Button color="error" onClick={() => removeFromCart(item)}>
             <CloseOutlinedIcon />
@@ -183,9 +218,7 @@ const Cart = ({ user, getCartCount }) => {
     getCart();
   }, [user]);
 
-  const navigate = useNavigate()
-
-  console.log(user, "this is the user test")
+  const navigate = useNavigate();
 
   return (
     <Container>
@@ -210,9 +243,7 @@ const Cart = ({ user, getCartCount }) => {
               setSnackbarMessage={setSnackbarMessage}
               getCart={getCart}
               getCartCount={getCartCount}
-              
             />
-
           ))}
         </>
       )}
