@@ -32,7 +32,6 @@ const Wishlist = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
   };
 
   const addToCart = (orderId) => {
-    console.log(orderId);
     Axios.post(
       `http://localhost:3000/api/wishlistToOrder`,
       {
@@ -135,7 +134,7 @@ const Wishlist = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
               >
                 <CardContent>
                   <Typography component="div" variant="h5">
-                    ${item.products.price}
+                    ${parseFloat(item.products.price).toFixed(2)}
                   </Typography>
                 </CardContent>
               </Grid>
