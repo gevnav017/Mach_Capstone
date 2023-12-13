@@ -18,9 +18,7 @@ const MenuProps = {
   },
 };
 
-const names = ["BEATS", "BOSE", "HARMAN", "JBL", "SONY"];
-
-const FilterBar = () => {
+const FilterBar = ({brandList=[]}) => {
   const [selectedItem, setSelectedItem] = useState([]);
 
   const handleChange = (event) => {
@@ -51,7 +49,7 @@ const FilterBar = () => {
           renderValue={(selected) => selected.join(", ")}
           MenuProps={MenuProps}
         >
-          {names.map((name) => (
+          {brandList.map((name) => (
             <MenuItem key={name} value={name}>
               <Checkbox checked={selectedItem.indexOf(name) > -1} />
               <ListItemText primary={name} />

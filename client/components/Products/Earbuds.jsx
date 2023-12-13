@@ -268,7 +268,12 @@ const Earbuds = ({
         });
     }
   };
-
+  const uniqueBrandList = earbuds.reduce((brands, earbud) => {
+    if (brands.includes(earbud.brand)) {
+      return brands;
+    }
+    return [...brands, earbud.brand];
+  }, []);
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
       <div
@@ -283,7 +288,7 @@ const Earbuds = ({
         <Typography variant="h5" sx={{ my: 2 }}>
           Earbuds
         </Typography>
-        <FilterBar />
+        <FilterBar brandList={uniqueBrandList} />
       </div>
       <Grid container spacing={2}>
         {earbuds &&
