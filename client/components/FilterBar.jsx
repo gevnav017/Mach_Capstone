@@ -18,22 +18,18 @@ const MenuProps = {
   },
 };
 
-const names = ["BEATS", "BOSE", "HARMAN", "JBL", "SONY"];
-
-const FilterBar = () => {
+const FilterBar = ({ brandList = [], onFilterChange = () => null }) => {
   const [selectedItem, setSelectedItem] = useState([]);
 
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setSelectedItem(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    // On autofill we get a stringified value.
+    const newSelectedItem = typeof value === "string" ? value.split(",") : value
+    setSelectedItem(newSelectedItem);
+    onFilterChange(newSelectedItem);
   };
-
-  console.log(selectedItem)
 
   return (
     <div>
@@ -51,7 +47,7 @@ const FilterBar = () => {
           renderValue={(selected) => selected.join(", ")}
           MenuProps={MenuProps}
         >
-          {names.map((name) => (
+          {brandList.map((name) => (
             <MenuItem key={name} value={name}>
               <Checkbox checked={selectedItem.indexOf(name) > -1} />
               <ListItemText primary={name} />
