@@ -70,7 +70,7 @@ const CartItems = ({ item }) => {
         >
           <CardContent>
             <Typography component="div" variant="h5">
-              ${item.products.price}
+              ${parseInt(item.products.price).toFixed(2)}
             </Typography>
           </CardContent>
         </Grid>

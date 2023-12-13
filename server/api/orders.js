@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const prisma = require("../db/client");
 
-
 // all orders by user
 router.get("/all-orders/:userId", async (req, res) => {
   try {
@@ -13,7 +12,6 @@ router.get("/all-orders/:userId", async (req, res) => {
         userId: userId,
         ordered: true,
         inCart: false,
-        inWishlist: false,
       },
       include: {
         products: true,
@@ -26,27 +24,6 @@ router.get("/all-orders/:userId", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error"});
   }
 });
-
-// router.get("/all-orders/:userId", async (req, res) => {
-//   try {
-//     const { userId } = req.params;
-
-//     const orderHistory = await prisma.orders.findMany({
-//       where: {
-//         userId: userId,
-//         ordered: true
-//       },
-//       include: {
-//         products: true,
-//       },
-//     });
-
-//     res.json(orderHistory);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
-
 
 // get cart qty total for user in Navbar
 router.get("/cartCount/:userId", async (req, res) => {
@@ -74,7 +51,7 @@ router.get("/cartCount/:userId", async (req, res) => {
 router.get("/orders/:userId/:inCart", async (req, res) => {
   try {
     const { userId, inCart } = req.params;
-    const inCartValue = inCart === "true" 
+    const inCartValue = inCart === "true";
 
     const orders = await prisma.orders.findMany({
       where: {
@@ -136,6 +113,26 @@ router.post("/orders/new", async (req, res) => {
   }
 });
 
+// update quantity on increment or decrement in cart
+router.post("/cartQtyChange", async (req, res) => {
+  try {
+    const { itemId, cartQtyChange } = req.body;
+
+    const changeQty = await prisma.orders.update({
+      where: {
+        id: itemId,
+      },
+      data: {
+        quantity: cartQtyChange,
+      },
+    });
+
+    res.json(changeQty);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 router.post("/wishlistToOrder", async (req, res) => {
   try {
     const { orderId } = req.body;
@@ -159,7 +156,7 @@ router.post("/wishlistToOrder", async (req, res) => {
 
       res.json(wishlistToOrder);
     } else {
-      res.status(400).json("already in cart")
+      res.status(400).json("already in cart");
     }
   } catch (err) {
     console.log(err);
@@ -171,16 +168,16 @@ router.post("/orders/remove/:userId", async (req, res) => {
   try {
     const { userId, inCart } = req.params;
     const { productId } = req.body;
-    console.log(productId, userId, inCart)
+    console.log(productId, userId, inCart);
 
     const removeFromCart = await prisma.orders.delete({
       where: {
         id: productId,
         userId: userId,
-        inCart: true
+        inCart: true,
       },
     });
-    console.log(removeFromCart)
+    console.log(removeFromCart);
     res.json(removeFromCart);
   } catch (err) {
     console.log(err);
