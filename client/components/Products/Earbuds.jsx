@@ -227,6 +227,7 @@ const Earbuds = ({
   getCartCount,
 }) => {
   const [earbuds, setEarbuds] = useState([]);
+  const [selectedFilters, setSelectedFilters] = useState([]);
 
   useEffect(() => {
     getProducts();
@@ -288,7 +289,7 @@ const Earbuds = ({
         <Typography variant="h5" sx={{ my: 2 }}>
           Earbuds
         </Typography>
-        <FilterBar brandList={uniqueBrandList} />
+        <FilterBar brandList={uniqueBrandList} onFilterChange={setSelectedFilters}/>
       </div>
       <Grid container spacing={2}>
         {earbuds &&

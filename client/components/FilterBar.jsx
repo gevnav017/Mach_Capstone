@@ -18,20 +18,18 @@ const MenuProps = {
   },
 };
 
-const FilterBar = ({brandList=[]}) => {
+const FilterBar = ({ brandList = [], onFilterChange = () => null }) => {
   const [selectedItem, setSelectedItem] = useState([]);
 
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setSelectedItem(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    // On autofill we get a stringified value.
+    const newSelectedItem = typeof value === "string" ? value.split(",") : value
+    setSelectedItem(newSelectedItem);
+    onFilterChange(newSelectedItem);
   };
-
-  console.log(selectedItem)
 
   return (
     <div>
