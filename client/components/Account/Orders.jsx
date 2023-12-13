@@ -21,13 +21,13 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const BasicSelect = () => {
+const BasicSelect = ({ onTimeRangeChange }) => {
   const [ordersPlaced, setOrdersPlaced] = useState("");
 
   const handleChange = (event) => {
-    setOrdersPlaced(event.target.value);
-
-    Axios.get("", {});
+    const selectedTimeRange = event.target.value;
+    setOrdersPlaced(selectedTimeRange);
+    onTimeRangeChange(selectedTimeRange);
   };
 
   return (
@@ -55,11 +55,8 @@ const BasicSelect = () => {
   );
 };
 
-
-
 // details drop down
-const OrderDetails = ({name, image, price, quantity}) => {
-
+const OrderDetails = ({ name, image, price, quantity }) => {
   return (
     <div>
       <Accordion>
@@ -76,15 +73,15 @@ const OrderDetails = ({name, image, price, quantity}) => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-        {/* Add product imgs from orders and name */}
-        <div>
-          <img
-          src={image}
-          alt={name}
-          style={{maxWidth: "100px", maxHeight: "100px"}}
-          />
-        <Typography>{name}</Typography>
-        </div>
+          {/* Add product imgs from orders and name */}
+          <div>
+            <img
+              src={image}
+              alt={name}
+              style={{ maxWidth: "100px", maxHeight: "100px" }}
+            />
+            <Typography>{name}</Typography>
+          </div>
           <Typography>Quantity: {quantity}</Typography>
           <Typography>Price: ${price}</Typography>
           <Typography>Total: ${price * quantity}</Typography>
@@ -94,22 +91,35 @@ const OrderDetails = ({name, image, price, quantity}) => {
   );
 };
 
-
 const Orders = ({ user }) => {
   // state to hold orders
   const [orders, setOrders] = useState([]);
-  console.log(orders)
+  console.log(orders);
 
   // state to track whether orders are loading
   const [loading, setLoading] = useState(true);
 
+  // state to track order dates
+  const [selectedTimeRange, setSelectedTimeRange] = useState("last3Months");
+
   // axios call to get orders that have inCart column false by logged in user from db
   useEffect(() => {
     const userId = user && user.id;
-    Axios.get(`http://localhost:3000/api/all-orders/${userId}`)
+    const apiUrl = `http://localhost:3000/api/all-orders/${userId}`;
+
+    //Check if a time range is selected
+    const onTimeRangeParam = selectedTimeRange
+      ? `?timeRange=${selectedTimeRange}`
+      : "";
+
+    Axios.get(apiUrl + onTimeRangeParam)
       .then((res) => setOrders(res.data))
-      .then(setLoading(false));
-  }, [user.id]);
+      .then(() => setLoading(false));
+  }, [user.id, selectedTimeRange]);
+
+  const handleTimeRangeChange = (timeRange) => {
+    setSelectedTimeRange(timeRange);
+  };
 
   return (
     <Container maxWidth="lg" sx={{ p: 3 }}>
@@ -124,7 +134,7 @@ const Orders = ({ user }) => {
       >
         <Typography variant="h5">Order History</Typography>
 
-        <BasicSelect />
+        <BasicSelect onTimeRangeChange={handleTimeRangeChange} />
       </div>
       {/* Conditional rendering based on the presence of orders */}
       {loading ? (
@@ -183,12 +193,12 @@ const Orders = ({ user }) => {
                     Total: ${order.total}
                   </Typography>
                   {/* To show items in order summary */}
-                  <OrderDetails 
-                  image={order.products.image}
-                  name={order.products.name}
-                  price={order.products.price} 
-                  quantity={order.quantity} />
-                  
+                  <OrderDetails
+                    image={order.products.image}
+                    name={order.products.name}
+                    price={order.products.price}
+                    quantity={order.quantity}
+                  />
                 </CardContent>
               </Card>
             </Grid>
@@ -200,132 +210,3 @@ const Orders = ({ user }) => {
 };
 
 export default Orders;
-
-
-// const OrderDetails = ({price, quantity}) => {
-
-//   return (
-//     <div>
-//       <Accordion>
-//         <AccordionSummary
-//           expandIcon={<ExpandMoreIcon />}
-//           aria-controls="panel1a-content"
-//           id="panel1a-header"
-//         >
-//           <Typography
-//             variant="h8"
-//             style={{ color: "#2998e2", fontWeight: "bold" }}
-//           >
-//             See Order Details
-//           </Typography>
-//         </AccordionSummary>
-//         <AccordionDetails>
-//           <Typography>Quantity: {quantity}</Typography>
-//           <Typography>Price: ${price}</Typography>
-//           <Typography>Total: ${price * quantity}</Typography>
-//         </AccordionDetails>
-//       </Accordion>
-//     </div>
-//   );
-// };
-
-
-// const Orders = ({ user }) => {
-//   // state to hold orders
-//   const [orders, setOrders] = useState([]);
-//   console.log(orders)
-
-//   // state to track whether orders are loading
-//   const [loading, setLoading] = useState(true);
-
-//   // axios call to get orders that have inCart column false by logged in user from db
-//   useEffect(() => {
-//     const userId = user && user.id;
-//     Axios.get(`http://localhost:3000/api/all-orders/${userId}`)
-//       .then((res) => setOrders(res.data))
-//       .then(setLoading(false));
-//   }, [user.id]);
-
-//   return (
-//     <Container maxWidth="lg" sx={{ p: 3 }}>
-//       <div
-//         style={{
-//           display: "flex",
-//           flexDirection: "row",
-//           justifyContent: "space-between",
-//           alignItems: "center",
-//           marginBottom: "40px",
-//         }}
-//       >
-//         <Typography variant="h5">Order History</Typography>
-
-//         <BasicSelect />
-//       </div>
-//       {/* Conditional rendering based on the presence of orders */}
-//       {loading ? (
-//         <Typography variant="h6">Loading...</Typography>
-//       ) : orders.length === 0 ? (
-//         <Typography
-//           variant="h6"
-//           style={{
-//             display: "flex",
-//             justifyContent: "center",
-//           }}
-//         >
-//           NO ORDER HISTORY AVAILABLE
-//         </Typography>
-//       ) : (
-//         <Grid
-//           container
-//           spacing={2}
-//           style={{
-//             display: "flex",
-//             flexDirection: "column",
-//           }}
-//         >
-//           {/* map through orders state to display all orders from the logged in user */}
-//           {/* button on each order item to click and view order details...dialog box opens up */}
-//           {/* Grid to display orders as cards */}
-
-//           {orders.map((order) => (
-//             // <Grid item key={order.id} xs={12} md={5} lg={4}>
-//             <Grid item key={order.id}>
-//               {/* <Card sx={{ height: "100%" }}> */}
-//               <Card
-//                 style={{
-//                   maxWidth: "98%",
-//                   marginBottom: "16px",
-//                 }}
-//               >
-//                 <CardContent
-//                   style={{
-//                     display: "flex",
-//                     flexDirection: "column",
-//                   }}
-//                 >
-//                   {/* Display order info */}
-//                   <Typography variant="h7" gutterBottom>
-//                     Order Date: {order && order.dateUpdated.slice(0, 10)}
-//                   </Typography>
-//                   <Typography variant="h7" gutterBottom>
-//                     Order #: {order && order.id.slice(0, 8)}
-//                   </Typography>
-//                   <Typography
-//                     variant="h7"
-//                     gutterBottom
-//                     style={{ marginBottom: "10px" }}
-//                   >
-//                     Total: ${order.total}
-//                   </Typography>
-//                   {/* To show items in order summary */}
-//                   <OrderDetails price={order.products.price} quantity={order.quantity} />
-                  
-//                 </CardContent>
-//               </Card>
-//             </Grid>
-//           ))}
-//         </Grid>
-//       )}
-//     </Container>
-//   );
-// };

@@ -6,12 +6,33 @@ const prisma = require("../db/client");
 router.get("/all-orders/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
+    const { timeRange } = req.query;
+
+    let startDate;
+
+    switch (timeRange) {
+      case "last3Months":
+        startDate = new Date();
+        startDate.setMonth(startDate.getMonth() - 3);
+        break;
+      case "4To6Months":
+        startDate = new Date();
+        startDate.setMonth(startDate.getMonth() - 6);
+        break;
+      case "7To9Months":
+        startDate = new Date();
+        startDate.setMonth(startDate.getMonth() - 9);
+        break;
+      default:
+        startDate = null;
+    }
 
     const orderHistory = await prisma.orders.findMany({
       where: {
         userId: userId,
         ordered: true,
         inCart: false,
+        dateUpdated: startDate ? { gte: startDate } : undefined,
       },
       include: {
         products: true,
@@ -21,7 +42,7 @@ router.get("/all-orders/:userId", async (req, res) => {
     res.json(orderHistory);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Internal Server Error"});
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
