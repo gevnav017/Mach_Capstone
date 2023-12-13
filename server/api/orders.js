@@ -11,6 +11,7 @@ router.get("/all-orders/:userId", async (req, res) => {
       where: {
         userId: userId,
         ordered: true,
+        inCart: false,
       },
       include: {
         products: true,
@@ -20,6 +21,7 @@ router.get("/all-orders/:userId", async (req, res) => {
     res.json(orderHistory);
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: "Internal Server Error"});
   }
 });
 
