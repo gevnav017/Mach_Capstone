@@ -168,7 +168,7 @@ router.post("/orders/remove/:userId", async (req, res) => {
   try {
     const { userId, inCart } = req.params;
     const { productId } = req.body;
-    console.log(productId, userId, inCart);
+    // console.log(productId, userId, inCart);
 
     const removeFromCart = await prisma.orders.delete({
       where: {
@@ -177,8 +177,41 @@ router.post("/orders/remove/:userId", async (req, res) => {
         inCart: true,
       },
     });
-    console.log(removeFromCart);
+    // console.log(removeFromCart);
     res.json(removeFromCart);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error 500" });
+  }
+});
+
+//now adding order to wishlist
+router.post("/cartToWishlist", async (req, res) => {
+  try{
+    const { productId } = req.body;
+
+    //checking to see if product already in wishlist
+    const alreadyInWishlist = await prisma.orders.findFirst({
+      where: {
+        id: productId,
+        inWishlist: true
+      },
+    });
+
+    if (!alreadyInWishlist) {
+      const cartToWishlist = await prisma.orders.update({
+        data: {
+          inWishlist: true,
+        },
+        where: {
+          id: productId,
+        },
+      });
+
+      res.json(cartToWishlist);
+    } else {
+      res.status(400).json("Already in wishlist");
+    }
   } catch (err) {
     console.log(err);
   }
