@@ -51,14 +51,12 @@ const ItemsCard = ({
           setSnackbarMessage("Product removed from cart successfully");
           getCart();
         }
-      })
+      }).then(getCartCount())
       .catch((err) => {
         console.log(err);
         setOpenSnackbar(true);
         setSnackbarMessage("Error removing product from cart");
       });
-
-    getCartCount();
   };
 
   const incrementQty = (itemId) => {
