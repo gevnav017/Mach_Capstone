@@ -226,13 +226,16 @@ const Cart = ({ user, getCartCount }) => {
         <Typography>Your cart is empty</Typography>
       ) : (
         <>
-          <Button
-            onClick={() => {
-              navigate("/cart/checkout");
-            }}
-          >
-            Checkout
-          </Button>
+          <Box sx={{ my: 3, textAlign: "right" }}>
+            <Button
+              onClick={() => {
+                navigate("/cart/checkout");
+              }}
+              
+            >
+              Checkout
+            </Button>
+          </Box>
           {cart.map((item) => (
             <ItemsCard
               key={item.id}
