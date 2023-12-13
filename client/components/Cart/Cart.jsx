@@ -94,8 +94,35 @@ const ItemsCard = ({
   };
 
   //add item to wishlist and remove from cart
-  const addToWishlist = (item) => {
-    console.log(item);
+  const addToWishlist = (itemId) => {
+    const userId = user && user.id;
+
+    Axios.post(
+      `http://localhost:3000/api/cartToWishlist`,
+      {
+        productId: itemId,
+      },
+      {
+        headers: {
+          "content-type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.status === 200) {
+          setOpenSnackbar(true);
+          setSnackbarMessage("Product added to wishlist");
+          removeFromCart(item);
+          
+          // need to reload the cart after removing like in remove function
+          getCart(); 
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setOpenSnackbar(true);
+        setSnackbarMessage("Error adding product to wishlist");
+      });
   };
 
   return (
@@ -244,6 +271,7 @@ const Cart = ({ user, getCartCount }) => {
               setSnackbarMessage={setSnackbarMessage}
               getCart={getCart}
               getCartCount={getCartCount}
+              // addToWishlist={addToWishlist}
             />
           ))}
         </>
