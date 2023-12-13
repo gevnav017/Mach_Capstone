@@ -228,10 +228,20 @@ const Earbuds = ({
 }) => {
   const [earbuds, setEarbuds] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState([]);
+  const [filteredEarbuds, setFilteredEarbuds] = useState([]);
 
   useEffect(() => {
     getProducts();
   }, [user]);
+
+
+  useEffect(() => {
+    if (selectedFilters.length > 0) {
+      setFilteredEarbuds(earbuds.filter((earbud) => selectedFilters.includes(earbud.brand)));
+    } else {
+      setFilteredEarbuds(earbuds)
+    }
+  })
 
   const getProducts = () => {
     if (user) {
@@ -292,8 +302,8 @@ const Earbuds = ({
         <FilterBar brandList={uniqueBrandList} onFilterChange={setSelectedFilters}/>
       </div>
       <Grid container spacing={2}>
-        {earbuds &&
-          earbuds.map((earbud) => (
+        {
+          filteredEarbuds.map((earbud) => (
             <ItemsCard
               key={earbud.id}
               item={earbud}
