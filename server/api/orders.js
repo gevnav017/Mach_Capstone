@@ -11,7 +11,9 @@ router.get("/all-orders/:userId", async (req, res) => {
     const orderHistory = await prisma.orders.findMany({
       where: {
         userId: userId,
-        ordered: true
+        ordered: true,
+        inCart: false,
+        inWishlist: false,
       },
       include: {
         products: true,
@@ -21,8 +23,29 @@ router.get("/all-orders/:userId", async (req, res) => {
     res.json(orderHistory);
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: "Internal Server Error"});
   }
 });
+
+// router.get("/all-orders/:userId", async (req, res) => {
+//   try {
+//     const { userId } = req.params;
+
+//     const orderHistory = await prisma.orders.findMany({
+//       where: {
+//         userId: userId,
+//         ordered: true
+//       },
+//       include: {
+//         products: true,
+//       },
+//     });
+
+//     res.json(orderHistory);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// });
 
 
 // get cart qty total for user in Navbar

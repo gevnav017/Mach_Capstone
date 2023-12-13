@@ -76,11 +76,12 @@ const OrderDetails = ({name, image, price, quantity}) => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
+        {/* Add product imgs from orders and name */}
         <div>
           <img
           src={image}
           alt={name}
-          style={{maxWidth: "50px", maxHeight: "50px"}}
+          style={{maxWidth: "100px", maxHeight: "100px"}}
           />
         <Typography>{name}</Typography>
         </div>
