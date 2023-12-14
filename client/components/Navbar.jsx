@@ -13,7 +13,6 @@ import Earbuds from "./Products/Earbuds";
 import ProductDetails from "./ProductDetails/Product-Details";
 import Cart from "./Cart/Cart";
 import Checkout from "./Cart/Checkout";
-import OrderConfirmation from "./Cart/OrderConfirmation";
 import Account from "./Account/Account";
 import Login from "./Login/Login";
 import Register from "./Login/Register";
@@ -361,10 +360,17 @@ const Navbar = () => {
             />
           }
         />
-        <Route path="/cart/checkout" element={<Checkout user={user} />} />
         <Route
-          path="/cart/checkout/order-confirmation"
-          element={<OrderConfirmation user={user} />}
+          path="/cart/checkout"
+          element={
+            <Checkout
+              user={user}
+              cartCount={cartCount}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+              getCartCount={getCartCount}
+            />
+          }
         />
         <Route
           path="/account"

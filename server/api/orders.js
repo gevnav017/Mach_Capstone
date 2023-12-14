@@ -199,7 +199,8 @@ router.post("/orders/remove/:userId", async (req, res) => {
         inCart: true,
       },
       data: {
-        inCart: false
+        inCart: false,
+        quantity: 0
       }
     });
     // console.log(removeFromCart);
@@ -225,11 +226,11 @@ router.post("/cartToWishlist", async (req, res) => {
 
     if (!alreadyInWishlist) {
       const cartToWishlist = await prisma.orders.update({
-        data: {
-          inWishlist: true,
-        },
         where: {
           id: productId,
+        },
+        data: {
+          inWishlist: true,
         },
       });
 
