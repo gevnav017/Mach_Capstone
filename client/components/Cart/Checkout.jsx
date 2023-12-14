@@ -108,7 +108,7 @@ const CartItems = ({
         >
           <CardContent sx={{ mr: 3 }}>
             <Typography component="div" variant="h5">
-              ${parseInt(item.products.price).toFixed(2)}
+              ${parseFloat(item.products.price).toFixed(2)}
             </Typography>
           </CardContent>
           <CardContent>
@@ -150,7 +150,7 @@ const Checkout = ({
 
   cart &&
     cart.map((item) => {
-      cartPrices.push(parseInt(item.products.price));
+      cartPrices.push(parseFloat(item.products.price));
     });
 
   let cartTotal = 0;
@@ -256,7 +256,7 @@ const Checkout = ({
                 <Typography gutterBottom>Item Qty: {cartCount}</Typography>
                 <Typography gutterBottom>Tax: ${tax.toFixed(2)}</Typography>
                 <Typography gutterBottom>
-                  Total: ${cartTotal.toFixed(2)}
+                  Total: ${(cartTotal + tax).toFixed(2)}
                 </Typography>
               </Box>
             </Box>
