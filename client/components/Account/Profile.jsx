@@ -23,8 +23,7 @@ const Profile = ({ user }) => {
           </Typography>
 
           <Typography>{`Name: ${user.firstName} ${user.lastName}`}</Typography>
-          <Typography>{"Email:"}</Typography>
-          <Typography>{"Date of Birth:"}</Typography>
+          <Typography>{`Email: ${user.email}`}</Typography>
         </Paper>
       </Box>
       <Box sx={{ width: "50%" }}>
@@ -32,8 +31,8 @@ const Profile = ({ user }) => {
           <Typography variant="h5" component="div">
             Address Book
           </Typography>
-          <Typography>Billing Address:</Typography>
-          <Typography>Shipping Address:</Typography>
+          <Typography>{`Billing Address: ${user.streetAddress}, ${user.city} ${user.zipCode}`}</Typography>
+          <Typography>{`Shipping Address: ${user.streetAddress}, ${user.city} ${user.zipCode}`}</Typography>
         </Paper>
 
         <Paper sx={{ m: 2, p: 2 }}>

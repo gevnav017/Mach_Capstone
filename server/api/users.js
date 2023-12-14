@@ -86,6 +86,11 @@ router.post("/users/register", async (req, res) => {
         password: hashedPassword,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        email: req.body.email,
+        streetAddress: req.body.street,
+        city: req.body.city,
+        state: req.body.state,
+        zipCode: parseInt(req.body.zipcode)
       };
 
       // add user to database
