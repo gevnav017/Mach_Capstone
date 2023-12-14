@@ -14,8 +14,6 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 
 const initialError = {
   username: false,
@@ -56,20 +54,6 @@ const SignUp = () => {
       lastName: !lastName,
     });
 
-    // if (!username && !password && !firstName && !lastName) {
-    //   setError({
-    //     ...error,
-    //     username: true,
-    //     password: true,
-    //     firstName: true,
-    //     lastName: true,
-    //   });
-    // } else if (!username) {
-    //   setError({ ...error, username: true });
-    // } else if (!password) {
-    //   setError({ ...error, password: true });
-    // }
-
     if (username && password) {
       Axios.post(
         "http://localhost:3000/api/users/register",
@@ -78,6 +62,11 @@ const SignUp = () => {
           password: password,
           firstName: firstName,
           lastName: lastName,
+          email: email,
+          street: street,
+          city: city,
+          state: state,
+          zipcode: zipcode,
         },
         {
           "content-type": "application/JSON",
@@ -210,6 +199,18 @@ const SignUp = () => {
                   error={error.lastName}
                 />
               </FormControl>
+
+              <FormControl variant="outlined">
+                <InputLabel htmlFor="firstName-input">Email</InputLabel>
+                <OutlinedInput
+                  id="email-input"
+                  label="Email"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  error={error.email}
+                />
+              </FormControl>
             </Box>
 
             <Box
@@ -225,7 +226,7 @@ const SignUp = () => {
                   id="street-input"
                   label="Street"
                   onChange={(e) => {
-                    setFirstName(e.target.value);
+                    setStreet(e.target.value);
                   }}
                   error={error.firstName}
                 />
@@ -237,7 +238,7 @@ const SignUp = () => {
                   id="city-input"
                   label="City"
                   onChange={(e) => {
-                    setLastName(e.target.value);
+                    setCity(e.target.value);
                   }}
                   error={error.lastName}
                 />
@@ -249,7 +250,7 @@ const SignUp = () => {
                   id="state-input"
                   label="State"
                   onChange={(e) => {
-                    setUsername(e.target.value);
+                    setState(e.target.value);
                   }}
                   error={error.username}
                 />
@@ -261,7 +262,7 @@ const SignUp = () => {
                   id="zipcode-input"
                   label="Zipcode"
                   onChange={(e) => {
-                    setPassword(e.target.value);
+                    setZipcode(e.target.value);
                   }}
                   error={error.password}
                 />
