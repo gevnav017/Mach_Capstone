@@ -39,6 +39,25 @@ const ItemsCard = ({
     setCount((prevCount) => prevCount > 1 && prevCount - 1);
   };
 
+  const toggleWishlist = (earbudId) => {
+    if (user) {
+      const inWishlist = item.orders && item.orders.length > 0 && item.orders[0].inWishlist;
+
+      if (inWishlist) {
+        //if already in wishlist we can remove
+        removeFromWishlist(item.orders[0].id);
+      } else {
+        //if not add it
+        addToWishlist(earbudId);
+      }
+    } else {
+      setSnackbarMessage(
+        "You must log in or create an account to save your changes"
+      );
+      setOpenSnackbar(true);
+    }
+  };
+
   const addToWishlist = (earbudId) => {
     if (user) {
       Axios.post(
@@ -70,6 +89,31 @@ const ItemsCard = ({
       );
       setOpenSnackbar(true);
     }
+  };
+
+  const removeFromWishlist = (orderId) => {
+    Axios.post(
+      "http://localhost:3000/api/wishlist/remove",
+      {
+        orderId: orderId,
+      },
+      {
+        headers: {
+          "content-type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.status === 200) {
+          getProducts();
+          setSnackbarMessage("Successfully removed from wishlist");
+          setOpenSnackbar(true);
+        }
+      })
+      .catch((err) => {
+        setSnackbarMessage("Error: " + err);
+        setOpenSnackbar(true);
+      });
   };
 
   const addToCart = (earbudId) => {
@@ -204,7 +248,7 @@ const ItemsCard = ({
                 : false
             }
             color="error"
-            onClick={() => addToWishlist(item.id)}
+            onClick={() => toggleWishlist(item.id)}
           />
           <Button
             variant="contained"

@@ -169,7 +169,7 @@ router.post("/wishlistToOrder", async (req, res) => {
       const wishlistToOrder = await prisma.orders.update({
         data: {
           inCart: true,
-          quantity: 1,
+          // quantity: 1,
         },
         where: {
           id: orderId,
