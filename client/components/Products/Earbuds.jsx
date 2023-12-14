@@ -234,14 +234,15 @@ const Earbuds = ({
     getProducts();
   }, [user]);
 
-
   useEffect(() => {
     if (selectedFilters.length > 0) {
-      setFilteredEarbuds(earbuds.filter((earbud) => selectedFilters.includes(earbud.brand)));
+      setFilteredEarbuds(
+        earbuds.filter((earbud) => selectedFilters.includes(earbud.brand))
+      );
     } else {
-      setFilteredEarbuds(earbuds)
+      setFilteredEarbuds(earbuds);
     }
-  })
+  });
 
   const getProducts = () => {
     if (user) {
@@ -299,21 +300,23 @@ const Earbuds = ({
         <Typography variant="h5" sx={{ my: 2 }}>
           Earbuds
         </Typography>
-        <FilterBar brandList={uniqueBrandList} onFilterChange={setSelectedFilters}/>
+        <FilterBar
+          brandList={uniqueBrandList}
+          onFilterChange={setSelectedFilters}
+        />
       </div>
       <Grid container spacing={2}>
-        {
-          filteredEarbuds.map((earbud) => (
-            <ItemsCard
-              key={earbud.id}
-              item={earbud}
-              user={user}
-              setOpenSnackbar={setOpenSnackbar}
-              setSnackbarMessage={setSnackbarMessage}
-              getProducts={getProducts}
-              getCartCount={getCartCount}
-            />
-          ))}
+        {filteredEarbuds.map((earbud) => (
+          <ItemsCard
+            key={earbud.id}
+            item={earbud}
+            user={user}
+            setOpenSnackbar={setOpenSnackbar}
+            setSnackbarMessage={setSnackbarMessage}
+            getProducts={getProducts}
+            getCartCount={getCartCount}
+          />
+        ))}
       </Grid>
     </Container>
   );
