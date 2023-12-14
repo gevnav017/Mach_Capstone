@@ -109,8 +109,8 @@ const ItemsCard = ({
         {
           userId: user.id,
           productId: earbudId,
-          orderId: orderId,
         },
+        
         {
           headers: {
             "content-type": "application/JSON",
