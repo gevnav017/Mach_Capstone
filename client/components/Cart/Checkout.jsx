@@ -139,17 +139,12 @@ const Checkout = ({
   user,
   cartCount,
   getCartCount,
+  setCartCount,
   setOpenSnackbar,
   setSnackbarMessage,
 }) => {
   const [cart, setCart] = useState([]);
   const [activeStep, setActiveStep] = useState(0);
-  const [orderSummary, setOrderSummary] = useState({
-    totalQuantity: 0,
-    subtotal: 0,
-    tax: 0,
-    totalPrice: 0,
-  });
 
   let cartPrices = [];
 
@@ -185,7 +180,10 @@ const Checkout = ({
 
   const updateOrderSummary = (cartItems) => {
     if (cartItems && cartItems.length > 0) {
-      const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+      const totalQuantity = cartItems.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
       const subtotal = cartItems.reduce(
         (sum, item) => sum + parseFloat(item.products.price) * item.quantity,
         0
@@ -237,11 +235,17 @@ const Checkout = ({
             }}
           >
             <Box>
-              <Typography variant="h6" component="div">Order Summary</Typography>
+              <Typography variant="h6" component="div">
+                Order Summary
+              </Typography>
               {cartPrices.map((price, idx) => (
                 <Box
                   key={idx}
-                  sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mt: 3,
+                  }}
                 >
                   <Typography gutterBottom>Item {idx + 1}</Typography>
                   <Typography gutterBottom>${price.toFixed(2)}</Typography>
@@ -291,18 +295,21 @@ const Checkout = ({
             {Math.round(Math.random() * 1000000)}.
           </Typography>
 
-          <Box style={{marginTop: '10px'}}>
+          <Box style={{ marginTop: "10px" }}>
             <Typography variant="h6" gutterBottom>
               Order Details:
             </Typography>
-            <ul style={{listStyle: "none"}}>
+            <ul style={{ listStyle: "none" }}>
               {cart.map((item) => (
                 <li key={item.id}>
-                  {item.products.name} - ${parseFloat(item.products.price).toFixed(2)} x {item.quantity}
+                  {item.products.name} - $
+                  {parseFloat(item.products.price).toFixed(2)} x {item.quantity}
                 </li>
               ))}
             </ul>
-            <Typography variant="h6" gutterBottom>Total: ${orderSummary.totalPrice.toFixed(2)}</Typography>
+            <Typography variant="h6" gutterBottom>
+              Total: ${cartTotal.toFixed(2)}
+            </Typography>
           </Box>
         </Paper>
       ),
@@ -313,6 +320,26 @@ const Checkout = ({
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+    if (activeStep === steps.length - 2) {
+      Axios.post(
+        "http://localhost:3000/api/orders/checkout",
+        {
+          userId: user && user.id,
+        },
+        {
+          headers: {
+            "Content-Type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => {
+          setCartCount(0);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
 
     if (activeStep === steps.length - 1) {
       navigate("/");
@@ -367,6 +394,5 @@ const Checkout = ({
     </Container>
   );
 };
-
 
 export default Checkout;

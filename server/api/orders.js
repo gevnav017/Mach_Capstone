@@ -200,8 +200,8 @@ router.post("/orders/remove/:userId", async (req, res) => {
       },
       data: {
         inCart: false,
-        quantity: 0
-      }
+        quantity: 0,
+      },
     });
     // console.log(removeFromCart);
     res.json(removeFromCart);
@@ -213,14 +213,14 @@ router.post("/orders/remove/:userId", async (req, res) => {
 
 //now adding order to wishlist
 router.post("/cartToWishlist", async (req, res) => {
-  try{
+  try {
     const { productId } = req.body;
 
     //checking to see if product already in wishlist
     const alreadyInWishlist = await prisma.orders.findFirst({
       where: {
         id: productId,
-        inWishlist: true
+        inWishlist: true,
       },
     });
 
@@ -245,25 +245,33 @@ router.post("/cartToWishlist", async (req, res) => {
 
 // adding orders to orderhistory after checkout
 router.post("/orders/checkout", async (req, res) => {
-  try{
-    const userId = req.user.id;
+  try {
+    const { userId } = req.body;
 
-    const updatedOrder = await prisma.orders.update({
+    const findOrders = await prisma.orders.findMany({
       where: {
         userId: userId,
         inCart: true,
       },
+    });
+
+    const updatedOrder = await prisma.orders.updateMany({
+      where: {
+        id: findOrders.id,
+      },
       data: {
         inCart: false,
         ordered: true,
-      }
+      },
     });
-    res.json({ success: true, message: "Order placed successfully", order: updatedOrder });
+
+    console.log(updatedOrder)
+
+    res.json(updatedOrder);
   } catch (error) {
     console.error("Error checking out:", error);
-    res.status(500).json({ success: false, message: "Internal server error"});
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
-
 
 module.exports = router;

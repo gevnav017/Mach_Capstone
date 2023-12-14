@@ -63,7 +63,6 @@ const Navbar = () => {
 
   const getCartCount = () => {
     const userId = user && user.id;
-    const inCart = true;
 
     Axios.get(`http://localhost:3000/api/cartCount/${userId}`)
       .then((res) => {
@@ -369,6 +368,7 @@ const Navbar = () => {
               setOpenSnackbar={setOpenSnackbar}
               setSnackbarMessage={setSnackbarMessage}
               getCartCount={getCartCount}
+              setCartCount={setCartCount}
             />
           }
         />
