@@ -5,7 +5,6 @@ import Axios from "axios";
 // component imports
 import FilterBar from "../FilterBar";
 
-
 // MUI imports
 import {
   Container,
@@ -228,10 +227,23 @@ const Headphones = ({
   getCartCount,
 }) => {
   const [headphones, setHeadphones] = useState([]);
+  const [selectedHeadphones, setSelectedHeadphones] = useState([]);
+  const [filteredHeadphones, setFilteredHeadphones] = useState([]);
 
   useEffect(() => {
     getProducts();
   }, [user]);
+
+  useEffect(() => {
+    if (selectedHeadphones.length > 0) {
+      setFilteredHeadphones(
+        headphones.filter((headphone) =>
+          selectedHeadphones.includes(headphone.brand))
+      );
+    } else {
+      setFilteredHeadphones(headphones);
+    }
+  });
 
   const getProducts = () => {
     if (user) {
@@ -269,10 +281,14 @@ const Headphones = ({
         });
     }
   };
-
+  const newBrandList = headphones.reduce((brands, headphone) => {
+    if (brands.includes(headphone.brand)) {
+      return brands;
+    }
+    return [...brands, headphone.brand];
+  }, []);
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
-
       <div
         style={{
           display: "flex",
@@ -280,29 +296,28 @@ const Headphones = ({
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: "40px",
-
         }}
-
       >
-      
-      <Typography variant="h5" sx={{ my: 2 }}>
-        Headphones
-      </Typography>
-      <FilterBar />
+        <Typography variant="h5" sx={{ my: 2 }}>
+          Headphones
+        </Typography>
+        <FilterBar
+          brandList={newBrandList}
+          onFilterChange={setSelectedHeadphones}
+        />
       </div>
       <Grid container spacing={2}>
-        {headphones &&
-          headphones.map((headphone) => (
-            <ItemsCard
-              key={headphone.id}
-              item={headphone}
-              user={user}
-              setOpenSnackbar={setOpenSnackbar}
-              setSnackbarMessage={setSnackbarMessage}
-              getProducts={getProducts}
-              getCartCount={getCartCount}
-            />
-          ))}
+        {filteredHeadphones.map((headphone) => (
+          <ItemsCard
+            key={headphone.id}
+            item={headphone}
+            user={user}
+            setOpenSnackbar={setOpenSnackbar}
+            setSnackbarMessage={setSnackbarMessage}
+            getProducts={getProducts}
+            getCartCount={getCartCount}
+          />
+        ))}
       </Grid>
     </Container>
   );

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import Axios from "axios";
 
 // component imports
-// import FilterBar from "../FilterBar";
+import FilterBar from "../FilterBar";
 
 // MUI imports
 import {
@@ -227,10 +227,23 @@ const Speakers = ({
   getCartCount,
 }) => {
   const [speakers, setSpeakers] = useState([]);
+  const [selectedSpeakers, setSelectedSpeakers] = useState([]);
+  const [filteredSpeakers, setFilteredSpeakers] = useState([]);
+
 
   useEffect(() => {
     getProducts();
   }, [user]);
+
+  useEffect(() => {
+    if (selectedSpeakers.length > 0) {
+      setFilteredSpeakers(
+        speakers.filter((speaker) => selectedSpeakers.includes(speaker.brand))
+      );
+    } else {
+      setFilteredSpeakers(speakers);
+    }
+  });
 
   const getProducts = () => {
     if (user) {
@@ -268,7 +281,12 @@ const Speakers = ({
         });
     }
   };
-
+  const newerBrandlist = speakers.reduce((brands, speaker) => {
+    if (brands.includes(speaker.brand)) {
+      return brands;
+    }
+    return [...brands, speaker.brand];
+  }, []);
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
       <div 
@@ -283,12 +301,14 @@ const Speakers = ({
       <Typography variant="h5" sx={{ my: 2 }}>
         Speakers
       </Typography>
-      {/* <FilterBar /> */}
+      <FilterBar
+        brandList={newerBrandlist}
+        onFilterChange={setSelectedSpeakers}
+      />
       </div>
 
       <Grid container spacing={2}>
-        {speakers &&
-          speakers.map((speaker) => (
+        {filteredSpeakers.map((speaker) => (
             <ItemsCard
               key={speaker.id}
               item={speaker}
