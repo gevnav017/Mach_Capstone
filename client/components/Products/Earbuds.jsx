@@ -41,7 +41,7 @@ const ItemsCard = ({
 
   const toggleWishlist = (earbudId) => {
     if (user) {
-      const inWishlist = item.orders && item.orders.length > 0 && item.orders[0].inWishlist;
+      const inWishlist = item.orders && item.orders.length > 0 && item.orders[0].hasOwnProperty("inWishlist") ? item.orders[0].inWishlist : false;
 
       if (inWishlist) {
         //if already in wishlist we can remove
@@ -60,6 +60,14 @@ const ItemsCard = ({
 
   const addToWishlist = (earbudId) => {
     if (user) {
+      //testing some things 
+      const data = {
+        userId: user.id,
+        productId: earbudId,
+      };
+  
+      console.log("addToWishlist data:", data);
+
       Axios.post(
         "http://localhost:3000/api/wishlist",
         {
@@ -80,6 +88,8 @@ const ItemsCard = ({
           }
         })
         .catch((err) => {
+          console.error("Add to wishlist Error:", err);
+
           setSnackbarMessage("Error: " + err);
           setOpenSnackbar(true);
         });
@@ -111,6 +121,8 @@ const ItemsCard = ({
         }
       })
       .catch((err) => {
+        console.error("Remove from wishlist Error:", err);
+
         setSnackbarMessage("Error: " + err);
         setOpenSnackbar(true);
       });

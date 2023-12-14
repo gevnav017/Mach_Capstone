@@ -22,7 +22,7 @@ import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import IconButton from "@mui/material/IconButton";
 
-const ProductDetails = () => {
+const ProductDetails = ({ user }) => {
   const [item, setItem] = useState(null);
   const [alsoLikes, setAlsoLikes] = useState([]);
   const [count, setCount] = useState(1);
@@ -34,9 +34,16 @@ const ProductDetails = () => {
 
   const { itemId } = useParams();
 
+  const [isInWishlist, setIsInWishlist] = useState(false);
+
+
   useEffect(() => {
     Axios.get(`http://localhost:3000/api/product/${itemId}`)
-      .then((res) => setItem(res.data))
+      .then((res) => {
+        setItem(res.data);
+        setIsInWishlist(res.data && res.data.orders && res.data.orders[0] && res.data.orders[0].inWishlist);
+
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -61,6 +68,101 @@ const ProductDetails = () => {
   }, []);
 
   // console.log("this is a test from Product-details")
+
+  useEffect(() => {
+    //check if in wishlist
+    if (item) {
+      const inWishlist = item.orders && item.orders.length > 0 && item.orders[0].hasOwnProperty("inWishlist")
+        ? item.orders[0].inWishlist
+        : false;
+      setIsInWishlist(inWishlist);
+    }
+  }, [item]);
+  console.log(count);
+  
+  const addToCart = () => {
+    if (item) {
+      Axios.post(
+        "http://localhost:3000/api/orders/new",
+        {
+          userId: user.id,
+          productId: item.id,
+          quantity: count,
+        },
+        {
+          headers: {
+            "content-type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => {
+          if (res.status === 200) {
+            console.log("Added to cart:", res.data);
+          }
+        })
+        .catch((err) => {
+          console.error("Add to cart error:", err);
+        });
+    }
+  };
+
+  const toggleWishlist = () => {
+    if (item) {
+      if (isInWishlist) {
+        removeFromWishlist(item.orders[0].id);
+
+      } else {
+        addToWishlist(item.id);
+      }
+    }
+  };
+
+  const addToWishlist = (item) => {
+    Axios.post(
+      "http://localhost:3000/api/wishlist",
+      {
+        userId: user.id,
+        productId: item.id,
+      },
+      {
+        headers: {
+          "content-type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("Added to wishlist:", res.data);
+          setIsInWishlist(true);
+        }
+      })
+      .catch((err) => {
+        console.error("Add to wishlist error:", err);
+      });
+  };
+
+  const removeFromWishlist = (orderId) => {
+    Axios.post(
+      "http://localhost:3000/api/wishlist/remove",
+      {
+        orderId: orderId,
+      },
+      {
+        headers: {
+          "content-type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("Removed from wishlist:", res.data);
+          setIsInWishlist(false);
+        }
+      })
+      .catch((err) => {
+        console.log("Remove from wishlist error:", err);
+      });
+  };
 
   return (
     <Container maxWidth="lg" sx={{ minWidth: "400px", p: 3 }}>
@@ -178,12 +280,12 @@ const ProductDetails = () => {
                 // checked={item.orders[0] && item.orders[0].inWishlist}
                 color="error"
                 sx={{ mr: "auto" }}
-                // onClick={() => addToWishlist(item.id)}
+                onClick={() => toggleWishlist(item.id)}
               />
               <Button
                 variant="contained"
                 size="small"
-                // onClick={() => addToCart(item.id)}
+                onClick={() => addToCart(item.id)}
               >
                 <ShoppingCartOutlinedIcon size="small" sx={{ mr: 1 }} />
                 Add to cart

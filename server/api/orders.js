@@ -106,6 +106,7 @@ router.post("/orders/new", async (req, res) => {
     // if already in cart
     if (!inOrders) {
       // add item to cart
+      console.log(quantity);
       const addToCart = await prisma.orders.create({
         data: {
           userId,
