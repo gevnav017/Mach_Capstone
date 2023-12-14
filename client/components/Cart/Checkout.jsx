@@ -20,7 +20,45 @@ import IconButton from "@mui/material/IconButton";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
 // cart items component
-const CartItems = ({ item }) => {
+const CartItems = ({
+  item,
+  user,
+  getCart,
+  getCartCount,
+  setSnackbarMessage,
+  setOpenSnackbar,
+}) => {
+  const removeFromCart = (itemId) => {
+    const userId = user && user.id;
+
+    Axios.post(
+      `http://localhost:3000/api/orders/remove/${userId}`,
+      {
+        userId: userId,
+        productId: itemId,
+      },
+      {
+        headers: {
+          "content-type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          setSnackbarMessage("Product removed from cart successfully");
+          setOpenSnackbar(true);
+          getCart();
+          getCartCount();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setSnackbarMessage("Error removing product from cart");
+        setOpenSnackbar(true);
+      });
+  };
+
   return (
     <Card key={item.id} sx={{ display: "flex", minWidth: "400px", mb: 2 }}>
       <CardMedia
@@ -68,10 +106,13 @@ const CartItems = ({ item }) => {
           md={3}
           sx={{ display: "flex", alignItems: "center" }}
         >
-          <CardContent>
+          <CardContent sx={{ mr: 3 }}>
             <Typography component="div" variant="h5">
               ${parseInt(item.products.price).toFixed(2)}
             </Typography>
+          </CardContent>
+          <CardContent>
+            <Typography color="text.secondary">{item.quantity}</Typography>
           </CardContent>
         </Grid>
         <Grid
@@ -85,8 +126,7 @@ const CartItems = ({ item }) => {
             p: 2,
           }}
         >
-          {/* <Button onClick={() => addToCart(item.id)}>Add to cart</Button> */}
-          <Button color="error" onClick={() => removeFromWishlist(item.id)}>
+          <Button color="error" onClick={() => removeFromCart(item.id)}>
             <CloseOutlinedIcon />
           </Button>
         </Grid>
@@ -95,8 +135,13 @@ const CartItems = ({ item }) => {
   );
 };
 
-
-const Checkout = ({ user }) => {
+const Checkout = ({
+  user,
+  cartCount,
+  getCartCount,
+  setOpenSnackbar,
+  setSnackbarMessage,
+}) => {
   const [cart, setCart] = useState([]);
   const [activeStep, setActiveStep] = useState(0);
   const [orderSummary, setOrderSummary] = useState({
@@ -106,7 +151,22 @@ const Checkout = ({ user }) => {
     totalPrice: 0,
   });
 
-  useEffect(() => {
+  let cartPrices = [];
+
+  cart &&
+    cart.map((item) => {
+      cartPrices.push(parseInt(item.products.price));
+    });
+
+  let cartTotal = 0;
+
+  cartPrices.forEach((price) => {
+    cartTotal += price;
+  });
+
+  const tax = cartTotal * 0.095;
+
+  const getCart = () => {
     const userId = user && user.id;
     const inCart = true;
 
@@ -116,6 +176,11 @@ const Checkout = ({ user }) => {
         updateOrderSummary(res.data);
       })
       .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getCart();
+    getCartCount();
   }, [user]);
 
   const updateOrderSummary = (cartItems) => {
@@ -151,7 +216,17 @@ const Checkout = ({ user }) => {
         >
           <Box>
             {cart &&
-              cart.map((item) => <CartItems key={item.id} item={item} />)}
+              cart.map((item) => (
+                <CartItems
+                  key={item.id}
+                  item={item}
+                  user={user}
+                  setOpenSnackbar={setOpenSnackbar}
+                  setSnackbarMessage={setSnackbarMessage}
+                  getCartCount={getCartCount}
+                  getCart={getCart}
+                />
+              ))}
           </Box>
           <Paper
             sx={{
@@ -159,23 +234,26 @@ const Checkout = ({ user }) => {
               top: 0,
               p: 3,
               width: { xs: "40%", md: "30%" },
-              // minWidth: "200px",
             }}
           >
-            <Typography variant="h6" gutterBottom>Order Summary:</Typography>
-            <Box sx={{ border: "solid red", p: 2 }}>
-              <Typography gutterBottom>
-                Item Qty: {orderSummary.totalQuantity}
-              </Typography>
-              <Typography gutterBottom>
-                Subtotal: ${orderSummary.subtotal.toFixed(2)}
-              </Typography>
-              <Typography gutterBottom>
-                Tax: ${orderSummary.tax.toFixed(2)}
-              </Typography>
-              <Typography gutterBottom>
-                Total: ${orderSummary.totalPrice.toFixed(2)}
-              </Typography>
+            <Box>
+              {cartPrices.map((price, idx) => (
+                <Box
+                  key={idx}
+                  sx={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Typography gutterBottom>Item {idx + 1}</Typography>
+                  <Typography gutterBottom>${price.toFixed(2)}</Typography>
+                </Box>
+              ))}
+              <hr />
+              <Box sx={{ textAlign: "right", mt: 3 }}>
+                <Typography gutterBottom>Item Qty: {cartCount}</Typography>
+                <Typography gutterBottom>Tax: ${tax.toFixed(2)}</Typography>
+                <Typography gutterBottom>
+                  Total: ${cartTotal.toFixed(2)}
+                </Typography>
+              </Box>
             </Box>
           </Paper>
         </Box>

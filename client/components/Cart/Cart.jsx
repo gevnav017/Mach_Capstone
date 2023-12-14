@@ -224,10 +224,8 @@ const ItemsCard = ({
 };
 
 //////////////////////////////////////////////////
-const Cart = ({ user, getCartCount }) => {
+const Cart = ({ user, setSnackbarMessage, setOpenSnackbar, getCartCount }) => {
   const [cart, setCart] = useState([]);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const getCart = () => {
     const userId = user && user.id;
@@ -254,6 +252,7 @@ const Cart = ({ user, getCartCount }) => {
         <>
           <Box sx={{ my: 3, textAlign: "right" }}>
             <Button
+              variant="contained"
               onClick={() => {
                 navigate("/cart/checkout");
               }}
@@ -266,7 +265,6 @@ const Cart = ({ user, getCartCount }) => {
               key={item.id}
               item={item}
               user={user}
-              setCart={setCart}
               setOpenSnackbar={setOpenSnackbar}
               setSnackbarMessage={setSnackbarMessage}
               getCart={getCart}
