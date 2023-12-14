@@ -110,18 +110,18 @@ const ItemsCard = ({
     )
       .then((res) => {
         if (res.status === 200) {
+          setSnackbarMessage("Successfully added to wishlist");
           setOpenSnackbar(true);
-          setSnackbarMessage("Product added to wishlist");
-          removeFromCart(item);
-          
-          // need to reload the cart after removing like in remove function
-          getCart(); 
+
+        } else {
+          setSnackbarMessage("Something went wrong");
+          setOpenSnackbar(true);
         }
       })
       .catch((err) => {
         console.log(err);
+        setSnackbarMessage(err.response.data);
         setOpenSnackbar(true);
-        setSnackbarMessage("Error adding product to wishlist");
       });
   };
 
