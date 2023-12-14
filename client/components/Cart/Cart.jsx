@@ -46,16 +46,17 @@ const ItemsCard = ({
       }
     )
       .then((res) => {
+        console.log(res)
         if (res.status === 200) {
-          setOpenSnackbar(true);
           setSnackbarMessage("Product removed from cart successfully");
+          setOpenSnackbar(true);
           getCart();
+          getCartCount();
         }
-      }).then(getCartCount())
+      })
       .catch((err) => {
-        console.log(err);
-        setOpenSnackbar(true);
         setSnackbarMessage("Error removing product from cart");
+        setOpenSnackbar(true);
       });
   };
 
@@ -112,14 +113,12 @@ const ItemsCard = ({
         if (res.status === 200) {
           setSnackbarMessage("Successfully added to wishlist");
           setOpenSnackbar(true);
-
         } else {
           setSnackbarMessage("Something went wrong");
           setOpenSnackbar(true);
         }
       })
       .catch((err) => {
-        console.log(err);
         setSnackbarMessage(err.response.data);
         setOpenSnackbar(true);
       });
@@ -248,7 +247,9 @@ const Cart = ({ user, getCartCount }) => {
   return (
     <Container>
       {cart.length === 0 ? (
-        <Typography>Your cart is empty</Typography>
+        <Typography sx={{ width: "100%", textAlign: "center", mt: 5 }}>
+          Your cart is empty
+        </Typography>
       ) : (
         <>
           <Box sx={{ my: 3, textAlign: "right" }}>
@@ -256,7 +257,6 @@ const Cart = ({ user, getCartCount }) => {
               onClick={() => {
                 navigate("/cart/checkout");
               }}
-              
             >
               Checkout
             </Button>
@@ -271,7 +271,6 @@ const Cart = ({ user, getCartCount }) => {
               setSnackbarMessage={setSnackbarMessage}
               getCart={getCart}
               getCartCount={getCartCount}
-              // addToWishlist={addToWishlist}
             />
           ))}
         </>

@@ -351,14 +351,12 @@ const Navbar = () => {
           }
         />
         <Route
-          exact
           path="/cart"
           element={
             <Cart
               user={user}
               setOpenSnackbar={setOpenSnackbar}
               setSnackbarMessage={setSnackbarMessage}
-              // getProducts={getProducts}
               getCartCount={getCartCount}
             />
           }
