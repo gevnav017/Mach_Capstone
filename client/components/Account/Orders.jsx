@@ -22,7 +22,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const BasicSelect = ({ onTimeRangeChange }) => {
-  const [ordersPlaced, setOrdersPlaced] = useState("");
+  const [ordersPlaced, setOrdersPlaced] = useState("last3Months");
 
   const handleChange = (event) => {
     const selectedTimeRange = event.target.value;
