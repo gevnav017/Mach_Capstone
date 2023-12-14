@@ -188,17 +188,9 @@ const Orders = ({ user }) => {
                   <Typography variant="h7" gutterBottom>
                     Order Date: {order && order.dateUpdated.slice(0, 10)}
                   </Typography>
-                  <Typography variant="h7" gutterBottom>
+                  <Typography variant="h7" gutterBottom style={{marginBottom: "10px"}}>
                     Order #: {order && order.id.slice(0, 8)}
                   </Typography>
-                  <Typography
-                    variant="h7"
-                    gutterBottom
-                    style={{ marginBottom: "10px" }}
-                  >
-                    Total: ${order.total}
-                  </Typography>
-                  {/* To show items in order summary */}
                   <OrderDetails
                     image={order.products.image}
                     name={order.products.name}
