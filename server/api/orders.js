@@ -192,12 +192,15 @@ router.post("/orders/remove/:userId", async (req, res) => {
     const { productId } = req.body;
     // console.log(productId, userId, inCart);
 
-    const removeFromCart = await prisma.orders.delete({
+    const removeFromCart = await prisma.orders.update({
       where: {
         id: productId,
         userId: userId,
         inCart: true,
       },
+      data: {
+        inCart: false
+      }
     });
     // console.log(removeFromCart);
     res.json(removeFromCart);
