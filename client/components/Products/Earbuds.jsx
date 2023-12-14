@@ -34,6 +34,19 @@ const ItemsCard = ({
   getCartCount,
 }) => {
   const [count, setCount] = useState(1);
+  const [isInWishlist, setIsInWishlist] = useState(item.orders && item.orders.length > 0 && item.orders[0].inWishlist);
+  
+  useEffect(() => {
+    if (user) {
+      //gotta check first to see if present in wishlist because hearts were not populating
+      Axios.get(`http://localhost:3000/api/wishlist/${user.id}`)
+        .then((res) => {
+          const isInWishlist = res.data.some((wishlistItem) => wishlistItem.productId === item.id);
+          setIsInWishlist(isInWishlist);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user, item.id]);
 
   const decrementQty = () => {
     setCount((prevCount) => prevCount > 1 && prevCount - 1);
@@ -41,22 +54,22 @@ const ItemsCard = ({
 
   const toggleWishlist = (earbudId) => {
     if (user) {
-      const inWishlist = item.orders && item.orders.length > 0 && item.orders[0].inWishlist;
-
-      if (inWishlist) {
-        //if already in wishlist we can remove
-        removeFromWishlist(item.orders[0].id);
+  
+      if (isInWishlist) {
+        //if already in wishlist remove it
+        removeFromWishlist(earbudId);
       } else {
-        //if not add it
+        //if not in wishlist add it
         addToWishlist(earbudId);
       }
+  
+      //want to be able to toggle the button
+      setIsInWishlist(!isInWishlist);
     } else {
-      setSnackbarMessage(
-        "You must log in or create an account to save your changes"
-      );
+      setSnackbarMessage("You must log in or create an account to save your changes");
       setOpenSnackbar(true);
     }
-  };
+  };  
 
   const addToWishlist = (earbudId) => {
     if (user) {
@@ -80,7 +93,39 @@ const ItemsCard = ({
           }
         })
         .catch((err) => {
-          setSnackbarMessage("Error: " + err);
+          setSnackbarMessage("Error adding to wishlist");
+          setOpenSnackbar(true);
+        });
+    } else {
+      setSnackbarMessage("You must log in or create an account to save your changes");
+      setOpenSnackbar(true);
+    }
+  };
+
+  const removeFromWishlist = (earbudId) => {
+    if (user) {
+      Axios.post(
+        "http://localhost:3000/api/wishlist/remove",
+        {
+          userId: user.id,
+          productId: earbudId,
+          orderId: orderId,
+        },
+        {
+          headers: {
+            "content-type": "application/JSON",
+          },
+        }
+      )
+        .then((res) => {
+          if (res.status === 200) {
+            getProducts();
+            setSnackbarMessage("Successfully removed from wishlist");
+            setOpenSnackbar(true);
+          }
+        })
+        .catch((err) => {
+          setSnackbarMessage("Error adding to wishlist" + err);
           setOpenSnackbar(true);
         });
     } else {
@@ -89,31 +134,6 @@ const ItemsCard = ({
       );
       setOpenSnackbar(true);
     }
-  };
-
-  const removeFromWishlist = (orderId) => {
-    Axios.post(
-      "http://localhost:3000/api/wishlist/remove",
-      {
-        orderId: orderId,
-      },
-      {
-        headers: {
-          "content-type": "application/JSON",
-        },
-      }
-    )
-      .then((res) => {
-        if (res.status === 200) {
-          getProducts();
-          setSnackbarMessage("Successfully removed from wishlist");
-          setOpenSnackbar(true);
-        }
-      })
-      .catch((err) => {
-        setSnackbarMessage("Error: " + err);
-        setOpenSnackbar(true);
-      });
   };
 
   const addToCart = (earbudId) => {
@@ -139,13 +159,11 @@ const ItemsCard = ({
           }
         })
         .catch((err) => {
-          setSnackbarMessage("Error: " + err);
+          setSnackbarMessage("Error adding to cart");
           setOpenSnackbar(true);
         });
     } else {
-      setSnackbarMessage(
-        "You must log in or create an account to save your changes"
-      );
+      setSnackbarMessage("You must log in or create an account to save your changes");
       setOpenSnackbar(true);
     }
   };
@@ -242,11 +260,7 @@ const ItemsCard = ({
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
-            checked={
-              item.orders && Object.keys(item.orders).length > 0
-                ? item.orders[0].inWishlist
-                : false
-            }
+            checked={isInWishlist}
             color="error"
             onClick={() => toggleWishlist(item.id)}
           />
