@@ -173,7 +173,7 @@ const ItemsCard = ({
         >
           <CardContent>
             <Typography component="div" variant="h5">
-              ${parseInt(item.products.price).toFixed(2)}
+              ${parseFloat(item.products.price).toFixed(2)}
             </Typography>
           </CardContent>
         </Grid>
