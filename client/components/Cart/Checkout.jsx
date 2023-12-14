@@ -237,10 +237,11 @@ const Checkout = ({
             }}
           >
             <Box>
+              <Typography variant="h6" component="div">Order Summary</Typography>
               {cartPrices.map((price, idx) => (
                 <Box
                   key={idx}
-                  sx={{ display: "flex", justifyContent: "space-between" }}
+                  sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}
                 >
                   <Typography gutterBottom>Item {idx + 1}</Typography>
                   <Typography gutterBottom>${price.toFixed(2)}</Typography>
