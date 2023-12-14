@@ -48,7 +48,7 @@ const ItemsCard = ({
         removeFromWishlist(item.orders[0].id);
       } else {
         //if not add it
-        addToWishlist(headphoneId);
+        addToWishlist(speakerId);
       }
     } else {
       setSnackbarMessage(
