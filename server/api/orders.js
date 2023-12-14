@@ -242,4 +242,27 @@ router.post("/cartToWishlist", async (req, res) => {
   }
 });
 
+// adding orders to orderhistory after checkout
+router.post("/orders/checkout", async (req, res) => {
+  try{
+    const userId = req.user.id;
+
+    const updatedOrder = await prisma.orders.update({
+      where: {
+        userId: userId,
+        inCart: true,
+      },
+      data: {
+        inCart: false,
+        ordered: true,
+      }
+    });
+    res.json({ success: true, message: "Order placed successfully", order: updatedOrder });
+  } catch (error) {
+    console.error("Error checking out:", error);
+    res.status(500).json({ success: false, message: "Internal server error"});
+  }
+});
+
+
 module.exports = router;

@@ -85,7 +85,7 @@ const CartItems = ({ item }) => {
             p: 2,
           }}
         >
-          <Button onClick={() => addToCart(item.id)}>Add to cart</Button>
+          {/* <Button onClick={() => addToCart(item.id)}>Add to cart</Button> */}
           <Button color="error" onClick={() => removeFromWishlist(item.id)}>
             <CloseOutlinedIcon />
           </Button>
@@ -95,18 +95,47 @@ const CartItems = ({ item }) => {
   );
 };
 
+
 const Checkout = ({ user }) => {
   const [cart, setCart] = useState([]);
   const [activeStep, setActiveStep] = useState(0);
+  const [orderSummary, setOrderSummary] = useState({
+    totalQuantity: 0,
+    subtotal: 0,
+    tax: 0,
+    totalPrice: 0,
+  });
 
   useEffect(() => {
     const userId = user && user.id;
     const inCart = true;
 
     Axios.get(`http://localhost:3000/api/orders/${userId}/${inCart}`)
-      .then((res) => setCart(res.data))
+      .then((res) => {
+        setCart(res.data);
+        updateOrderSummary(res.data);
+      })
       .catch((err) => console.log(err));
   }, [user]);
+
+  const updateOrderSummary = (cartItems) => {
+    if (cartItems && cartItems.length > 0) {
+      const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+      const subtotal = cartItems.reduce(
+        (sum, item) => sum + parseFloat(item.products.price) * item.quantity,
+        0
+      );
+      const tax = 0.04 * subtotal;
+      const totalPrice = subtotal + tax;
+
+      setOrderSummary({
+        totalQuantity,
+        subtotal,
+        tax,
+        totalPrice,
+      });
+    }
+  };
 
   const steps = [
     {
@@ -133,12 +162,20 @@ const Checkout = ({ user }) => {
               // minWidth: "200px",
             }}
           >
-            <Box sx={{ border: "solid red", }}>
+            <Typography variant="h6" gutterBottom>Order Summary:</Typography>
+            <Box sx={{ border: "solid red", p: 2 }}>
               <Typography gutterBottom>
-                Item Qty
+                Item Qty: {orderSummary.totalQuantity}
               </Typography>
-              <Typography gutterBottom>Tax</Typography>
-              <Typography gutterBottom>Total</Typography>
+              <Typography gutterBottom>
+                Subtotal: ${orderSummary.subtotal.toFixed(2)}
+              </Typography>
+              <Typography gutterBottom>
+                Tax: ${orderSummary.tax.toFixed(2)}
+              </Typography>
+              <Typography gutterBottom>
+                Total: ${orderSummary.totalPrice.toFixed(2)}
+              </Typography>
             </Box>
           </Paper>
         </Box>
@@ -171,11 +208,23 @@ const Checkout = ({ user }) => {
             Thank you for shopping with us!
           </Typography>
           <Typography gutterBottom variant="subtitle">
-            We have recieve your order. Your order confirmation #
+            We have received your order. Your order confirmation #
             {Math.round(Math.random() * 1000000)}.
           </Typography>
 
-          <Box>Items and total here</Box>
+          <Box style={{marginTop: '10px'}}>
+            <Typography variant="h6" gutterBottom>
+              Order Details:
+            </Typography>
+            <ul style={{listStyle: "none"}}>
+              {cart.map((item) => (
+                <li key={item.id}>
+                  {item.products.name} - ${parseFloat(item.products.price).toFixed(2)} x {item.quantity}
+                </li>
+              ))}
+            </ul>
+            <Typography variant="h6" gutterBottom>Total: ${orderSummary.totalPrice.toFixed(2)}</Typography>
+          </Box>
         </Paper>
       ),
     },
@@ -239,5 +288,6 @@ const Checkout = ({ user }) => {
     </Container>
   );
 };
+
 
 export default Checkout;
