@@ -234,7 +234,7 @@ router.post("/cartToWishlist", async (req, res) => {
       res.status(400).json("Already in wishlist");
     }
   } catch (err) {
-    console.log(err);
+    res.json(err);
   }
 });
 

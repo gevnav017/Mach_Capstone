@@ -61,10 +61,13 @@ router.post("/wishlist/remove", async (req, res) => {
     const { orderId } = req.body;
     console.log(orderId)
 
-    const removeFromWishlist = await prisma.orders.delete({
+    const removeFromWishlist = await prisma.orders.update({
       where: {
         id: orderId,
       },
+      data: {
+        inWishlist: false,
+      }
     });
 
     res.json(removeFromWishlist);
