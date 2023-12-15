@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "nodemon server/index.js & webpack -w",
     "start": "node server/index.js",
-    "build": "webpack --config webpack.dev.config.js",
+    "build": "webpack",
     "test": "jest --verbose",
     "seed": "node server/db/seedData.js"
   },
