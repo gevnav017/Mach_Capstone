@@ -36,7 +36,7 @@ const EarbudDetails = () => {
 
   useEffect(() => {
     Axios.get(
-      `http://localhost:3000/api/product/${itemId}`,
+      `https://mach-4zyf.onrender.com/api/product/${itemId}`,
       {
         headers: {
           "Content-Type": "application/Json",
@@ -51,7 +51,7 @@ const EarbudDetails = () => {
 
   useEffect(() => {
     Axios.post(
-      "http://localhost:3000/api/products",
+      "https://mach-4zyf.onrender.com/api/products",
       {
         category: "Earbud",
       },

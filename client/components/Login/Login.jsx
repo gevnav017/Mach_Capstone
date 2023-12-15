@@ -58,7 +58,7 @@ const Login = ({ setUser }) => {
       console.log("enter username and password");
     } else {
       Axios.post(
-        "http://localhost:3000/api/users/login",
+        "https://mach-4zyf.onrender.com/api/users/login",
         {
           username: username,
           password: password,
@@ -74,7 +74,7 @@ const Login = ({ setUser }) => {
             const token = data.data.token;
             window.localStorage.setItem("token", token);
 
-            Axios.get("http://localhost:3000/api/user/auth/me", {
+            Axios.get("https://mach-4zyf.onrender.com/api/user/auth/me", {
               headers: {
                 authorization: token,
               },

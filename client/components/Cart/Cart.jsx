@@ -34,7 +34,7 @@ const ItemsCard = ({
     const userId = user && user.id;
 
     Axios.post(
-      `http://localhost:3000/api/orders/remove/${userId}`,
+      `https://mach-4zyf.onrender.com/api/orders/remove/${userId}`,
       {
         userId: userId,
         productId: item.id,
@@ -64,7 +64,7 @@ const ItemsCard = ({
     setCount((prevCount) => prevCount + 1);
 
     Axios.post(
-      `http://localhost:3000/api/cartQtyChange`,
+      `https://mach-4zyf.onrender.com/api/cartQtyChange`,
       {
         itemId: itemId,
         cartQtyChange: count + 1,
@@ -81,7 +81,7 @@ const ItemsCard = ({
     setCount((prevCount) => prevCount > 1 && prevCount - 1);
 
     Axios.post(
-      `http://localhost:3000/api/cartQtyChange`,
+      `https://mach-4zyf.onrender.com/api/cartQtyChange`,
       {
         itemId: itemId,
         cartQtyChange: count - 1,
@@ -99,7 +99,7 @@ const ItemsCard = ({
     const userId = user && user.id;
 
     Axios.post(
-      `http://localhost:3000/api/cartToWishlist`,
+      `https://mach-4zyf.onrender.com/api/cartToWishlist`,
       {
         productId: itemId,
       },
@@ -231,7 +231,7 @@ const Cart = ({ user, setSnackbarMessage, setOpenSnackbar, getCartCount }) => {
     const userId = user && user.id;
     const inCart = true;
 
-    Axios.get(`http://localhost:3000/api/orders/${userId}/${inCart}`)
+    Axios.get(`https://mach-4zyf.onrender.com/api/orders/${userId}/${inCart}`)
       .then((res) => setCart(res.data))
       .catch((err) => console.log(err));
   };

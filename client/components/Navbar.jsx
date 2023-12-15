@@ -48,7 +48,7 @@ const Navbar = () => {
   useEffect(() => {
     const token = window.localStorage.getItem("token");
 
-    Axios.get("http://localhost:3000/api/user/auth/me", {
+    Axios.get("https://mach-4zyf.onrender.com/api/user/auth/me", {
       headers: {
         authorization: token,
       },
@@ -64,7 +64,7 @@ const Navbar = () => {
   const getCartCount = () => {
     const userId = user && user.id;
 
-    Axios.get(`http://localhost:3000/api/cartCount/${userId}`)
+    Axios.get(`https://mach-4zyf.onrender.com/api/cartCount/${userId}`)
       .then((res) => {
         if (res.data[0]._sum.quantity > 0) {
           setCartCount(res.data[0]._sum.quantity);

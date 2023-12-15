@@ -45,7 +45,7 @@ const Home = () => {
 
   // make axios call here to the API to get all items
   useEffect(() => {
-    Axios.get("http://localhost:3000/api/products")
+    Axios.get("https://mach-4zyf.onrender.com/api/products")
       .then((res) => setItems(res.data))
       .catch((err) => console.log(err));
   }, []);

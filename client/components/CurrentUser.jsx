@@ -10,7 +10,7 @@ const useCurrentUser = (tokenFromArg) => {
     const getUser = async () => {
       try {
         const response = await Axios.get(
-          "http://localhost:3000/api/user/auth/me",
+          "https://mach-4zyf.onrender.com/api/user/auth/me",
           {
             headers: {
               authorization: token,

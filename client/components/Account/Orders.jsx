@@ -106,7 +106,7 @@ const Orders = ({ user }) => {
   // axios call to get orders that have inCart column false by logged in user from db
   useEffect(() => {
     const userId = user && user.id;
-    const apiUrl = `http://localhost:3000/api/all-orders/${userId}`;
+    const apiUrl = `https://mach-4zyf.onrender.com/api/all-orders/${userId}`;
 
     // check if time range is selected
     const onTimeRangeParam = selectedTimeRange

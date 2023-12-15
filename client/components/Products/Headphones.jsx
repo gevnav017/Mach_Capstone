@@ -61,7 +61,7 @@ const ItemsCard = ({
   const addToWishlist = (headphoneId) => {
     if (user) {
       Axios.post(
-        "http://localhost:3000/api/wishlist",
+        "https://mach-4zyf.onrender.com/api/wishlist",
         {
           userId: user.id,
           productId: headphoneId,
@@ -93,7 +93,7 @@ const ItemsCard = ({
 
   const removeFromWishlist = (orderId) => {
     Axios.post(
-      "http://localhost:3000/api/wishlist/remove",
+      "https://mach-4zyf.onrender.com/api/wishlist/remove",
       {
         orderId: orderId,
       },
@@ -119,7 +119,7 @@ const ItemsCard = ({
   const addToCart = (headphoneId) => {
     if (user) {
       Axios.post(
-        "http://localhost:3000/api/orders/new",
+        "https://mach-4zyf.onrender.com/api/orders/new",
         {
           userId: user.id,
           productId: headphoneId,
@@ -292,7 +292,7 @@ const Headphones = ({
   const getProducts = () => {
     if (user) {
       Axios.post(
-        "http://localhost:3000/api/productsWithUser",
+        "https://mach-4zyf.onrender.com/api/productsWithUser",
         {
           userId: user && user.id,
           category: "Headphone",
@@ -309,7 +309,7 @@ const Headphones = ({
         });
     } else {
       Axios.get(
-        "http://localhost:3000/api/products",
+        "https://mach-4zyf.onrender.com/api/products",
         {
           category: "Headphone",
         },
