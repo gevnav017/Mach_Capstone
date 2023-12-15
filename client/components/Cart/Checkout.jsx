@@ -32,7 +32,7 @@ const CartItems = ({
     const userId = user && user.id;
 
     Axios.post(
-      `http://localhost:3000/api/orders/remove/${userId}`,
+      `https://mach-4zyf.onrender.com/api/orders/remove/${userId}`,
       {
         userId: userId,
         productId: itemId,
@@ -165,7 +165,7 @@ const Checkout = ({
     const userId = user && user.id;
     const inCart = true;
 
-    Axios.get(`http://localhost:3000/api/orders/${userId}/${inCart}`)
+    Axios.get(`https://mach-4zyf.onrender.com/api/orders/${userId}/${inCart}`)
       .then((res) => {
         setCart(res.data);
         updateOrderSummary(res.data);
@@ -323,7 +323,7 @@ const Checkout = ({
 
     if (activeStep === steps.length - 2) {
       Axios.post(
-        "http://localhost:3000/api/orders/checkout",
+        "https://mach-4zyf.onrender.com/api/orders/checkout",
         {
           userId: user && user.id,
         },

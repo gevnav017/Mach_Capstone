@@ -35,7 +35,7 @@ const ProductDetails = () => {
   const { itemId } = useParams();
 
   useEffect(() => {
-    Axios.get(`http://localhost:3000/api/product/${itemId}`)
+    Axios.get(`https://mach-4zyf.onrender.com/api/product/${itemId}`)
       .then((res) => setItem(res.data))
       .catch((err) => {
         console.log(err);
@@ -44,7 +44,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     Axios.post(
-      "http://localhost:3000/api/products",
+      "https://mach-4zyf.onrender.com/api/products",
       {
         category: itemId,
       },

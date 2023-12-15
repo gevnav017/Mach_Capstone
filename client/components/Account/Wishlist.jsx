@@ -24,7 +24,7 @@ const Wishlist = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
   const getWishlist = () => {
     const userId = user && user.id;
 
-    Axios.get(`http://localhost:3000/api/wishlist/${userId}`)
+    Axios.get(`https://mach-4zyf.onrender.com/api/wishlist/${userId}`)
       .then((data) => setWishlist(data.data))
       .catch((err) => {
         console.log(err);
@@ -33,7 +33,7 @@ const Wishlist = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
 
   const addToCart = (orderId) => {
     Axios.post(
-      `http://localhost:3000/api/wishlistToOrder`,
+      `https://mach-4zyf.onrender.com/api/wishlistToOrder`,
       {
         orderId: orderId,
       },
@@ -56,7 +56,7 @@ const Wishlist = ({ user, setOpenSnackbar, setSnackbarMessage }) => {
 
   const removeFromWishlist = (orderId) => {
     Axios.post(
-      `http://localhost:3000/api/wishlist/remove`,
+      `https://mach-4zyf.onrender.com/api/wishlist/remove`,
       {
         orderId: orderId,
       },

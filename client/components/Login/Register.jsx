@@ -56,7 +56,7 @@ const SignUp = () => {
 
     if (username && password) {
       Axios.post(
-        "http://localhost:3000/api/users/register",
+        "https://mach-4zyf.onrender.com/api/users/register",
         {
           username: username,
           password: password,

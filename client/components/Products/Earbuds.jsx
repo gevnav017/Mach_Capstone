@@ -39,7 +39,7 @@ const ItemsCard = ({
   useEffect(() => {
     if (user) {
       //gotta check first to see if present in wishlist because hearts were not populating
-      Axios.get(`http://localhost:3000/api/wishlist/${user.id}`)
+      Axios.get(`https://mach-4zyf.onrender.com/api/wishlist/${user.id}`)
         .then((res) => {
           const isInWishlist = res.data.some((wishlistItem) => wishlistItem.productId === item.id);
           setIsInWishlist(isInWishlist);
@@ -74,7 +74,7 @@ const ItemsCard = ({
   const addToWishlist = (earbudId) => {
     if (user) {
       Axios.post(
-        "http://localhost:3000/api/wishlist",
+        "https://mach-4zyf.onrender.com/api/wishlist",
         {
           userId: user.id,
           productId: earbudId,
@@ -105,7 +105,7 @@ const ItemsCard = ({
   const removeFromWishlist = (earbudId) => {
     if (user) {
       Axios.post(
-        "http://localhost:3000/api/wishlist/remove",
+        "https://mach-4zyf.onrender.com/api/wishlist/remove",
         {
           userId: user.id,
           productId: earbudId,
@@ -139,7 +139,7 @@ const ItemsCard = ({
   const addToCart = (earbudId) => {
     if (user) {
       Axios.post(
-        "http://localhost:3000/api/orders/new",
+        "https://mach-4zyf.onrender.com/api/orders/new",
         {
           userId: user.id,
           productId: earbudId,
@@ -305,7 +305,7 @@ const Earbuds = ({
   const getProducts = () => {
     if (user) {
       Axios.post(
-        "http://localhost:3000/api/productsWithUser",
+        "https://mach-4zyf.onrender.com/api/productsWithUser",
         {
           userId: user && user.id,
           category: "Earbud",
@@ -322,7 +322,7 @@ const Earbuds = ({
         });
     } else {
       Axios.get(
-        "http://localhost:3000/api/products",
+        "https://mach-4zyf.onrender.com/api/products",
         {
           category: "Earbud",
         },

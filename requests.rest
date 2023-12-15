@@ -1,12 +1,12 @@
-GET http://localhost:3000/api/account/orders/b7e93e4f-7da1-4af6-970d-3306f9d4f4c1
+GET https://mach-4zyf.onrender.com/api/account/orders/b7e93e4f-7da1-4af6-970d-3306f9d4f4c1
 
 ###
 
-GET http://localhost:3000/api/users
+GET https://mach-4zyf.onrender.com/api/users
 
 ###
 
-POST http://localhost:3000/api/users/register
+POST https://mach-4zyf.onrender.com/api/users/register
 content-type: application/json
 
 {
@@ -18,7 +18,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:3000/api/users/login
+POST https://mach-4zyf.onrender.com/api/users/login
 content-type: application/json
 
 {
